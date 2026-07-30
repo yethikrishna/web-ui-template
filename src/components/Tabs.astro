@@ -1,0 +1,218 @@
+---
+/**
+ * Tabs — Accessible tabbed interface.
+ *
+ * Renders a tablist with tab buttons and corresponding tabpanels. A bundled
+ * client script handles panel switching and full keyboard navigation per the
+ * WAI-ARIA Tabs pattern:
+ *   - ArrowLeft / ArrowRight: move focus between tabs (wraps)
+ *   - Home / End: jump to first / last tab
+ *   - Enter / Space: activate (native button behavior)
+ *
+ * Roving tabindex is used so only the active tab is in the tab order.
+ *
+ * Props:
+ *   tabs: Array<{ label: string; content: string }>
+ *   title?: string
+ */
+interface Tab {
+  label: string;
+  content: string;
+}
+
+interface Props {
+  tabs: Tab[];
+  title?: string;
+}
+
+const { tabs, title } = Astro.props;
+
+// Stable unique id per instance so multiple Tabs components never collide.
+const uid = Math.random().toString(36).slice(2, 9);
+const baseId = `tabs-${uid}`;
+const titleId = `${baseId}-title`;
+---
+
+<section class="tabs" data-tabs={baseId} aria-labelledby={title ? titleId : undefined}>
+  {title && <h2 class="tabs__title" id={titleId}>{title}</h2>}
+
+  <div class="tabs__container">
+    <div class="tabs__list" role="tablist" aria-label={title ?? 'Tabbed content'}>
+      {tabs.map((tab, i) => (
+        <button
+          type="button"
+          class="tabs__tab"
+          role="tab"
+          id={`${baseId}-tab-${i}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          aria-controls={`${baseId}-panel-${i}`}
+          tabindex={i === 0 ? 0 : -1}
+          data-index={i}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+
+    {tabs.map((tab, i) => (
+      <div
+        class="tabs__panel"
+        role="tabpanel"
+        id={`${baseId}-panel-${i}`}
+        aria-labelledby={`${baseId}-tab-${i}`}
+        hidden={i !== 0}
+        data-index={i}
+        tabindex="0"
+      >
+        {tab.content}
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .tabs {
+    padding: 4rem 1.5rem;
+  }
+
+  .tabs__title {
+    max-width: var(--max);
+    margin: 0 auto 1.5rem;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+
+  .tabs__container {
+    max-width: var(--max);
+    margin-inline: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--bg-elevated);
+    overflow: hidden;
+  }
+
+  .tabs__list {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .tabs__tab {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: 0 0 auto;
+    padding: 0.9rem 1.25rem;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+  }
+
+  .tabs__tab:hover {
+    color: var(--ink-soft);
+    background: var(--accent-soft);
+  }
+
+  .tabs__tab[aria-selected='true'] {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .tabs__tab:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+
+  .tabs__panel {
+    padding: 1.5rem 1.75rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+
+  .tabs__panel:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+
+  .tabs__panel[hidden] {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    .tabs {
+      padding: 3rem 1.25rem;
+    }
+    .tabs__panel {
+      padding: 1.25rem;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Initializes every Tabs instance on the page. Scoped per `[data-tabs]`
+   * root so multiple components are independent.
+   */
+  function initTabs(root: HTMLElement) {
+    const tabs = Array.from(
+      root.querySelectorAll<HTMLButtonElement>('[role="tab"]')
+    );
+    if (!tabs.length) return;
+
+    /** Activate a tab by index: update ARIA state, roving tabindex, panels. */
+    function activate(index: number) {
+      tabs.forEach((tab, i) => {
+        const selected = i === index;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+        const panelId = tab.getAttribute('aria-controls');
+        const panel = panelId
+          ? root.querySelector(`#${CSS.escape(panelId)}`)
+          : null;
+        if (panel) (panel as HTMLElement).hidden = !selected;
+      });
+      tabs[index].focus();
+    }
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => activate(index));
+      tab.addEventListener('keydown', (event: KeyboardEvent) => {
+        const last = tabs.length - 1;
+        let next: number | null = null;
+        switch (event.key) {
+          case 'ArrowRight':
+            next = index === last ? 0 : index + 1;
+            break;
+          case 'ArrowLeft':
+            next = index === 0 ? last : index - 1;
+            break;
+          case 'Home':
+            next = 0;
+            break;
+          case 'End':
+            next = last;
+            break;
+          default:
+            return; // Enter/Space handled natively by <button>
+        }
+        event.preventDefault();
+        activate(next as number);
+      });
+    });
+  }
+
+  const roots = document.querySelectorAll<HTMLElement>('[data-tabs]');
+  roots.forEach(initTabs);
+</script>

@@ -1,0 +1,146 @@
+---
+title: Getting started
+description: Install the varsha website starter template using create-varsha, degit, git clone, or npm create. Prerequisites, setup, and first run.
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha is a premium website starter template built on [Astro](https://astro.build). This guide covers prerequisites, installation methods, and running your first local development server.
+
+## Prerequisites
+
+Before installing varsha, make sure you have the following tools:
+
+| Tool | Minimum version | Notes |
+| --- | --- | --- |
+| [Node.js](https://nodejs.org/) | 18.17.0 or 20.3.0+ | LTS recommended |
+| [npm](https://www.npmjs.com/) | 9.0+ | Bundled with Node.js |
+| A code editor | — | VS Code with the [Astro extension](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode) recommended |
+| Git | 2.0+ | Required for cloning and deployment workflows |
+
+You can check your Node.js version by running:
+
+```bash
+node --version
+```
+
+## Install varsha
+
+Choose one of the following methods to create a new varsha project.
+
+<CardGrid>
+  <Card title="Recommended: create-varsha">
+    The official CLI scaffolds a project with dependency installation and git init in one command.
+  </Card>
+  <Card title="degit">
+    `degit` downloads the latest template without Git history, giving you a clean starting point.
+  </Card>
+  <Card title="Git clone">
+    Clone the full repository if you want to contribute back or preserve Git history.
+  </Card>
+</CardGrid>
+
+### Option 1: Create with create-varsha (recommended)
+
+```bash
+npx create-varsha my-varsha-site
+cd my-varsha-site
+```
+
+The CLI automatically installs dependencies and initializes a git repository. You can also use `npm create varsha`, `yarn create varsha`, `pnpm create varsha`, or `bunx create-varsha`.
+
+Options:
+- `--pm <manager>` — Use a specific package manager (npm, yarn, pnpm, bun)
+- `--no-install` — Skip dependency installation
+- `--no-git` — Skip git initialization
+- `--template <branch>` — Use a specific branch or tag
+
+### Option 2: Create with degit
+
+```bash
+npx degit yethikrishna/web-ui-template my-varsha-site
+cd my-varsha-site
+npm install
+```
+
+This creates a new directory called `my-varsha-site` with a fresh copy of the varsha starter, excluding the original Git history.
+
+### Option 3: Clone with Git
+
+```bash
+git clone https://github.com/yethikrishna/web-ui-template.git my-varsha-site
+cd my-varsha-site
+npm install
+```
+
+If you clone with Git, consider removing the existing remote and adding your own before making commits:
+
+```bash
+git remote remove origin
+git remote add origin https://github.com/your-username/your-repo.git
+```
+
+### Option 4: Create with Astro CLI
+
+```bash
+npm create astro@latest -- --template yethikrishna/web-ui-template my-varsha-site
+cd my-varsha-site
+npm install
+```
+
+## Run the development server
+
+Start the local dev server:
+
+```bash
+npm run dev
+```
+
+By default, varsha runs on [http://localhost:4321](http://localhost:4321). Open this URL in your browser to see your site.
+
+The dev server supports:
+
+- **Hot module replacement (HMR):** Changes to `.astro`, `.mdx`, `.css`, and `.ts` files are reflected instantly without a full page reload.
+- **Local network access:** Add `--host` to expose the dev server on your local network: `npm run dev -- --host`.
+
+## Available scripts
+
+varsha includes the following npm scripts out of the box:
+
+| Script | Command | Purpose |
+| --- | --- | --- |
+| `dev` | `npm run dev` | Start the local development server |
+| `build` | `npm run build` | Build the production site to `./dist/` |
+| `preview` | `npm run preview` | Preview the production build locally before deploying |
+| `astro` | `npx astro` | Run Astro CLI commands directly |
+
+## Verify your installation
+
+After running `npm run dev`, you should see:
+
+1. The varsha landing page at `http://localhost:4321/`
+2. The documentation at `http://localhost:4321/docs/`
+3. The blog at `http://localhost:4321/blog/`
+
+If all three pages load, your installation is working correctly.
+
+## Next steps
+
+<CardGrid>
+  <Card title="Quick start">
+    Build your first custom page and deploy it in under five minutes.
+
+    [Quick start →](/docs/quick-start/)
+  </Card>
+  <Card title="Project structure">
+    Familiarize yourself with how a varsha project is organized.
+
+    [Project structure →](/docs/concepts/)
+  </Card>
+</CardGrid>
+
+## Getting help
+
+- **Documentation:** You are here. Browse the sidebar for guides on every feature.
+- **GitHub issues:** Report bugs or request features at [github.com/yethikrishna/web-ui-template/issues](https://github.com/yethikrishna/web-ui-template/issues).
+- **Instagram:** Follow [@yethikrishnar](https://instagram.com/yethikrishnar) for updates and showcases.

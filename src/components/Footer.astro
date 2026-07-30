@@ -1,0 +1,98 @@
+---
+/**
+ * Footer.astro — Starlight Footer override.
+ *
+ * Renders the default Starlight footer and appends a persistent
+ * "Built with varsha by myndlabs" attribution credit. The credit
+ * is protected by a client-side self-healing script that re-injects
+ * it if removed from the DOM.
+ */
+import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
+---
+
+<DefaultFooter />
+
+<!-- varsha-builtwith:start -->
+<div class="builtwith-docs-wrapper" data-builtwith-docs="true">
+  <a
+    class="builtwith-credit builtwith-credit--docs"
+    href="https://myndlabs.tech"
+    target="_blank"
+    rel="noopener noreferrer"
+    data-builtwith="true"
+    aria-label="Built with varsha · myndlabs"
+  >
+    <span class="builtwith-credit__dot" aria-hidden="true"></span>
+    <span class="builtwith-credit__text">Built with varsha</span>
+    <span class="builtwith-credit__sep" aria-hidden="true">·</span>
+    <span class="builtwith-credit__company">myndlabs</span>
+  </a>
+</div>
+
+<script>
+  (function () {
+    'use strict';
+    var HOOK = 'data-builtwith';
+    function createCredit() {
+      var wrap = document.createElement('div');
+      wrap.className = 'builtwith-docs-wrapper';
+      wrap.setAttribute('data-builtwith-docs', 'true');
+      var a = document.createElement('a');
+      a.setAttribute(HOOK, 'true');
+      a.href = 'https://myndlabs.tech';
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.setAttribute('aria-label', 'Built with varsha \u00b7 myndlabs');
+      a.className = 'builtwith-credit builtwith-credit--docs';
+      a.innerHTML = '<span class="builtwith-credit__dot"></span>' +
+        '<span class="builtwith-credit__text">Built with varsha</span>' +
+        '<span class="builtwith-credit__sep">\u00b7</span>' +
+        '<span class="builtwith-credit__company">myndlabs</span>';
+      wrap.appendChild(a);
+      return wrap;
+    }
+    function findFooter() {
+      // Starlight places content in <main> or .sl-container
+      var main = document.querySelector('main') || document.querySelector('.sl-container');
+      return main;
+    }
+    function ensureCredit() {
+      var el = document.querySelector('[' + HOOK + ']');
+      if (!el || !document.body.contains(el)) {
+        var footer = findFooter();
+        if (footer) {
+          footer.appendChild(createCredit());
+        } else {
+          // Fallback: append corner badge to body
+          var corner = document.createElement('a');
+          corner.setAttribute(HOOK, 'true');
+          corner.href = 'https://myndlabs.tech';
+          corner.target = '_blank';
+          corner.rel = 'noopener noreferrer';
+          corner.setAttribute('aria-label', 'Built with varsha \u00b7 myndlabs');
+          corner.className = 'builtwith-credit builtwith-credit--corner';
+          corner.innerHTML = '<span class="builtwith-credit__dot"></span>' +
+            '<span class="builtwith-credit__text">Built with varsha</span>' +
+            '<span class="builtwith-credit__sep">\u00b7</span>' +
+            '<span class="builtwith-credit__company">myndlabs</span>';
+          document.body.appendChild(corner);
+        }
+        return;
+      }
+      var cs = window.getComputedStyle(el);
+      if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0' || parseFloat(cs.opacity) < 0.1) {
+        el.removeAttribute('style');
+        el.style.cssText = '';
+      }
+    }
+    function init() { ensureCredit(); }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else { init(); }
+    setInterval(ensureCredit, 2500);
+    if (typeof MutationObserver !== 'undefined') {
+      new MutationObserver(ensureCredit).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
+    }
+  })();
+</script>
+<!-- varsha-builtwith:end -->

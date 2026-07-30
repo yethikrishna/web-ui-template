@@ -1,0 +1,161 @@
+---
+title: Project structure
+description: Understand the varsha project directory layout, key files, and where to put pages, components, content, and static assets.
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+A varsha project follows standard Astro conventions with additional structure for the marketing site, documentation, blog, and design system. Understanding this layout will help you find your way around quickly.
+
+## Top-level structure
+
+```text
+my-varsha-site/
+├── public/              # Static assets served as-is
+│   ├── assets/          # Images, fonts, OG cards
+│   └── css/             # Compiled/global CSS (style.css)
+├── src/
+│   ├── assets/          # Images and SVGs processed by Astro
+│   ├── components/      # Reusable Astro components
+│   ├── content/         # Markdown/MDX content (docs, blog)
+│   │   ├── blog/        # Blog posts
+│   │   └── docs/        # Documentation pages
+│   │       ├── ja/      # Japanese documentation
+│   │       └── zh-cn/   # Simplified Chinese documentation
+│   ├── data/            # JSON data files
+│   ├── pages/           # File-based routes
+│   ├── scripts/         # Build scripts and utilities
+│   ├── styles/          # Global and Starlight-specific styles
+│   └── content.config.ts # Content collections schema
+├── index.html           # Root marketing landing page
+├── astro.config.mjs     # Astro configuration (sidebar, integrations)
+├── package.json         # Dependencies and scripts
+└── tsconfig.json        # TypeScript configuration
+```
+
+## Key directories and files
+
+### `src/pages/`
+
+File-based routing for Astro pages. Every `.astro` or `.md` file in this directory becomes a route based on its path.
+
+```text
+src/pages/
+├── index.astro          # Marketing landing page (reads root index.html)
+├── compare.astro        # Compare page
+├── plugins.astro        # Plugins/ecosystem page
+├── stats.astro          # Stats page
+└── blog/
+    ├── index.astro      # Blog listing page
+    └── [slug].astro     # Dynamic blog post route
+```
+
+Create new pages by adding `.astro` files here. For example, `src/pages/pricing.astro` becomes `/pricing`.
+
+### `src/components/`
+
+Reusable UI components written in Astro.
+
+| Component | Purpose |
+| --- | --- |
+| `MarketingLayout.astro` | Layout wrapper for marketing pages — includes header, nav, footer, theme system, and attribution |
+| `BuiltWith.astro` | Persistent "Built with varsha by myndlabs" credit component (do not remove) |
+| `Header.astro` | Custom Starlight header for the docs |
+| `Footer.astro` | Custom Starlight footer |
+| `Sidebar.astro` | Custom Starlight sidebar |
+| `SiteTitle.astro` | Custom Starlight site title |
+| `Banner.astro` | Announcement banner for Starlight docs |
+| `AuthorCard.astro` | Blog post author card component |
+
+### `src/content/`
+
+Content collections for Markdown and MDX content. Defined in `src/content.config.ts`.
+
+- **`src/content/blog/`** — Blog posts as Markdown (`.md`) files with frontmatter (title, description, pubDate).
+- **`src/content/docs/`** — Documentation pages as MDX (`.mdx`) files, organized by locale.
+
+### `src/content/docs/`
+
+The documentation directory powers the Starlight docs site. Files in the root are English; the `ja/` and `zh-cn/` subdirectories contain Japanese and Simplified Chinese translations respectively.
+
+```text
+src/content/docs/
+├── index.mdx            # Docs landing (Overview)
+├── install.mdx          # Getting started
+├── quick-start.mdx      # Quick start
+├── concepts.mdx         # Project structure (you are here)
+├── how-to-work.mdx      # Pages & layouts
+├── configuration.mdx    # Customization
+├── design-system.mdx    # Design system
+├── session-state.mdx    # Content & blog
+├── persistence-remote.mdx # Deployment (slug: deployment)
+├── socket-api.mdx       # SEO & metadata
+├── plugins.mdx          # Components reference
+├── cli-reference.mdx    # CSS design tokens
+├── integrations.mdx     # Integrations
+├── agent-skill.mdx      # Agent skill file
+├── keyboard.mdx         # Themes
+├── troubleshooting.mdx  # Troubleshooting
+├── marketplace.mdx      # Examples
+└── agents.mdx           # Showcase
+```
+
+### `src/styles/`
+
+| File | Purpose |
+| --- | --- |
+| `starlight.css` | Custom CSS overrides for the Starlight documentation theme |
+
+Global marketing site styles live in `public/css/style.css`.
+
+### `public/`
+
+Static assets served directly without processing. Place fonts, favicons, robots.txt, and other public files here.
+
+```text
+public/
+├── assets/              # Logos, OG images, fonts (jbm.woff2)
+└── css/
+    └── style.css       # Global CSS for the marketing site (themes, layout, components)
+```
+
+### Root files
+
+| File | Purpose |
+| --- | --- |
+| `index.html` | The static marketing landing page (read by `src/pages/index.astro`) |
+| `astro.config.mjs` | Central configuration — site URL, Starlight sidebar, integrations, locales, social links |
+| `package.json` | Dependencies (Astro, Starlight, integrations) and npm scripts |
+| `src/content.config.ts` | Content collection schemas for blog and docs |
+
+## Configuration hotspots
+
+When customizing your site, these are the files you will edit most often:
+
+<CardGrid>
+  <Card title="Site metadata">
+    Edit `astro.config.mjs` to change the site title, description, URL, social links, and sidebar navigation.
+  </Card>
+  <Card title="Navigation">
+    Edit the nav links in `src/components/MarketingLayout.astro` for header links on marketing pages.
+  </Card>
+  <Card title="Colors & themes">
+    Edit CSS custom properties in `public/css/style.css` to modify theme palettes or add new themes.
+  </Card>
+  <Card title="Content">
+    Add or edit Markdown files in `src/content/blog/` and `src/content/docs/`.
+  </Card>
+</CardGrid>
+
+## Naming conventions
+
+- **Components:** Use PascalCase for `.astro` component files (e.g., `MarketingLayout.astro`, `BuiltWith.astro`).
+- **Pages:** Use lowercase kebab-case for page files (e.g., `about-us.astro`, `blog-post.astro`).
+- **Content:** Use lowercase kebab-case for Markdown/MDX content files (e.g., `my-first-post.md`, `getting-started.mdx`).
+- **CSS:** Use BEM-inspired class names in marketing CSS (e.g., `site-header`, `nav-links`, `builtwith-credit`).
+
+## Next steps
+
+- Learn how to [create pages and use layouts](/docs/how-to-work/)
+- Explore [customization options](/docs/configuration/)
+- Understand the [design system](/docs/design-system/)

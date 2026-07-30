@@ -1,0 +1,217 @@
+---
+title: ページとレイアウト
+description: varshaでページを作成する方法、MarketingLayoutの使用法、レイアウトの構造化、ビルトインコンポーネントを使ったページ構築のガイド。
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varshaはファイルベースのルーティングを使用しており、`src/pages/`にファイルを置くだけでページを作成できます。このガイドでは、ページの作成、レイアウトの使用、共通コンポーネントの構成方法について説明します。
+
+## ページの作成方法
+
+### 基本的なマーケティングページ
+
+マーケティングページ（ランディングページ、About、Pricingなど）はすべて`MarketingLayout`を使用する必要があります：
+
+```astro title="src/pages/about.astro"
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+
+<MarketingLayout
+  title="About Us"
+  description="Learn about our company."
+  canonicalPath="/about/"
+>
+  <main class="page">
+    <section class="hero">
+      <h1>About Us</h1>
+      <p>We build tools that help people ship faster.</p>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+### MarketingLayoutのプロパティ
+
+| プロパティ | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `title` | `string` | はい | ページタイトル（`<title>`タグとOGタグに使用） |
+| `description` | `string` | はい | メタディスクリプション |
+| `canonicalPath` | `string` | はい | 正規URLパス（`/about/`のように） |
+| `image` | `string` | いいえ | OG画像のパス（デフォルトは`/og-image.png`） |
+
+### ヒーロー付きページ
+
+ヒーローセクションのあるページを作成：
+
+```astro title="src/pages/features.astro"
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+
+<MarketingLayout
+  title="Features"
+  description="Everything varsha has to offer."
+  canonicalPath="/features/"
+>
+  <main class="page">
+    <section class="hero">
+      <h1>Everything you need to ship.</h1>
+      <p>Built-in components, themes, and tools.</p>
+      <div class="hero-actions">
+        <a href="/docs/quick-start/" class="btn btn-primary">Get started</a>
+        <a href="#features" class="btn btn-secondary">See features</a>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <div class="container">
+        <h2>Features</h2>
+        <div class="card-grid">
+          <div class="card">
+            <h3>Beautiful by default</h3>
+            <p>18+ themes and a polished design system.</p>
+          </div>
+          <div class="card">
+            <h3>Fast by default</h3>
+            <p>Astro ships zero JavaScript by default.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+## ページの構造化
+
+varshaはマーケティングページに一貫したセクション構造を使用しています：
+
+```
+<main class="page">
+  <section class="hero">        <!-- ページヘッダー/ヒーロー -->
+  <section class="section">     <!-- コンテンツセクション -->
+    <div class="container">     <!-- コンテンツ幅を制限 -->
+  <section class="section alt"> <!-- 代替背景のセクション -->
+</main>
+```
+
+### 使用可能なユーティリティクラス
+
+| クラス | 目的 |
+| --- | --- |
+| `.page` | メインページラッパー |
+| `.hero` | フルワイドのヒーローセクション |
+| `.section` | 標準パディング付きコンテンツセクション |
+| `.section.alt` | 代替背景のセクション |
+| `.container` | 最大幅のコンテナ（デフォルトで中央揃え） |
+| `.card-grid` | レスポンシブなカードグリッド |
+| `.card` | 個々のカード |
+| `.btn` / `.btn-primary` / `.btn-secondary` | ボタンスタイル |
+
+## 既存コンポーネントの使用
+
+### BuiltWith
+
+「Built with varsha by myndlabs」の帰属バッジを表示します。このコンポーネントは`MarketingLayout`によって自動的に含まれます。**削除しないでください** — これはvarshaの使用条件において必要な帰属表示です。
+
+```astro
+import BuiltWith from '../components/BuiltWith.astro';
+
+<BuiltWith />
+```
+
+### カスタムセクションコンポーネント
+
+再利用可能なセクションコンポーネントを`src/components/`に作成できます：
+
+```astro title="src/components/FeatureGrid.astro"
+---
+const { features } = Astro.props;
+---
+
+<div class="card-grid">
+  {features.map(feature => (
+    <div class="card">
+      <h3>{feature.title}</h3>
+      <p>{feature.description}</p>
+    </div>
+  ))}
+</div>
+```
+
+そして任意のページで使用：
+
+```astro
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+
+const features = [
+  { title: 'Fast', description: 'Zero JS by default.' },
+  { title: 'Beautiful', description: '18+ built-in themes.' },
+];
+---
+
+<MarketingLayout title="Features" description="..." canonicalPath="/features/">
+  <main class="page">
+    <section class="hero">
+      <h1>Features</h1>
+    </section>
+    <section class="section">
+      <div class="container">
+        <FeatureGrid features={features} />
+      </div>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+## ナビゲーションの更新
+
+新しいページを追加した後、`MarketingLayout.astro`のナビゲーションリンクを更新します：
+
+```astro title="src/components/MarketingLayout.astro"
+<div class="nav-links">
+  <a href="/">Home</a>
+  <a href="/features/">Features</a>
+  <a href="/pricing/">Pricing</a>
+  <a href="/docs/">Docs</a>
+</div>
+```
+
+デスクトップナビゲーション（`.nav-links`）とモバイルナビゲーションパネル（`.nav-menu-panel`）の**両方**を更新して、一貫性を保ってください。
+
+## 404ページ
+
+カスタム404ページは`src/pages/404.astro`にあります。ブランドに合わせて自由にカスタマイズできますが、ユーザーをホームに戻すためのクリアなナビゲーションを維持してください。
+
+## ベストプラクティス
+
+1. **常に`MarketingLayout`を使用する** — マーケティングページにはヘッダー、フッター、テーマ、帰属表示の一貫性のため
+2. **意味的なHTMLを使用する** — `<main>`、`<section>`、`<h1>`-`<h3>`、`<nav>`、`<footer>`
+3. **コンテンツをコンテナ内に保つ** — コンテンツが広すぎる画面で読みにくくならないよう、`.container`を使用
+4. **一貫したセクション構造を使用する** — `.hero` → `.section` → `.section.alt`など
+5. **コンポーネントは再利用可能に保つ** — 繰り返しパターンを`src/components/`に抽出
+6. **帰属表示を維持する** — BuiltWithコンポーネントは削除しないでください
+
+## 次のステップ
+
+<CardGrid>
+  <Card title="カスタマイズ">
+    ブランドに合わせてカラー、タイポグラフィ、メタデータを変更します。
+
+    [カスタマイズ →](/ja/docs/configuration/)
+  </Card>
+  <Card title="コンポーネントリファレンス">
+    ビルトインコンポーネントの完全なリストを参照します。
+
+    [コンポーネント →](/ja/docs/plugins/)
+  </Card>
+  <Card title="デザインシステム">
+    varshaのデザイン原則とトークンを理解します。
+
+    [デザインシステム →](/ja/docs/design-system/)
+  </Card>
+</CardGrid>

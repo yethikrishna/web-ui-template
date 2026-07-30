@@ -1,0 +1,99 @@
+---
+title: 集成
+description: varsha 随附的 Astro 集成指南。Starlight 文档、sitemap、Vercel 适配器、分析等，以及如何添加更多集成。
+---
+
+import { Card, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
+
+varsha 预装了生产站点所需的精选 Astro 集成。本指南概述每个集成以及如何添加额外集成。
+
+## 预装集成
+
+<CardGrid>
+  <Card title="Starlight" icon="book-open">
+    Astro 官方文档框架。提供侧边栏导航、全文搜索、i18n、深浅模式、代码块语法高亮等功能的美观文档站点。
+  </Card>
+  <Card title="Sitemap" icon="map">
+    构建时自动生成 `sitemap.xml`，提升 SEO 和搜索引擎爬取效果。
+  </Card>
+  <Card title="Vercel" icon="triangle-up">
+    Vercel 部署适配器。支持边缘/Serverless 函数、图片优化和缓存。
+  </Card>
+</CardGrid>
+
+## Starlight 文档
+
+Starlight 驱动文档站点（`/docs/`），在 `astro.config.mjs` 中配置：
+
+```js title="astro.config.mjs"
+starlight({
+  title: 'varsha',
+  customCss: ['./src/styles/global.css', './src/styles/marketing.css'],
+  sidebar: [
+    { label: 'Start here', items: [/* ... */] },
+  ],
+  locales: {
+    root: { label: 'English', lang: 'en' },
+    ja: { label: '日本語', lang: 'ja' },
+    'zh-cn': { label: '简体中文', lang: 'zh-CN' },
+  },
+  social: {
+    github: 'https://github.com/yethikrishna/web-ui-template',
+  },
+})
+```
+
+## Sitemap
+
+`@astrojs/sitemap` 集成在构建时自动生成站点地图。在 `astro.config.mjs` 中配置：
+
+```js
+sitemap({
+  filter: (page) => !page.includes('/admin/'),
+  changefreq: 'weekly',
+  priority: 0.7,
+})
+```
+
+## Vercel 适配器
+
+Vercel 适配器为 Vercel 平台优化构建。部署到其他平台时，切换适配器：
+
+<Tabs>
+  <TabItem label="Netlify">
+    ```bash
+    npx astro add netlify
+    ```
+  </TabItem>
+  <TabItem label="Cloudflare">
+    ```bash
+    npx astro add cloudflare
+    ```
+  </TabItem>
+  <TabItem label="Node.js">
+    ```bash
+    npx astro add node
+    ```
+  </TabItem>
+</Tabs>
+
+## 推荐的其他集成
+
+<CardGrid>
+  <Card title="RSS">
+    添加博客 RSS 订阅：`npx astro add rss`
+  </Card>
+  <Card title="Tailwind CSS">
+    如需使用 Tailwind：`npx astro add tailwind`（varsha 默认使用原生 CSS）
+  </Card>
+</CardGrid>
+
+## 添加集成
+
+添加 Astro 集成的最简单方式是使用 Astro CLI：
+
+```bash
+npx astro add <integration-name>
+```
+
+这会自动安装依赖并更新 `astro.config.mjs`。

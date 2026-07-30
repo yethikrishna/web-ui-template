@@ -1,0 +1,108 @@
+---
+title: 部署
+description: 如何将 varsha 站点部署到 Vercel、Netlify、Cloudflare Pages 或其他静态托管平台。
+slug: deployment
+---
+
+import { Card, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
+
+varsha 输出静态站点，可以部署到几乎任何托管平台。本指南涵盖主要平台的部署步骤。
+
+## 部署前检查
+
+部署前确认：
+
+1. `astro.config.mjs` 中的 `site` URL 设置为实际域名
+2. 构建无错误：`npm run build`
+3. 本地预览生产构建：`npm run preview`
+4. 所有草稿文章已准备好发布
+
+## Vercel（推荐）
+
+Vercel 提供最快的部署体验。varsha 预装了 Vercel 适配器。
+
+<Tabs>
+  <TabItem label="CLI">
+    ```bash
+    npm i -g vercel
+    vercel
+    vercel --prod
+    ```
+  </TabItem>
+  <TabItem label="通过 Git">
+    1. 将代码推送到 GitHub/GitLab/Bitbucket
+    2. 在 vercel.com 点击 "New Project"
+    3. 选择仓库
+    4. Astro 将被自动检测为框架预设
+    5. 点击 "Deploy"
+  </TabItem>
+</Tabs>
+
+## Netlify
+
+<Tabs>
+  <TabItem label="CLI">
+    ```bash
+    npm i -g netlify-cli
+    netlify deploy --build --prod
+    ```
+  </TabItem>
+  <TabItem label="通过 Git">
+    1. 推送代码到 Git
+    2. 在 app.netlify.com 点击 "Add new site"
+    3. 选择仓库
+    4. 构建设置：`npm run build`，发布目录：`dist`
+  </TabItem>
+</Tabs>
+
+**注意：** 部署到 Netlify 时，删除 Vercel 适配器或切换到 Netlify 适配器。
+
+## Cloudflare Pages
+
+<Tabs>
+  <TabItem label="通过 Git">
+    1. 推送代码到 GitHub/GitLab
+    2. 在 dash.cloudflare.com 进入 Pages
+    3. "Create a project" → "Connect to Git"
+    4. 构建设置：框架 Astro，命令 `npm run build`，输出 `dist`
+  </TabItem>
+  <TabItem label="Wrangler CLI">
+    ```bash
+    npm i -g wrangler
+    npm run build
+    npx wrangler pages deploy dist --project-name=your-site
+    ```
+  </TabItem>
+</Tabs>
+
+## 其他静态托管
+
+<CardGrid>
+  <Card title="GitHub Pages">
+    运行 `npm run build`，将 `dist/` 推送到 `gh-pages` 分支。在 `astro.config.mjs` 中设置 `base` 为仓库名。
+  </Card>
+  <Card title="AWS S3 + CloudFront">
+    将 `dist/` 上传到 S3 存储桶，创建 CloudFront 分配。
+  </Card>
+  <Card title="Nginx/Apache">
+    将 `dist/` 内容复制到 Web 服务器的文档根目录。
+  </Card>
+  <Card title="Firebase Hosting">
+    `firebase init hosting`，设置公共目录为 `dist`，然后 `firebase deploy`。
+  </Card>
+</CardGrid>
+
+## 环境变量
+
+部署时需要环境变量，在托管平台的仪表板中设置。以 `PUBLIC_` 开头的变量在客户端可用。
+
+## 自定义域名
+
+1. 在平台仪表板中添加自定义域名
+2. 按照平台指引配置 DNS 记录
+3. 等待 HTTPS 证书自动配置
+4. 更新 `astro.config.mjs` 中的 `site` 为新域名并重新部署
+
+## 问题排查
+
+遇到部署问题，参见[故障排除指南](/zh-cn/docs/troubleshooting/)。

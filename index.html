@@ -1,0 +1,1427 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>varsha: launch beautiful websites faster</title>
+        <meta
+            name="description"
+            content="varsha is a premium Astro website starter template by myndlabs.tech with built-in docs, blog, design system, dark mode, SEO, and i18n — ship production sites in minutes."
+        />
+        <meta name="theme-color" content="#f0eee9" />
+        <link rel="canonical" href="https://myndlabs.tech/" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="varsha" />
+        <meta property="og:title" content="varsha: launch beautiful websites faster" />
+        <meta
+            property="og:description"
+            content="A premium Astro website starter with built-in docs, blog, design system, dark mode, and SEO. Ship production sites in minutes."
+        />
+        <meta property="og:url" content="https://myndlabs.tech/" />
+        <meta
+            property="og:image"
+            content="https://myndlabs.tech/assets/og-card-v8.png"
+        />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="varsha. Premium website starter by myndlabs." />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="varsha: launch beautiful websites faster" />
+        <meta
+            name="twitter:description"
+            content="A premium Astro website starter with built-in docs, blog, design system, dark mode, and SEO."
+        />
+        <meta
+            name="twitter:image"
+            content="https://myndlabs.tech/assets/og-card-v8.png"
+        />
+        <meta name="twitter:image:alt" content="varsha. Premium website starter by myndlabs." />
+
+        <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.png?v=16" />
+        <link rel="apple-touch-icon" href="/assets/logo.png" />
+        <link
+            rel="preload"
+            href="/assets/jbm.woff2"
+            as="font"
+            type="font/woff2"
+            crossorigin
+        />
+        <script>
+            (function () {
+                var saved = localStorage.getItem("varsha-palette");
+                var system = window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "tokyo-night"
+                    : "tokyo-night-day";
+                document.documentElement.setAttribute("data-palette", saved || system);
+            })();
+        </script>
+        <link rel="stylesheet" href="/css/style.css?v=43" />
+        <style>
+            /* Browser preview mock for the website showcase */
+            .browser-mock {
+                background: var(--bg-elevated, #1a1b26);
+                border-radius: 12px;
+                border: 1px solid var(--border, #2a2b3a);
+                overflow: hidden;
+                box-shadow: 0 25px 60px rgba(0,0,0,0.35), 0 6px 20px rgba(0,0,0,0.2);
+                font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+            }
+            .browser-chrome {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 10px 14px;
+                background: var(--bg-surface, #16161e);
+                border-bottom: 1px solid var(--border, #2a2b3a);
+            }
+            .browser-dots {
+                display: flex;
+                gap: 7px;
+                flex-shrink: 0;
+            }
+            .browser-dots span {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                display: block;
+            }
+            .browser-dots span:nth-child(1) { background: #ff5f57; }
+            .browser-dots span:nth-child(2) { background: #febc2e; }
+            .browser-dots span:nth-child(3) { background: #28c840; }
+            .browser-url-bar {
+                flex: 1;
+                background: var(--bg-raised, #24283b);
+                border-radius: 6px;
+                padding: 5px 12px;
+                font-size: 12px;
+                color: var(--text-dim, #565f89);
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .browser-url-bar .lock {
+                color: #28c840;
+                font-size: 11px;
+            }
+            .browser-url-bar .url-text {
+                color: var(--text-muted, #a9b1d6);
+            }
+            .browser-content {
+                padding: 0;
+                background: var(--bg, #1a1b26);
+                min-height: 340px;
+                position: relative;
+            }
+            /* Simulated website preview inside the browser */
+            .site-preview {
+                padding: 28px 32px;
+                color: var(--text, #c0caf5);
+            }
+            .site-preview-nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 36px;
+            }
+            .site-preview-brand {
+                font-size: 14px;
+                font-weight: 700;
+                color: var(--accent, #7aa2f7);
+                letter-spacing: 0.5px;
+            }
+            .site-preview-links {
+                display: flex;
+                gap: 18px;
+                font-size: 11px;
+                color: var(--text-dim, #565f89);
+            }
+            .site-preview-links span {
+                opacity: 0.7;
+            }
+            .site-preview-hero {
+                text-align: center;
+                padding: 20px 0 28px;
+            }
+            .site-preview-eyebrow {
+                display: inline-block;
+                font-size: 10px;
+                text-transform: uppercase;
+                letter-spacing: 1.2px;
+                color: var(--accent, #7aa2f7);
+                background: var(--bg-raised, #24283b);
+                padding: 4px 10px;
+                border-radius: 20px;
+                margin-bottom: 16px;
+            }
+            .site-preview-h1 {
+                font-size: 26px;
+                font-weight: 700;
+                line-height: 1.15;
+                color: var(--text, #c0caf5);
+                margin: 0 0 10px;
+                font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+            }
+            .site-preview-h1 .accent-word {
+                background: linear-gradient(135deg, var(--accent, #7aa2f7), var(--accent2, #bb9af7));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .site-preview-sub {
+                font-size: 12px;
+                color: var(--text-dim, #565f89);
+                max-width: 380px;
+                margin: 0 auto 20px;
+                line-height: 1.5;
+                font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+            }
+            .site-preview-ctas {
+                display: flex;
+                gap: 10px;
+                justify-content: center;
+                margin-bottom: 32px;
+            }
+            .site-preview-btn {
+                padding: 7px 18px;
+                border-radius: 6px;
+                font-size: 11px;
+                font-weight: 600;
+                font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+            }
+            .site-preview-btn.primary {
+                background: var(--accent, #7aa2f7);
+                color: var(--bg, #1a1b26);
+            }
+            .site-preview-btn.secondary {
+                border: 1px solid var(--border, #2a2b3a);
+                color: var(--text, #c0caf5);
+            }
+            .site-preview-features {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+            }
+            .site-preview-feature {
+                background: var(--bg-raised, #24283b);
+                border: 1px solid var(--border, #2a2b3a);
+                border-radius: 8px;
+                padding: 14px 12px;
+                text-align: left;
+            }
+            .site-preview-feature-icon {
+                width: 24px;
+                height: 24px;
+                border-radius: 6px;
+                background: var(--accent-soft, rgba(122,162,247,0.12));
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                margin-bottom: 8px;
+                color: var(--accent, #7aa2f7);
+            }
+            .site-preview-feature h4 {
+                margin: 0 0 4px;
+                font-size: 11px;
+                font-weight: 600;
+                color: var(--text, #c0caf5);
+                font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+            }
+            .site-preview-feature p {
+                margin: 0;
+                font-size: 10px;
+                color: var(--text-dim, #565f89);
+                line-height: 1.4;
+                font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+            }
+            /* Showcase cards replacing video grid */
+            .showcase-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 20px;
+            }
+            .showcase-card {
+                display: block;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                text-decoration: none;
+                color: inherit;
+                transition: transform 0.2s, border-color 0.2s;
+                background: var(--bg-elevated);
+            }
+            .showcase-card:hover {
+                transform: translateY(-3px);
+                border-color: var(--accent);
+            }
+            .showcase-thumb {
+                height: 180px;
+                background: linear-gradient(135deg, var(--bg-raised), var(--bg-surface));
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                overflow: hidden;
+            }
+            .showcase-thumb-inner {
+                width: 82%;
+                height: 78%;
+                background: var(--bg);
+                border-radius: 8px;
+                border: 1px solid var(--border);
+                padding: 14px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .showcase-thumb-bar {
+                height: 8px;
+                border-radius: 4px;
+                background: var(--bg-raised);
+            }
+            .showcase-thumb-bar.accent { background: var(--accent); width: 60%; }
+            .showcase-thumb-bar.muted { width: 90%; opacity: 0.4; }
+            .showcase-thumb-bar.short { width: 40%; opacity: 0.4; }
+            .showcase-thumb-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+                flex: 1;
+            }
+            .showcase-thumb-grid > div {
+                background: var(--bg-raised);
+                border-radius: 4px;
+            }
+            .showcase-copy {
+                padding: 18px 20px;
+            }
+            .showcase-meta {
+                font-size: 12px;
+                color: var(--text-dim);
+                text-transform: uppercase;
+                letter-spacing: 0.8px;
+                margin-bottom: 6px;
+            }
+            .showcase-title {
+                font-size: 18px;
+                font-weight: 600;
+                margin: 0 0 6px;
+            }
+            .showcase-desc {
+                font-size: 14px;
+                color: var(--text-dim);
+                margin: 0;
+                line-height: 1.5;
+            }
+            /* Component showcase grid replacing agent grid */
+            .component-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 16px;
+            }
+            .component-card {
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 24px 16px;
+                text-align: center;
+                background: var(--bg-elevated);
+                transition: border-color 0.2s, transform 0.2s;
+            }
+            .component-card:hover {
+                border-color: var(--accent);
+                transform: translateY(-2px);
+            }
+            .component-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                background: var(--accent-soft, rgba(122,162,247,0.1));
+                color: var(--accent);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 12px;
+                font-size: 18px;
+                font-weight: 700;
+            }
+            .component-card span {
+                font-size: 14px;
+                font-weight: 500;
+            }
+            @media (max-width: 768px) {
+                .site-preview-features {
+                    grid-template-columns: 1fr;
+                }
+                .site-preview-h1 { font-size: 20px; }
+                .browser-content { min-height: auto; }
+            }
+        </style>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "varsha",
+            "url": "https://myndlabs.tech/",
+            "description": "varsha is a premium Astro website starter template by myndlabs.tech with built-in docs, blog, design system, dark mode, SEO, and i18n.",
+            "publisher": {
+                "@type": "Organization",
+                "name": "myndlabs",
+                "url": "https://myndlabs.tech"
+            },
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://myndlabs.tech/docs/?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+            }
+        }
+        </script>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "varsha",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Cross-platform",
+            "description": "A premium website starter template built on Astro 5 and Starlight.",
+            "url": "https://myndlabs.tech/",
+            "author": {
+                "@type": "Person",
+                "name": "Yethikrishna R",
+                "url": "https://founder.myndlabs.tech"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "myndlabs",
+                "url": "https://myndlabs.tech"
+            },
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            }
+        }
+        </script>
+    </head>
+    <body>
+        <header class="site-header">
+            <nav class="nav" aria-label="Primary navigation">
+                <a class="brand" href="/" aria-label="varsha home">
+                    <span class="brand-logo" aria-hidden="true"></span>
+                    <span>varsha</span>
+                </a>
+                <details class="nav-menu">
+                    <summary class="nav-menu-button" aria-label="Open navigation">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </summary>
+                    <div class="nav-menu-panel">
+                        <a href="/">Home</a>
+                        <a href="#features">Features</a>
+                        <a href="#showcase">Showcase</a>
+                        <a href="/docs/">Docs</a>
+                        <a href="/blog/">Blog</a>
+                        <a href="https://github.com/yethikrishna/web-ui-template">GitHub</a>
+                        <a href="https://instagram.com/yethikrishnar">Instagram</a>
+                    </div>
+                </details>
+                <div class="nav-links">
+                    <a href="/">Home</a>
+                    <a href="#features">Features</a>
+                    <a href="#showcase">Showcase</a>
+                    <a href="/docs/">Docs</a>
+                    <a href="/blog/">Blog</a>
+                </div>
+                <div class="nav-tools">
+                    <a class="nav-icon-link" href="https://github.com/yethikrishna/web-ui-template" aria-label="varsha on GitHub">
+                        <svg viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.64 7.64 0 0 1 8 3.87c.68 0 1.36.09 2 .26 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+                        </svg>
+                    </a>
+                    <a class="nav-icon-link" href="https://instagram.com/yethikrishnar" aria-label="varsha on Instagram">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.849.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.849.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="currentColor"/>
+                        </svg>
+                    </a>
+                    <a class="nav-cta" href="/docs/install/">Get started</a>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero" id="hero">
+                <div class="hero-left">
+                    <div class="hero-copy">
+                    <p class="eyebrow">
+                        <span class="status-dot dot-done"></span>
+                        Premium website starter by myndlabs.tech
+                    </p>
+                    <h1>Launch beautiful websites faster.</h1>
+                    <p class="hero-lede">
+                        varsha is a premium Astro starter template with a
+                        polished design system, built-in <strong>docs</strong>,
+                        <strong>blog</strong>, and <strong>dark mode</strong> out
+                        of the box. Ship production-ready marketing sites,
+                        documentation portals, and personal pages in minutes
+                        instead of weeks.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button button-primary" href="/docs/install/"
+                            >Get started</a
+                        >
+                        <a class="button button-secondary" href="/docs/"
+                            >View docs</a
+                        >
+                    </div>
+                    <div class="install-panel" aria-label="Quick start command">
+                        <div class="install-methods" role="group" aria-label="Install method">
+                            <span class="install-label">Create a new project</span>
+                            <button
+                                class="install-method is-active"
+                                type="button"
+                                data-command="npm create varsha@latest"
+                                data-size="compact"
+                                aria-pressed="true"
+                            >npm</button>
+                            <button
+                                class="install-method"
+                                type="button"
+                                data-command="pnpm create varsha@latest"
+                                data-size="normal"
+                                aria-pressed="false"
+                            >pnpm</button>
+                            <button
+                                class="install-method"
+                                type="button"
+                                data-command="yarn create varsha"
+                                data-size="normal"
+                                aria-pressed="false"
+                            >yarn</button>
+                        </div>
+                        <div class="install-card" aria-label="Create command">
+                            <span class="prompt">$</span>
+                            <code id="install-cmd" class="is-compact"
+                                >npm create varsha@latest</code
+                            >
+                            <button id="copy-btn" type="button" data-copy-target="install-cmd">Copy</button>
+                        </div>
+                    </div>
+                    <p class="hero-note">Astro-based · TypeScript-ready · Zero-config dark mode · No lock-in, deploy anywhere</p>
+                </div>
+                </div>
+
+                <div class="hero-right">
+                <figure class="hero-product-shot">
+                    <div
+                        class="browser-mock"
+                        id="site-mock"
+                        role="img"
+                        aria-label="Browser preview of a website built with varsha, showing a landing page with hero section, feature cards, and navigation"
+                    >
+                        <div class="browser-chrome">
+                            <div class="browser-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <div class="browser-url-bar">
+                                <span class="lock">&#128274;</span>
+                                <span class="url-text">founder.myndlabs.tech</span>
+                            </div>
+                        </div>
+                        <div class="browser-content">
+                            <div class="site-preview">
+                                <div class="site-preview-nav">
+                                    <div class="site-preview-brand">varsha</div>
+                                    <div class="site-preview-links">
+                                        <span>Features</span>
+                                        <span>Docs</span>
+                                        <span>Blog</span>
+                                        <span>Pricing</span>
+                                    </div>
+                                </div>
+                                <div class="site-preview-hero">
+                                    <span class="site-preview-eyebrow">Built with varsha</span>
+                                    <h2 class="site-preview-h1">Ship your next <span class="accent-word">idea</span> in minutes.</h2>
+                                    <p class="site-preview-sub">A production-ready starter with docs, blog, and a beautiful design system baked in.</p>
+                                    <div class="site-preview-ctas">
+                                        <span class="site-preview-btn primary">Get started</span>
+                                        <span class="site-preview-btn secondary">View docs</span>
+                                    </div>
+                                </div>
+                                <div class="site-preview-features">
+                                    <div class="site-preview-feature">
+                                        <div class="site-preview-feature-icon">&#9889;</div>
+                                        <h4>Blazing fast</h4>
+                                        <p>Astro islands ship zero JS by default.</p>
+                                    </div>
+                                    <div class="site-preview-feature">
+                                        <div class="site-preview-feature-icon">&#9790;</div>
+                                        <h4>Dark mode</h4>
+                                        <p>18 themes with system preference detection.</p>
+                                    </div>
+                                    <div class="site-preview-feature">
+                                        <div class="site-preview-feature-icon">&#9998;</div>
+                                        <h4>Blog & Docs</h4>
+                                        <p>Content collections ready out of the box.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <figcaption>
+                        A website built with varsha. Your brand, your content, deployed in minutes.
+                    </figcaption>
+                </figure>
+                </div>
+            </section>
+
+            <section class="section" id="features" aria-labelledby="features-title">
+                <div class="section-heading-wide">
+                    <div>
+                        <p class="section-kicker"># features</p>
+                        <h2 id="features-title">Everything you need to launch, nothing you don't.</h2>
+                    </div>
+                    <p>
+                        varsha ships with a curated set of features that cover 90% of website
+                        projects out of the box. Focus on your content and product; the boring
+                        infrastructure is already done.
+                    </p>
+                </div>
+                <div class="access-grid">
+                    <article class="access-card">
+                        <span class="access-label">design</span>
+                        <h3>Beautiful by default</h3>
+                        <p>
+                            A thoughtful design system with 18 hand-picked color palettes,
+                            typography scales, and spacing tokens. Your site looks premium from day one.
+                        </p>
+                    </article>
+                    <article class="access-card">
+                        <span class="access-label">performance</span>
+                        <h3>Fast, really fast</h3>
+                        <p>
+                            Built on Astro's islands architecture. Ship near-zero JavaScript
+                            by default, with perfect Lighthouse scores and instant page loads.
+                        </p>
+                    </article>
+                    <article class="access-card">
+                        <span class="access-label">accessibility</span>
+                        <h3>Accessible</h3>
+                        <p>
+                            Semantic HTML, keyboard navigation, ARIA attributes, and color
+                            contrast built into every component. WCAG 2.1 AA by default.
+                        </p>
+                    </article>
+                    <article class="access-card">
+                        <span class="access-label">theming</span>
+                        <h3>Customizable</h3>
+                        <p>
+                            CSS custom properties power the entire theme system. Change two
+                            variables and re-skin your entire site in seconds.
+                        </p>
+                    </article>
+                    <article class="access-card">
+                        <span class="access-label">seo</span>
+                        <h3>SEO-ready</h3>
+                        <p>
+                            Open Graph, Twitter cards, canonical URLs, sitemaps, and structured
+                            metadata all preconfigured. Just add your content.
+                        </p>
+                    </article>
+                    <article class="access-card">
+                        <span class="access-label">dark mode</span>
+                        <h3>Dark mode built-in</h3>
+                        <p>
+                            18 themes (9 dark, 9 light) with system preference detection
+                            and a keyboard-accessible theme switcher. No extra setup.
+                        </p>
+                    </article>
+                    <article class="access-card">
+                        <span class="access-label">content</span>
+                        <h3>Blog included</h3>
+                        <p>
+                            Markdown/MDX blog with content collections, tags, RSS feed,
+                            syntax highlighting, and reading time estimates.
+                        </p>
+                    </article>
+                    <article class="access-card">
+                        <span class="access-label">docs</span>
+                        <h3>Docs included</h3>
+                        <p>
+                            Full documentation site template with sidebar navigation, search,
+                            code blocks, and i18n support.
+                        </p>
+                    </article>
+                    <article class="access-card">
+                        <span class="access-label">i18n</span>
+                        <h3>i18n ready</h3>
+                        <p>
+                            Built-in internationalization routing and content organization
+                            for multi-language sites from the start.
+                        </p>
+                    </article>
+                    <article class="access-card">
+                        <span class="access-label">components</span>
+                        <h3>Components library</h3>
+                        <p>
+                            Dozens of pre-built components: hero sections, feature grids,
+                            pricing tables, callouts, code blocks, tabs, and more.
+                        </p>
+                    </article>
+                    <article class="access-card">
+                        <span class="access-label">typescript</span>
+                        <h3>TypeScript-ready</h3>
+                        <p>
+                            Full TypeScript support with strict types out of the box.
+                            Components, content collections, and APIs all fully typed.
+                        </p>
+                    </article>
+                    <article class="access-card">
+                        <span class="access-label">deploy</span>
+                        <h3>Deploy anywhere</h3>
+                        <p>
+                            Static output deploys to Vercel, Netlify, Cloudflare Pages,
+                            GitHub Pages, or any static host. Add an Astro adapter for SSR if needed.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section community-section" id="showcase" aria-labelledby="showcase-title">
+                <div class="section-heading-wide">
+                    <div>
+                        <p class="section-kicker"># showcase</p>
+                        <h2 id="showcase-title">Built with varsha.</h2>
+                    </div>
+                    <p>
+                        See what ships when you start with varsha. From personal sites
+                        to startup landing pages, the starter gets out of the way and
+                        lets your content and brand take center stage.
+                    </p>
+                </div>
+                <div class="showcase-grid" aria-label="Sites built with varsha">
+                    <a class="showcase-card" href="https://founder.myndlabs.tech" target="_blank" rel="noopener">
+                        <div class="showcase-thumb">
+                            <div class="showcase-thumb-inner">
+                                <div class="showcase-thumb-bar accent"></div>
+                                <div class="showcase-thumb-bar muted"></div>
+                                <div class="showcase-thumb-bar short"></div>
+                                <div class="showcase-thumb-grid">
+                                    <div></div><div></div><div></div><div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="showcase-copy">
+                            <div class="showcase-meta">Founder Site</div>
+                            <h3 class="showcase-title">founder.myndlabs.tech</h3>
+                            <p class="showcase-desc">A founder landing page with personal brand, newsletter, and product links, built and launched in an afternoon.</p>
+                        </div>
+                    </a>
+                    <a class="showcase-card" href="/docs/">
+                        <div class="showcase-thumb">
+                            <div class="showcase-thumb-inner">
+                                <div class="showcase-thumb-bar" style="background: var(--accent); width: 35%;"></div>
+                                <div style="display:flex; gap:6px; flex:1;">
+                                    <div style="width:30%; background:var(--bg-raised); border-radius:4px;"></div>
+                                    <div style="flex:1; display:flex; flex-direction:column; gap:4px;">
+                                        <div class="showcase-thumb-bar muted"></div>
+                                        <div class="showcase-thumb-bar muted" style="width:80%;"></div>
+                                        <div class="showcase-thumb-bar short"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="showcase-copy">
+                            <div class="showcase-meta">Documentation</div>
+                            <h3 class="showcase-title">Docs portal</h3>
+                            <p class="showcase-desc">The varsha documentation itself ships as part of the starter, demonstrating sidebar nav, search, and MDX content.</p>
+                        </div>
+                    </a>
+                    <a class="showcase-card" href="/blog/">
+                        <div class="showcase-thumb">
+                            <div class="showcase-thumb-inner">
+                                <div class="showcase-thumb-bar" style="background: var(--accent2, #bb9af7); width: 50%;"></div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; flex:1;">
+                                    <div style="background:var(--bg-raised); border-radius:4px; display:flex; flex-direction:column; gap:4px; padding:6px;">
+                                        <div style="height:6px; background:var(--bg-surface); border-radius:2px; width:80%;"></div>
+                                        <div style="height:4px; background:var(--bg-surface); border-radius:2px; width:100%; opacity:0.5;"></div>
+                                    </div>
+                                    <div style="background:var(--bg-raised); border-radius:4px; display:flex; flex-direction:column; gap:4px; padding:6px;">
+                                        <div style="height:6px; background:var(--bg-surface); border-radius:2px; width:70%;"></div>
+                                        <div style="height:4px; background:var(--bg-surface); border-radius:2px; width:90%; opacity:0.5;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="showcase-copy">
+                            <div class="showcase-meta">Blog</div>
+                            <h3 class="showcase-title">Blog template</h3>
+                            <p class="showcase-desc">A full blog with MDX posts, tags, author pages, RSS, and syntax-highlighted code blocks ready for your first post.</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <section class="section access-section why-section" id="why">
+                <div class="section-heading-wide">
+                    <div>
+                        <p class="section-kicker"># why varsha</p>
+                        <h2>Skip the scaffolding. Start with a site that's already good.</h2>
+                    </div>
+                    <p>
+                        Most starters give you a blank page and a build tool. varsha gives you
+                        a complete, production-grade foundation you can be proud to ship on day one.
+                        Stop configuring and start creating.
+                    </p>
+                </div>
+                <div class="access-grid">
+                    <article class="access-card">
+                        <span class="access-label">zero config</span>
+                        <h3>Works out of the box</h3>
+                        <p>
+                            No webpack configs, no Tailwind setup debates, no dark mode
+                            hacks to reverse-engineer. Clone, install, run, and you have
+                            a beautiful site.
+                        </p>
+                        <pre><code>$ npm create varsha@latest
+$ cd my-site && npm run dev</code></pre>
+                    </article>
+                    <article class="access-card">
+                        <span class="access-label">content first</span>
+                        <h3>Markdown & MDX native</h3>
+                        <p>
+                            Write posts and docs in Markdown or MDX with Astro content
+                            collections. Type-safe frontmatter, automatic slugs, and fast builds.
+                        </p>
+                        <pre><code>---
+title: "Hello World"
+date: 2025-01-15
+tags: [intro]
+---
+
+# Welcome to my blog...</code></pre>
+                    </article>
+                    <article class="access-card">
+                        <span class="access-label">portable</span>
+                        <h3>Your site, your data</h3>
+                        <p>
+                            No vendor lock-in, no SaaS dependency, no platform you can't
+                            leave. Static files deploy anywhere; your content lives in
+                            your repo as plain text.
+                        </p>
+                        <pre><code>$ npm run build
+# output: ./dist/
+# deploy to any static host</code></pre>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section compare-section">
+                <div class="section-heading-wide">
+                    <div>
+                        <p class="section-kicker"># why different</p>
+                        <h2>varsha vs. building from scratch.</h2>
+                    </div>
+                    <p>
+                        Starting from an empty folder means spending weeks on boilerplate
+                        before you write a single word of content. Starting with varsha means
+                        you spend those weeks on your product instead.
+                    </p>
+                </div>
+                <div class="contrast-grid" aria-label="What varsha gives you">
+                    <article>
+                        <span>not a blank repo</span>
+                        <p>Dozens of components, layouts, and patterns ready to use.</p>
+                    </article>
+                    <article>
+                        <span>not a heavy framework</span>
+                        <p>Astro delivers static HTML with optional JS islands.</p>
+                    </article>
+                    <article>
+                        <span>more than a theme</span>
+                        <p>Docs, blog, components, i18n, SEO, and theming all integrated.</p>
+                    </article>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>What you get</th>
+                                <th>From scratch</th>
+                                <th>Basic theme</th>
+                                <th>Heavy framework</th>
+                                <th>varsha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Production-ready design system</td>
+                                <td>&mdash;</td>
+                                <td>limited</td>
+                                <td>requires setup</td>
+                                <td>&#10003;</td>
+                            </tr>
+                            <tr>
+                                <td>Dark mode with theme switcher</td>
+                                <td>&mdash;</td>
+                                <td>basic</td>
+                                <td>requires setup</td>
+                                <td>&#10003;</td>
+                            </tr>
+                            <tr>
+                                <td>Blog (MDX, RSS, tags)</td>
+                                <td>&mdash;</td>
+                                <td>some</td>
+                                <td>plugin</td>
+                                <td>&#10003;</td>
+                            </tr>
+                            <tr>
+                                <td>Documentation site template</td>
+                                <td>&mdash;</td>
+                                <td>&mdash;</td>
+                                <td>plugin</td>
+                                <td>&#10003;</td>
+                            </tr>
+                            <tr>
+                                <td>SEO &amp; social metadata</td>
+                                <td>&mdash;</td>
+                                <td>partial</td>
+                                <td>plugin</td>
+                                <td>&#10003;</td>
+                            </tr>
+                            <tr>
+                                <td>Accessibility (WCAG AA)</td>
+                                <td>your job</td>
+                                <td>varies</td>
+                                <td>varies</td>
+                                <td>&#10003;</td>
+                            </tr>
+                            <tr>
+                                <td>i18n routing</td>
+                                <td>&mdash;</td>
+                                <td>&mdash;</td>
+                                <td>plugin</td>
+                                <td>&#10003;</td>
+                            </tr>
+                            <tr>
+                                <td>TypeScript throughout</td>
+                                <td>optional</td>
+                                <td>varies</td>
+                                <td>&#10003;</td>
+                                <td>&#10003;</td>
+                            </tr>
+                            <tr>
+                                <td>Time to first deploy</td>
+                                <td>weeks</td>
+                                <td>days</td>
+                                <td>days</td>
+                                <td>minutes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="compare-cards" aria-label="Mobile comparison">
+                    <article>
+                        <h3>Production-ready design system</h3>
+                        <span>from scratch <b>&mdash;</b></span>
+                        <span>basic theme <b>limited</b></span>
+                        <span>heavy fwk <b>requires setup</b></span>
+                        <span class="varsha">varsha <b>&#10003;</b></span>
+                    </article>
+                    <article>
+                        <h3>Dark mode with theme switcher</h3>
+                        <span>from scratch <b>&mdash;</b></span>
+                        <span>basic theme <b>basic</b></span>
+                        <span>heavy fwk <b>requires setup</b></span>
+                        <span class="varsha">varsha <b>&#10003;</b></span>
+                    </article>
+                    <article>
+                        <h3>Blog (MDX, RSS, tags)</h3>
+                        <span>from scratch <b>&mdash;</b></span>
+                        <span>basic theme <b>some</b></span>
+                        <span>heavy fwk <b>plugin</b></span>
+                        <span class="varsha">varsha <b>&#10003;</b></span>
+                    </article>
+                    <article>
+                        <h3>Documentation site template</h3>
+                        <span>from scratch <b>&mdash;</b></span>
+                        <span>basic theme <b>&mdash;</b></span>
+                        <span>heavy fwk <b>plugin</b></span>
+                        <span class="varsha">varsha <b>&#10003;</b></span>
+                    </article>
+                    <article>
+                        <h3>SEO &amp; social metadata</h3>
+                        <span>from scratch <b>&mdash;</b></span>
+                        <span>basic theme <b>partial</b></span>
+                        <span>heavy fwk <b>plugin</b></span>
+                        <span class="varsha">varsha <b>&#10003;</b></span>
+                    </article>
+                    <article>
+                        <h3>Time to first deploy</h3>
+                        <span>from scratch <b>weeks</b></span>
+                        <span>basic theme <b>days</b></span>
+                        <span>heavy fwk <b>days</b></span>
+                        <span class="varsha">varsha <b>minutes</b></span>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section capability-section">
+                <div class="section-heading-wide">
+                    <div>
+                        <p class="section-kicker"># what you get</p>
+                        <h2>Components, content, and code that just works.</h2>
+                    </div>
+                    <p>
+                        Drop in pre-built components, create pages in Markdown or Astro,
+                        and customize with CSS variables. The starter is opinionated but
+                        never in your way.
+                    </p>
+                </div>
+                <div class="capability-body">
+                    <div class="capability-cards">
+                        <article>
+                            <h3>Page components</h3>
+                            <p>Hero sections, feature grids, CTAs, pricing tables, testimonial cards, and more, all accessible and theme-aware.</p>
+                        </article>
+                        <article>
+                        <h3>Content collections</h3>
+                            <p>Type-safe Markdown/MDX for blog posts and docs with automatic slugs, tags, and build-time validation.</p>
+                        </article>
+                        <article>
+                            <h3>Theme system</h3>
+                            <p>18 palettes driven by CSS variables. Switch themes with a keystroke; add your own brand colors in minutes.</p>
+                        </article>
+                        <article>
+                            <h3>Astro islands</h3>
+                            <p>Add interactivity only where you need it with Astro's island architecture. Zero JS shipped for static content.</p>
+                        </article>
+                    </div>
+                    <div class="code-card" aria-label="varsha component and page example">
+                        <pre><code><span class="comment">// src/pages/index.astro</span>
+<span class="cmd">---</span>
+<span class="cmd">import</span> Hero <span class="cmd">from</span> <span class="str">"../components/Hero.astro"</span>;
+<span class="cmd">import</span> Features <span class="cmd">from</span> <span class="str">"../components/Features.astro"</span>;
+<span class="cmd">import</span> CTA <span class="cmd">from</span> <span class="str">"../components/CTA.astro"</span>;
+<span class="cmd">import</span> { getCollection } <span class="cmd">from</span> <span class="str">"astro:content"</span>;
+
+<span class="keyword">const</span> posts = <span class="cmd">await</span> <span class="str">getCollection</span>(<span class="str">"blog"</span>);
+<span class="cmd">---</span>
+
+&lt;<span class="tag">Layout</span> title=<span class="str">"My Site"</span>&gt;
+  &lt;<span class="tag">Hero</span>
+    eyebrow=<span class="str">"Welcome"</span>
+    title=<span class="str">"Hello, world."</span>
+    primaryCta={{ <span class="attr">text</span>: <span class="str">"Get started"</span>, <span class="attr">href</span>: <span class="str">"/docs/"</span> }}
+  /&gt;
+  &lt;<span class="tag">Features</span> items={features} /&gt;
+  &lt;<span class="tag">CTA</span> title=<span class="str">"Start building today."</span> /&gt;
+&lt;/<span class="tag">Layout</span>&gt;</code></pre>
+                    </div>
+                </div>
+                <div class="inline-links">
+                    <a href="/docs/plugins/">Components →</a>
+                    <a href="/docs/session-state/">Content guide →</a>
+                    <a href="/docs/keyboard/">Theming →</a>
+                </div>
+            </section>
+
+            <section class="section integrations-section">
+                <div class="section-heading">
+                    <p class="section-kicker"># components & templates</p>
+                    <h2>Everything you need, ready to compose.</h2>
+                </div>
+                <div class="component-grid" aria-label="Included components and templates">
+                    <div class="component-card"><span class="component-icon">H</span><span>Hero</span></div>
+                    <div class="component-card"><span class="component-icon">F</span><span>Features</span></div>
+                    <div class="component-card"><span class="component-icon">$</span><span>Pricing</span></div>
+                    <div class="component-card"><span class="component-icon">"</span><span>Testimonials</span></div>
+                    <div class="component-card"><span class="component-icon">C</span><span>Call to Action</span></div>
+                    <div class="component-card"><span class="component-icon">B</span><span>Blog Layout</span></div>
+                    <div class="component-card"><span class="component-icon">D</span><span>Docs Layout</span></div>
+                    <div class="component-card"><span class="component-icon">N</span><span>Navigation</span></div>
+                    <div class="component-card"><span class="component-icon">T</span><span>Tabs</span></div>
+                    <div class="component-card"><span class="component-icon">/</span><span>Code Blocks</span></div>
+                    <div class="component-card"><span class="component-icon">@</span><span>Cards</span></div>
+                    <div class="component-card"><span class="component-icon">#</span><span>Tags</span></div>
+                    <div class="component-card"><span class="component-icon">&#9776;</span><span>Sidebar</span></div>
+                    <div class="component-card"><span class="component-icon">&#9993;</span><span>Newsletter</span></div>
+                    <div class="component-card"><span class="component-icon">&#9733;</span><span>Footer</span></div>
+                    <a class="component-card agent-more" href="/docs/plugins/"><span class="component-icon">+</span><span>more</span></a>
+                </div>
+                <p class="integration-note">
+                    Every component is accessible, theme-aware, and fully customizable.
+                    <a href="/docs/plugins/">Browse all components</a>
+                    or bring your own.
+                </p>
+            </section>
+
+            <section class="final-cta">
+                <p class="section-kicker"># start building</p>
+                <h2>Start building your website today.</h2>
+                <p>
+                    Skip the weeks of boilerplate. Clone the starter, customize your
+                    theme, write your first post, and deploy. Your audience is waiting.
+                </p>
+                <div class="hero-actions center">
+                    <a class="button button-primary" href="/docs/install/"
+                        >Get started</a
+                    >
+                    <a class="button button-secondary" href="/docs/"
+                        >Read the docs</a
+                    >
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <a class="brand" href="/" aria-label="varsha home">
+                <span class="brand-logo" aria-hidden="true"></span>
+                <span>varsha</span>
+            </a>
+            <div>
+                <a href="#features">Features</a>
+                <a href="#showcase">Showcase</a>
+                <a href="/docs/">Docs</a>
+                <a href="/blog/">Blog</a>
+                <a href="https://github.com/yethikrishna/web-ui-template">GitHub</a>
+                <a href="https://instagram.com/yethikrishnar">Instagram</a>
+                <a href="mailto:hey@myndlabs.tech">hey@myndlabs.tech</a>
+            </div>
+            <nav class="footer-social" aria-label="Social links">
+                <a href="https://github.com/yethikrishna/web-ui-template" aria-label="varsha on GitHub">
+                    <svg viewBox="0 0 16 16" aria-hidden="true">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.64 7.64 0 0 1 8 3.87c.68 0 1.36.09 2 .26 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+                    </svg>
+                </a>
+                <a href="https://instagram.com/yethikrishnar" aria-label="varsha on Instagram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.849.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.849.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="currentColor"/>
+                    </svg>
+                </a>
+            </nav>
+            <!-- varsha-builtwith:start -->
+            <a class="builtwith-credit builtwith-credit--footer" href="https://myndlabs.tech" target="_blank" rel="noopener noreferrer" data-builtwith="true" aria-label="Built with varsha · myndlabs">
+                <span class="builtwith-credit__dot"></span>
+                <span class="builtwith-credit__text">Built with varsha</span>
+                <span class="builtwith-credit__sep">·</span>
+                <span class="builtwith-credit__company">myndlabs</span>
+            </a>
+            <!-- varsha-builtwith:end -->
+        </footer>
+
+        <div class="logo-menu" id="logo-menu" hidden>
+            <a href="/assets/logo.svg" download="varsha-logo.svg">Download SVG</a>
+            <a href="/assets/logo.png" download="varsha-logo.png">Download PNG</a>
+            <button type="button" id="copy-logo-url">Copy SVG URL</button>
+        </div>
+
+        <div class="theme-hint" id="theme-hint" title="Press / or t to switch theme">
+            <span class="theme-hint-dot"></span>
+            <span class="theme-hint-label" id="theme-hint-label">light</span>
+            <span class="theme-hint-key">[/]</span>
+        </div>
+
+        <div class="theme-overlay" id="theme-overlay" hidden>
+            <div class="theme-overlay-panel" role="dialog" aria-label="Theme switcher" aria-modal="true">
+                <div class="theme-overlay-title">settings</div>
+                <div class="theme-overlay-tabs">
+                    <span class="active">theme</span>
+                </div>
+                <div class="theme-overlay-list" id="theme-overlay-list" role="listbox" aria-label="Themes">
+                    <div class="theme-sep"><span>dark</span></div>
+                    <button type="button" role="option" data-value="catppuccin">catppuccin</button>
+                    <button type="button" role="option" data-value="terminal">terminal</button>
+                    <button type="button" role="option" data-value="tokyo-night">tokyo night</button>
+                    <button type="button" role="option" data-value="dracula">dracula</button>
+                    <button type="button" role="option" data-value="nord">nord</button>
+                    <button type="button" role="option" data-value="gruvbox">gruvbox</button>
+                    <button type="button" role="option" data-value="one-dark">one dark</button>
+                    <button type="button" role="option" data-value="solarized">solarized</button>
+                    <button type="button" role="option" data-value="kanagawa">kanagawa</button>
+                    <button type="button" role="option" data-value="rose-pine">rose pine</button>
+                    <button type="button" role="option" data-value="vesper">vesper</button>
+                    <div class="theme-sep"><span>light</span></div>
+                    <button type="button" role="option" data-value="catppuccin-latte">catppuccin latte</button>
+                    <button type="button" role="option" data-value="tokyo-night-day">tokyo day</button>
+                    <button type="button" role="option" data-value="gruvbox-light">gruvbox light</button>
+                    <button type="button" role="option" data-value="one-light">one light</button>
+                    <button type="button" role="option" data-value="solarized-light">solarized light</button>
+                    <button type="button" role="option" data-value="kanagawa-lotus">kanagawa lotus</button>
+                    <button type="button" role="option" data-value="rose-pine-dawn">rose pine dawn</button>
+                </div>
+                <div class="theme-overlay-footer">
+                    <span class="theme-overlay-hints"><span class="key">↑↓</span> select</span>
+                    <span class="theme-overlay-actions"><span class="theme-apply-btn">↵ apply</span><button class="theme-close-btn" type="button" id="theme-close-btn">esc close</button></span>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            (function () {
+                var overlay = document.getElementById("theme-overlay");
+                var list = document.getElementById("theme-overlay-list");
+                var hintLabel = document.getElementById("theme-hint-label");
+                if (!overlay || !list) return;
+
+                var options = Array.prototype.slice.call(list.querySelectorAll("[role='option']"));
+                var media = window.matchMedia("(prefers-color-scheme: dark)");
+                var saved = localStorage.getItem("varsha-palette") || "";
+                var committed = saved || defaultPalette();
+
+                function defaultPalette() {
+                    return media.matches ? "tokyo-night" : "tokyo-night-day";
+                }
+
+                function setPalette(value) {
+                    document.documentElement.setAttribute("data-palette", value || defaultPalette());
+                }
+
+                function updateUI(value) {
+                    var activeValue = value || defaultPalette();
+                    options.forEach(function (opt) {
+                        var selected = opt.dataset.value === activeValue;
+                        opt.setAttribute("aria-selected", String(selected));
+                    });
+                    var active = options.find(function (o) { return o.dataset.value === activeValue; });
+                    if (hintLabel && active) hintLabel.textContent = active.textContent.trim();
+                }
+
+                function openOverlay() {
+                    overlay.hidden = false;
+                    document.body.style.overflow = "hidden";
+                    committed = localStorage.getItem("varsha-palette") || defaultPalette();
+                    updateUI(committed);
+                    var active = list.querySelector("[aria-selected='true']") || options[0];
+                    if (active) active.focus();
+                }
+
+                function closeOverlay() {
+                    overlay.hidden = true;
+                    document.body.style.overflow = "";
+                }
+
+                function toggleOverlay() {
+                    if (overlay.hidden) openOverlay();
+                    else closeOverlay();
+                }
+
+                function preview(index) {
+                    if (index < 0 || index >= options.length) return;
+                    setPalette(options[index].dataset.value);
+                    updateUI(options[index].dataset.value);
+                    options[index].focus();
+                }
+
+                function commit(value) {
+                    setPalette(value);
+                    localStorage.setItem("varsha-palette", value);
+                    updateUI(value);
+                    closeOverlay();
+                }
+
+                function revert() {
+                    setPalette(committed);
+                    updateUI(committed);
+                    closeOverlay();
+                }
+
+                media.addEventListener("change", function () {
+                    if (!localStorage.getItem("varsha-palette")) {
+                        setPalette("");
+                        updateUI("");
+                    }
+                });
+
+                options.forEach(function (opt, idx) {
+                    opt.addEventListener("click", function () {
+                        commit(opt.dataset.value);
+                    });
+                    opt.addEventListener("mouseenter", function () {
+                        preview(idx);
+                    });
+                });
+
+                document.addEventListener("keydown", function (e) {
+                    if ((e.key === "t" || e.key === "/") && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                        var tag = document.activeElement && document.activeElement.tagName;
+                        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+                        e.preventDefault();
+                        toggleOverlay();
+                        return;
+                    }
+                    if (overlay.hidden) return;
+                    var current = document.activeElement;
+                    var idx = options.indexOf(current);
+                    if (e.key === "ArrowDown") {
+                        e.preventDefault();
+                        var nextIdx = idx >= 0 ? Math.min(options.length - 1, idx + 1) : 0;
+                        preview(nextIdx);
+                    } else if (e.key === "ArrowUp") {
+                        e.preventDefault();
+                        var prevIdx = idx >= 0 ? Math.max(0, idx - 1) : options.length - 1;
+                        preview(prevIdx);
+                    } else if (e.key === "Enter" && idx >= 0) {
+                        e.preventDefault();
+                        commit(options[idx].dataset.value);
+                    } else if (e.key === "Escape") {
+                        e.preventDefault();
+                        revert();
+                    }
+                });
+
+                var themeHint = document.getElementById("theme-hint");
+                if (localStorage.getItem("varsha-theme-hint-seen") === "1") {
+                    themeHint.classList.add("is-seen");
+                }
+                themeHint.addEventListener("mouseenter", function () {
+                    localStorage.setItem("varsha-theme-hint-seen", "1");
+                    themeHint.classList.add("is-seen");
+                }, { once: true });
+                themeHint.addEventListener("click", toggleOverlay);
+                document.getElementById("theme-close-btn").addEventListener("click", revert);
+
+                setPalette(saved);
+                updateUI(saved);
+            })();
+
+            (function () {
+                var menu = document.getElementById("logo-menu");
+                var copyButton = document.getElementById("copy-logo-url");
+                var logos = document.querySelectorAll(".brand-logo");
+                if (!menu || !logos.length) return;
+
+                function hideMenu() {
+                    menu.hidden = true;
+                }
+
+                function showMenu(event) {
+                    event.preventDefault();
+                    menu.hidden = false;
+                    var menuWidth = menu.offsetWidth;
+                    var menuHeight = menu.offsetHeight;
+                    var left = Math.min(event.clientX, window.innerWidth - menuWidth - 12);
+                    var top = Math.min(event.clientY, window.innerHeight - menuHeight - 12);
+                    menu.style.left = Math.max(12, left) + "px";
+                    menu.style.top = Math.max(12, top) + "px";
+                }
+
+                logos.forEach(function (logo) {
+                    logo.addEventListener("contextmenu", showMenu);
+                });
+
+                document.addEventListener("click", function (event) {
+                    if (!menu.contains(event.target)) hideMenu();
+                });
+                document.addEventListener("keydown", function (event) {
+                    if (event.key === "Escape") hideMenu();
+                });
+                window.addEventListener("scroll", hideMenu, { passive: true });
+                window.addEventListener("resize", hideMenu);
+
+                if (copyButton) {
+                    copyButton.addEventListener("click", async function () {
+                        var url = new URL("/assets/logo.svg", window.location.href).href;
+                        try {
+                            await navigator.clipboard.writeText(url);
+                            copyButton.textContent = "Copied";
+                            setTimeout(function () {
+                                copyButton.textContent = "Copy SVG URL";
+                            }, 1500);
+                        } catch (error) {
+                            window.prompt("Copy logo URL", url);
+                        }
+                    });
+                }
+            })();
+
+            (function () {
+                var copyButton = document.getElementById("copy-btn");
+                var command = document.getElementById("install-cmd");
+                var methods = Array.prototype.slice.call(
+                    document.querySelectorAll(".install-method"),
+                );
+                if (!copyButton || !command || methods.length === 0) return;
+
+                methods.forEach(function (method) {
+                    method.addEventListener("click", function () {
+                        methods.forEach(function (entry) {
+                            var active = entry === method;
+                            entry.classList.toggle("is-active", active);
+                            entry.setAttribute("aria-pressed", String(active));
+                        });
+                        command.textContent = method.dataset.command;
+                        command.classList.toggle(
+                            "is-compact",
+                            method.dataset.size === "compact",
+                        );
+                        copyButton.textContent = "Copy";
+                    });
+                });
+
+                document.querySelectorAll("[data-copy-target]").forEach(function (button) {
+                    button.addEventListener("click", async function () {
+                        var target = document.getElementById(button.dataset.copyTarget);
+                        if (!target) return;
+
+                        try {
+                            await navigator.clipboard.writeText(
+                                target.textContent.trim(),
+                            );
+                            button.textContent = "Copied";
+                            setTimeout(function () {
+                                button.textContent = "Copy";
+                            }, 1500);
+                        } catch (error) {
+                            button.textContent = "Select";
+                        }
+                    });
+                });
+            })();
+        </script>
+
+        <!-- varsha-builtwith:start -->
+        <script>
+            (function () {
+                'use strict';
+                var HOOK = 'data-builtwith';
+                function createCredit() {
+                    var a = document.createElement('a');
+                    a.setAttribute(HOOK, 'true');
+                    a.href = 'https://myndlabs.tech';
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                    a.setAttribute('aria-label', 'Built with varsha \u00b7 myndlabs');
+                    a.className = 'builtwith-credit builtwith-credit--corner';
+                    a.innerHTML = '<span class="builtwith-credit__dot"></span>' +
+                        '<span class="builtwith-credit__text">Built with varsha</span>' +
+                        '<span class="builtwith-credit__sep">\u00b7</span>' +
+                        '<span class="builtwith-credit__company">myndlabs</span>';
+                    return a;
+                }
+                function ensureCredit() {
+                    var el = document.querySelector('[' + HOOK + ']');
+                    if (!el || !document.body.contains(el)) {
+                        document.body.appendChild(createCredit());
+                        return;
+                    }
+                    var cs = window.getComputedStyle(el);
+                    if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0' || parseFloat(cs.opacity) < 0.1) {
+                        el.removeAttribute('style');
+                        el.style.cssText = '';
+                    }
+                }
+                function init() { ensureCredit(); }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', init);
+                } else { init(); }
+                setInterval(ensureCredit, 2500);
+                if (typeof MutationObserver !== 'undefined') {
+                    new MutationObserver(ensureCredit).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
+                }
+            })();
+        </script>
+        <!-- varsha-builtwith:end -->
+    </body>
+</html>

@@ -1,0 +1,155 @@
+---
+title: 自定义
+description: 如何自定义 varsha 站点的品牌、颜色、字体、元数据和站点配置，包括如何保留署名。
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha 高度可定制以匹配你的品牌。本指南介绍如何更改站点设置、颜色、字体和元数据。
+
+## 重要：关于署名
+
+varsha 是免费开源启动模板。**请勿删除**站点上指向 [https://myndlabs.tech](https://myndlabs.tech) 的 "Built with varsha by myndlabs" 署名链接。此署名支持启动模板的持续开发。
+
+- 此署名默认通过 `MarketingLayout` 中的 `BuiltWith` 组件渲染
+- 显示在首页、营销页面和文档的右下角
+- 你可以调整样式以匹配主题，但不要删除、取消链接或隐藏它
+- 此署名在所有主题（18+）的角落均可见 — 这是有意设计的
+
+## 站点设置
+
+### 站点名称和描述
+
+打开 `astro.config.mjs` 并更新 Starlight 配置：
+
+```js title="astro.config.mjs"
+starlight({
+  title: 'Your Product Name',
+  description: 'A short description of your product.',
+  // ...
+})
+```
+
+### 域名
+
+更新 `site` 属性用于 sitemap 和 OG URL：
+
+```js title="astro.config.mjs"
+export default defineConfig({
+  site: 'https://your-domain.com',
+  // ...
+});
+```
+
+### 导航链接
+
+在 `src/components/MarketingLayout.astro` 中更新导航链接。记得同时更新桌面（`.nav-links`）和移动端导航面板（`.nav-menu-panel`）。
+
+### 社交链接
+
+在 `astro.config.mjs` 的 Starlight 配置中设置社交链接：
+
+```js title="astro.config.mjs"
+starlight({
+  social: {
+    github: 'https://github.com/yethikrishna/web-ui-template',
+    // 添加你自己的链接
+  },
+})
+```
+
+## 颜色和主题
+
+varsha 内置 18+ 主题，可通过 CSS 自定义属性完全自定义。
+
+### 更改主题
+
+用户可以在任意页面按 `/` 或 `t` 打开主题切换器。要设置默认主题，修改 `src/styles/global.css` 中的 CSS 变量：
+
+```css title="src/styles/global.css"
+:root {
+  --color-bg: #1a1b26;
+  --color-fg: #c0caf5;
+  --color-accent: #7aa2f7;
+  /* 完整主题自定义参见 CSS Token */
+}
+```
+
+### 创建自定义配色方案
+
+创建自己的主题，参见[主题指南](/zh-cn/docs/keyboard/)。
+
+## 字体
+
+### 更改字体
+
+字体通过 `src/components/MarketingLayout.astro` 和 Starlight 的 `customCss` 配置加载。更改字体：
+
+1. 添加 Google Fonts 或字体文件到项目
+2. 在 `src/styles/global.css` 更新字体族：
+
+```css title="src/styles/global.css"
+:root {
+  --font-sans: 'Your Font', system-ui, sans-serif;
+  --font-mono: 'Your Mono', monospace;
+  --font-display: 'Your Display Font', sans-serif;
+}
+```
+
+## Logo 和 Favicon
+
+- **Logo：** 将 `src/assets/logo.svg` 替换为你的 Logo
+- **Favicon：** 将 `public/favicon.svg` 替换为你的 Favicon
+- **OG 图片：** 替换 `public/og-image.png` 用于社交分享（推荐尺寸：1200x630）
+
+## 元数据和 SEO
+
+每个页面应通过 `MarketingLayout` 设置适当的元标签：
+
+```astro
+<MarketingLayout
+  title="Your Page Title"
+  description="A compelling description for SEO."
+  canonicalPath="/your-page/"
+>
+```
+
+全站 SEO 配置参见 [SEO 与元数据](/zh-cn/docs/socket-api/)。
+
+## 侧边栏配置
+
+文档侧边栏在 `astro.config.mjs` 的 Starlight 配置中定义。
+
+## 本地化
+
+varsha 默认支持英文、日文和简体中文。添加或更改语言：更新 Starlight 的 `locales` 配置。
+
+## 页脚自定义
+
+页脚在 `src/components/Footer.astro` 中定义。你可以更新版权信息、链接和社交图标。记得保留署名。
+
+## 自定义 CSS
+
+要进一步自定义样式，可在 `src/styles/` 的 CSS 文件中添加或在组件中添加 scoped `<style>` 块。
+
+全局可用的 CSS Token 和自定义属性完整列表参见 [CSS Token](/zh-cn/docs/cli-reference/)。
+
+## 下一步
+
+<CardGrid>
+  <Card title="主题">
+    切换内置主题和创建自定义主题。
+
+    [主题 →](/zh-cn/docs/keyboard/)
+  </Card>
+  <Card title="CSS Token">
+    完整的设计 Token 参考。
+
+    [CSS Token →](/zh-cn/docs/cli-reference/)
+  </Card>
+  <Card title="设计系统">
+    varsha 的设计原则和组件理念。
+
+    [设计系统 →](/zh-cn/docs/design-system/)
+  </Card>
+</CardGrid>

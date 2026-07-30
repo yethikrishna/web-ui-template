@@ -1,0 +1,166 @@
+---
+title: Quick start
+description: Build and ship your first custom page with varsha in under five minutes. Start the dev server, edit content, add a page, and deploy.
+---
+
+This quick start walks you through creating your first custom page and preparing your varsha site for deployment. It assumes you have already [installed varsha](/docs/install/).
+
+## 1. Start the dev server
+
+If the dev server is not already running, start it:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:4321](http://localhost:4321) in your browser. You should see the varsha landing page.
+
+## 2. Update site metadata
+
+Open `astro.config.mjs` and update the site configuration for your brand:
+
+```js title="astro.config.mjs"
+export default defineConfig({
+  site: 'https://your-domain.com', // Replace with your domain
+  // ...
+  integrations: [
+    sitemap(),
+    starlight({
+      title: 'Your Product Name',
+      description: 'A short description of your product or service.',
+      // ...
+    }),
+  ],
+});
+```
+
+## 3. Create your first page
+
+Create a new file at `src/pages/about.astro`:
+
+```astro title="src/pages/about.astro"
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+
+<MarketingLayout
+  title="About Us"
+  description="Learn about our company and mission."
+  canonicalPath="/about/"
+>
+  <main class="page">
+    <section class="hero">
+      <h1>About Us</h1>
+      <p>We build tools that help people ship faster.</p>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Our Mission</h2>
+        <p>
+          This is your first custom page. Edit it freely — add sections,
+          components, images, and whatever else your site needs.
+        </p>
+      </div>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+Visit [http://localhost:4321/about](http://localhost:4321/about) to see your new page. It inherits the site header, footer, theme switcher, and the "Built with varsha" attribution automatically.
+
+## 4. Add a navigation link
+
+Open `src/components/MarketingLayout.astro` and add your new page to the navigation:
+
+```astro title="src/components/MarketingLayout.astro" ins="add-about-link"
+<div class="nav-links">
+  <a href="/">Home</a>
+  <a href="/about/">About</a>
+  <!-- existing links -->
+</div>
+```
+
+Do the same for the mobile nav panel (`.nav-menu-panel`) to keep mobile and desktop navigation in sync.
+
+## 5. Try a theme
+
+Press `/` or `t` on any page to open the theme switcher. varsha ships with 18+ themes including:
+
+- Tokyo Night (default dark) / Tokyo Day (default light)
+- Catppuccin / Catppuccin Latte
+- Nord
+- Dracula
+- Gruvbox / Gruvbox Light
+- Kanagawa / Kanagawa Lotus
+- Rose Pine / Rose Pine Dawn
+- And more
+
+The selected theme is persisted in `localStorage` and respected across sessions.
+
+## 6. Add a blog post
+
+Create a new blog post at `src/content/blog/my-first-post.md`:
+
+```md title="src/content/blog/my-first-post.md"
+---
+title: "My First Post"
+description: "Hello world from my varsha site."
+pubDate: "2025-01-15"
+---
+
+Welcome to my blog! This is my first post powered by varsha.
+
+## What's next
+
+- Write more posts
+- Customize the design
+- Deploy to production
+```
+
+Visit [http://localhost:4321/blog/](http://localhost:4321/blog) to see your post listed.
+
+## 7. Build for production
+
+When you are ready to ship, build the production site:
+
+```bash
+npm run build
+```
+
+Preview the production build locally before deploying:
+
+```bash
+npm run preview
+```
+
+The static output is generated in the `dist/` directory and can be deployed to any static host.
+
+## 8. Deploy
+
+The fastest way to deploy is Vercel:
+
+```bash
+npx vercel
+```
+
+Or connect your Git repository to Vercel, Netlify, or Cloudflare Pages for automatic deployments on every push. See the [Deployment guide](/docs/persistence-remote/) for platform-specific instructions.
+
+## What you just did
+
+In under five minutes you have:
+
+1. Started a local varsha development server
+2. Updated site metadata
+3. Created a new page using `MarketingLayout`
+4. Added a navigation link
+5. Explored themes
+6. Published a blog post
+7. Built for production
+8. Learned how to deploy
+
+## Next steps
+
+- **[Pages & layouts →](/docs/how-to-work/)** — Deep dive into creating pages, working with layouts, and structuring content.
+- **[Customization →](/docs/configuration/)** — Brand your site: change colors, typography, metadata, and configuration.
+- **[Deployment →](/docs/persistence-remote/)** — Deploy to Vercel, Netlify, Cloudflare Pages, or static hosting.

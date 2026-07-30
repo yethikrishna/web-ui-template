@@ -1,0 +1,267 @@
+---
+title: CSS design tokens
+description: Complete reference for varsha's CSS custom properties — colors, typography, spacing, border radius, shadows, and theme palettes.
+slug: css-tokens
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha's design system is built entirely on CSS custom properties (CSS variables). Every color, font size, spacing value, radius, and shadow is a token that can be customized per theme or globally. This reference documents every token available.
+
+## How tokens work
+
+varsha uses a three-layer token system:
+
+1. **Primitive tokens** — Raw palette colors defined per theme (e.g., `--c-tokyo-night-bg: #1a1b26`)
+2. **Semantic tokens** — Meaning-based mappings that point to primitive tokens (e.g., `--bg`, `--fg`, `--accent`)
+3. **Component tokens** — Component-specific values that reference semantic tokens (e.g., `--nav-bg`, `--card-border`)
+
+When you switch themes (via the `/` key or `data-palette` attribute), the primitive tokens change, and all semantic and component tokens automatically update.
+
+## Using tokens in your CSS
+
+Reference tokens with `var()`:
+
+```css
+.my-component {
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  padding: var(--sp-4);
+  border-radius: var(--radius-md);
+}
+```
+
+Always prefer semantic tokens (`--bg`, `--accent`) over primitive tokens (`--c-red`) in your custom CSS. This ensures your components adapt correctly when themes change.
+
+## Color tokens
+
+### Semantic colors
+
+These are the primary tokens you will use in custom CSS and components:
+
+| Token | Description |
+| --- | --- |
+| `--bg` | Page background color |
+| `--fg` | Primary foreground (body text) |
+| `--muted` | Muted/secondary text color |
+| `--accent` | Primary accent color (links, buttons, highlights) |
+| `--accent-fg` | Text color on accent backgrounds |
+| `--border` | Default border color |
+| `--surface` | Card/panel/surface background color |
+| `--surface-hover` | Surface color on hover |
+| `--selection` | Text selection background |
+
+### Code and syntax colors
+
+| Token | Description |
+| --- | --- |
+| `--code-bg` | Code block background |
+| `--code-fg` | Code block text color |
+| `--code-comment` | Comment syntax color |
+| `--code-keyword` | Keyword syntax color |
+| `--code-string` | String literal syntax color |
+| `--code-number` | Number literal syntax color |
+| `--code-function` | Function name syntax color |
+| `--code-variable` | Variable syntax color |
+
+### Status colors
+
+| Token | Description |
+| --- | --- |
+| `--success` | Success/positive state (green) |
+| `--warning` | Warning state (yellow/amber) |
+| `--danger` | Error/danger state (red) |
+| `--info` | Informational state (blue) |
+
+## Typography tokens
+
+### Font families
+
+| Token | Value | Description |
+| --- | --- | --- |
+| `--font-sans` | `'JetBrains Mono', monospace` | Default sans/UI font |
+| `--font-mono` | `'JetBrains Mono', monospace` | Monospace/code font |
+| `--font-serif` | `serif` | Serif font (for quotes, editorial) |
+
+varsha uses JetBrains Mono as its primary typeface for a distinctive, technical aesthetic. The font is preloaded from `/assets/jbm.woff2`.
+
+### Font sizes
+
+| Token | Value | Typical use |
+| --- | --- | --- |
+| `--fs-xs` | `0.75rem` | Caption, labels, badges |
+| `--fs-sm` | `0.875rem` | Small text, metadata |
+| `--fs-base` | `1rem` | Body text (16px) |
+| `--fs-md` | `1.125rem` | Lead text, large body |
+| `--fs-lg` | `1.25rem` | Small headings |
+| `--fs-xl` | `1.5rem` | H4, card titles |
+| `--fs-2xl` | `1.875rem` | H3, section headings |
+| `--fs-3xl` | `2.25rem` | H2, page headings |
+| `--fs-4xl` | `3rem` | H1, hero titles |
+| `--fs-5xl` | `3.75rem` | Display text |
+| `--fs-6xl` | `4.5rem` | Large display |
+
+### Line heights
+
+| Token | Value | Use |
+| --- | --- | --- |
+| `--lh-tight` | `1.2` | Headings |
+| `--lh-snug` | `1.4` | Compact text |
+| `--lh-normal` | `1.6` | Body text |
+| `--lh-relaxed` | `1.75` | Long-form reading |
+
+### Font weights
+
+| Token | Value | Use |
+| --- | --- | --- |
+| `--fw-regular` | `400` | Body text |
+| `--fw-medium` | `500` | UI labels, navigation |
+| `--fw-semibold` | `600` | Subheadings, buttons |
+| `--fw-bold` | `700` | Headings |
+
+## Spacing tokens
+
+Based on a 4px base unit:
+
+| Token | Value | Common use |
+| --- | --- | --- |
+| `--sp-0\.5` | `2px` | Hairline gaps |
+| `--sp-1` | `4px` | Icon padding, tight gaps |
+| `--sp-2` | `8px` | Element padding, small gaps |
+| `--sp-3` | `12px` | Card padding, medium gaps |
+| `--sp-4` | `16px` | Section padding, component gaps |
+| `--sp-5` | `24px` | Large gaps, item spacing |
+| `--sp-6` | `32px` | Section spacing |
+| `--sp-8` | `48px` | Major sections |
+| `--sp-10` | `64px` | Hero padding, page sections |
+| `--sp-12` | `80px` | Large vertical rhythm |
+| `--sp-16` | `128px` | Full-page spacing |
+
+### Layout-specific spacing
+
+| Token | Description |
+| --- | --- |
+| `--container-max` | Max width of content containers (`1200px`) |
+| `--container-padding` | Horizontal padding on containers (`var(--sp-4)`) |
+| `--nav-height` | Height of the navigation header |
+
+## Border radius tokens
+
+| Token | Value | Use |
+| --- | --- | --- |
+| `--radius-sm` | `4px` | Badges, small elements |
+| `--radius-md` | `8px` | Buttons, inputs, cards |
+| `--radius-lg` | `12px` | Large cards, modals |
+| `--radius-xl` | `16px` | Hero cards, panels |
+| `--radius-full` | `9999px` | Pills, avatar circles |
+
+## Shadow tokens
+
+| Token | Description |
+| --- | --- |
+| `--shadow-sm` | Subtle shadow for interactive elements (hover states) |
+| `--shadow-md` | Medium shadow for cards and elevated surfaces |
+| `--shadow-lg` | Large shadow for dropdowns, modals, popovers |
+| `--shadow-glow` | Accent-colored glow for focus states and featured elements |
+
+Shadow tokens automatically adapt to the active theme — dark themes use more subtle shadows to avoid visual mud.
+
+## Transition tokens
+
+| Token | Value | Use |
+| --- | --- | --- |
+| `--transition-fast` | `150ms ease` | Hover states, color changes |
+| `--transition-base` | `250ms ease` | Standard transitions |
+| `--transition-slow` | `400ms ease` | Theme switching, large animations |
+
+## Z-index tokens
+
+| Token | Value | Purpose |
+| --- | --- | --- |
+| `--z-base` | `0` | Default stacking |
+| `--z-nav` | `100` | Navigation header |
+| `--z-overlay` | `500` | Modal overlays |
+| `--z-modal` | `600` | Modal dialogs |
+| `--z-toast` | `700` | Toast notifications |
+| `--z-builtwith` | `999` | Attribution badge |
+
+## Breakpoints
+
+While not CSS custom properties, varsha uses consistent responsive breakpoints in its CSS:
+
+| Name | Width | Target |
+| --- | --- | --- |
+| `sm` | `640px` | Large phones |
+| `md` | `768px` | Tablets |
+| `lg` | `1024px` | Small laptops |
+| `xl` | `1280px` | Desktops |
+
+In media queries:
+
+```css
+@media (max-width: 768px) {
+  /* Mobile/tablet styles */
+}
+```
+
+## Built-in themes
+
+varsha ships with 18+ themes, each defined as a set of primitive color tokens scoped to a `[data-palette="theme-name"]` selector:
+
+| Theme | Type | Palette ID |
+| --- | --- | --- |
+| Tokyo Night | Dark | `tokyo-night` |
+| Tokyo Day | Light | `tokyo-night-day` |
+| Catppuccin | Dark | `catppuccin` |
+| Catppuccin Latte | Light | `catppuccin-latte` |
+| Terminal | Dark | `terminal` |
+| Dracula | Dark | `dracula` |
+| Nord | Dark | `nord` |
+| Gruvbox | Dark | `gruvbox` |
+| Gruvbox Light | Light | `gruvbox-light` |
+| One Dark | Dark | `one-dark` |
+| One Light | Light | `one-light` |
+| Solarized | Dark | `solarized` |
+| Solarized Light | Light | `solarized-light` |
+| Kanagawa | Dark | `kanagawa` |
+| Kanagawa Lotus | Light | `kanagawa-lotus` |
+| Rose Pine | Dark | `rose-pine` |
+| Rose Pine Dawn | Light | `rose-pine-dawn` |
+| Vesper | Dark | `vesper` |
+
+See the [Themes guide](/docs/keyboard/) for details on switching themes and creating custom palettes.
+
+## Customizing tokens
+
+To override a token globally, set it on `:root` in your custom CSS:
+
+```css
+:root {
+  --accent: #6366f1;
+  --radius-md: 6px;
+  --fs-base: 1.0625rem;
+}
+```
+
+To create a custom theme, define a new `[data-palette="my-theme"]` block in `public/css/style.css` with all required color tokens.
+
+## Next steps
+
+<CardGrid>
+  <Card title="Themes">
+    Switch between built-in themes and create custom palettes.
+
+    [Themes →](/docs/keyboard/)
+  </Card>
+  <Card title="Customization">
+    Brand your site with colors, typography, and metadata.
+
+    [Customization →](/docs/configuration/)
+  </Card>
+  <Card title="Design system">
+    Understand the principles behind varsha's token architecture.
+
+    [Design system →](/docs/design-system/)
+  </Card>
+</CardGrid>

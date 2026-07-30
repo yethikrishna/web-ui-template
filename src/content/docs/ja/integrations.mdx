@@ -1,0 +1,113 @@
+---
+title: インテグレーション
+description: varshaに付属するAstroインテグレーションのガイド。Starlightドキュメント、sitemap、Vercelアダプター、アナリティクス、その他の追加方法。
+---
+
+import { Card, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
+
+varshaには、プロダクションサイトに必要な厳選されたAstroインテグレーションがプリインストールされています。このガイドでは、各インテグレーションの概要と追加のインテグレーションの追加方法を説明します。
+
+## プリインストールされているインテグレーション
+
+<CardGrid>
+  <Card title="Starlight" icon="book-open">
+    Astroの公式ドキュメントフレームワーク。サイドバーナビゲーション、全文検索、i18n、ダーク/ライトモード、コードブロックのシンタックスハイライトを備えた美しいドキュメントサイトを提供します。
+  </Card>
+  <Card title="Sitemap" icon="map">
+    ビルド時に自動的に`sitemap.xml`を生成し、SEOを向上させ、検索エンジンのクロールを改善します。
+  </Card>
+  <Card title="Vercel" icon="triangle-up">
+    Vercelへのデプロイメントアダプター。エッジ/サーバーレス関数、画像最適化、キャッシュをサポートします。
+  </Card>
+</CardGrid>
+
+## Starlightドキュメント
+
+Starlightはドキュメントサイト（`/docs/`）を強化します。`astro.config.mjs`で設定されます：
+
+```js title="astro.config.mjs"
+starlight({
+  title: 'varsha',
+  description: 'A premium website starter template.',
+  customCss: ['./src/styles/global.css', './src/styles/marketing.css'],
+  sidebar: [
+    { label: 'Start here', items: [/* ... */] },
+    { label: 'Building your site', items: [/* ... */] },
+    { label: 'Going live', items: [/* ... */] },
+    { label: 'Reference', items: [/* ... */] },
+  ],
+  locales: {
+    root: { label: 'English', lang: 'en' },
+    ja: { label: '日本語', lang: 'ja' },
+    'zh-cn': { label: '简体中文', lang: 'zh-CN' },
+  },
+  social: {
+    github: 'https://github.com/yethikrishna/web-ui-template',
+  },
+})
+```
+
+### Starlightの機能
+
+- **全文検索：** クライアントサイドの検索でドキュメントをすばやく見つける
+- **i18n：** 多言語ドキュメント（英語、日本語、簡体字中国語が付属）
+- **コードハイライト：** Shikiによるシンタックスハイライト
+- **テーマ：** Starlightのテーマはvarshaのテーマシステムと連携
+
+## Sitemap
+
+`@astrojs/sitemap`インテグレーションはビルド時に自動的にサイトマップを生成します。`astro.config.mjs`で`sitemap.xml`に含まれるページを設定できます：
+
+```js title="astro.config.mjs"
+sitemap({
+  filter: (page) => !page.includes('/admin/'),
+  changefreq: 'weekly',
+  priority: 0.7,
+})
+```
+
+## Vercelアダプター
+
+VercelアダプターはVercelプラットフォーム向けにビルドを最適化します。別のプラットフォームにデプロイする場合は、アダプターを切り替えてください：
+
+<Tabs>
+  <TabItem label="Netlify">
+    ```bash
+    npx astro add netlify
+    ```
+  </TabItem>
+  <TabItem label="Cloudflare">
+    ```bash
+    npx astro add cloudflare
+    ```
+  </TabItem>
+  <TabItem label="Node.js">
+    ```bash
+    npx astro add node
+    ```
+  </TabItem>
+</Tabs>
+
+## その他の推奨インテグレーション
+
+<CardGrid>
+  <Card title="RSS">
+    ブログのRSSフィードを追加：`npx astro add rss`
+  </Card>
+  <Card title="Tailwind CSS">
+    Tailwindを使用する場合：`npx astro add tailwind`（varshaはデフォルトでプレーンCSSを使用）
+  </Card>
+  <Card title="MDXのみ">
+    ドキュメントにはMDXが付属しています。マーケティングページにMDXが必要な場合は個別に追加
+  </Card>
+</CardGrid>
+
+## インテグレーションの追加
+
+Astroインテグレーションを追加するには、Astro CLIを使用するのが最も簡単です：
+
+```bash
+npx astro add <integration-name>
+```
+
+これにより、依存関係が自動的にインストールされ、`astro.config.mjs`が更新されます。

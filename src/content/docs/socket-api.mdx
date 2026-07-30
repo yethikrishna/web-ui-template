@@ -1,0 +1,322 @@
+---
+title: SEO & metadata
+description: Configure Open Graph tags, Twitter cards, sitemaps, robots.txt, structured data, and metadata for optimal search engine and social media visibility.
+slug: seo
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha is designed with SEO as a first-class concern. This guide covers how to configure metadata, Open Graph tags, sitemaps, robots directives, and structured data for maximum search and social visibility.
+
+## Default metadata
+
+varsha uses two layout systems that both inject comprehensive metadata:
+
+1. **MarketingLayout** (`src/components/MarketingLayout.astro`) — for marketing pages
+2. **Starlight** (configured in `astro.config.mjs`) — for documentation pages
+
+Both automatically output:
+
+- `<title>` tag
+- Meta description
+- Canonical URL
+- Open Graph (OG) tags (`og:type`, `og:title`, `og:description`, `og:url`, `og:image`)
+- Twitter Card tags (`twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`)
+- Theme color meta tag
+- Favicon and Apple touch icon links
+
+## Setting the site URL
+
+The most important SEO configuration is your production domain. Set it in `astro.config.mjs`:
+
+```js title="astro.config.mjs"
+export default defineConfig({
+  site: 'https://your-domain.com',
+  // ...
+});
+```
+
+This value is used to generate:
+
+- Canonical URLs
+- Sitemap URLs
+- Absolute OG image URLs
+- RSS feed links (if configured)
+
+## Per-page metadata
+
+### Marketing pages
+
+Every page using `MarketingLayout` accepts metadata props:
+
+```astro
+<MarketingLayout
+  title="About Us"
+  description="Learn about our company mission and team."
+  canonicalPath="/about/"
+  ogType="website"
+  ogImage="/assets/og-about.png"
+  ogImageAlt="About our company"
+>
+```
+
+| Prop | Purpose |
+| --- | --- |
+| `title` | Page title (appears in browser tab, search results, and social shares) |
+| `description` | Meta description for search results and social shares (aim for 150–160 characters) |
+| `canonicalPath` | The canonical URL path for this page |
+| `ogType` | `website` for pages, `article` for blog posts |
+| `ogImage` | Custom OG image for this page (default: `/assets/og-card-v8.png`) |
+| `ogImageAlt` | Accessible description of the OG image |
+
+### Documentation pages
+
+Starlight uses frontmatter for doc page metadata:
+
+```mdx
+---
+title: "Page title"
+description: "A concise description of this page (150-160 characters)."
+---
+```
+
+### Blog posts
+
+Blog post frontmatter feeds directly into SEO:
+
+```md
+---
+title: "Launching varsha"
+description: "We built a premium website starter that ships in minutes."
+pubDate: "2025-01-20"
+---
+```
+
+## Open Graph images
+
+### Default OG image
+
+The default OG image is configured in `astro.config.mjs` (for docs) and `MarketingLayout.astro` (for marketing pages). Replace it with your own branded image:
+
+- **Recommended size:** 1200 × 630 pixels
+- **Format:** PNG or JPEG
+- **Location:** `public/assets/og-card.png`
+
+Update the reference in `astro.config.mjs`:
+
+```js title="astro.config.mjs"
+{
+  tag: 'meta',
+  attrs: { property: 'og:image', content: 'https://your-domain.com/assets/og-card.png' },
+},
+```
+
+And in `MarketingLayout.astro`:
+
+```astro title="src/components/MarketingLayout.astro"
+ogImage = '/assets/og-card.png',
+ogImageAlt = 'Your site — tagline',
+```
+
+### Per-page OG images
+
+For important pages (blog posts, product launches), create custom OG images and pass them via the `ogImage` prop on `MarketingLayout`.
+
+## Sitemap
+
+varsha includes `@astrojs/sitemap` pre-configured. It automatically generates a sitemap at build time:
+
+- **Sitemap index:** `/sitemap-index.xml`
+- **Generated from:** All static pages, docs, and blog posts
+
+To verify your sitemap, build and preview:
+
+```bash
+npm run build
+npm run preview
+# Visit http://localhost:4321/sitemap-index.xml
+```
+
+### Submitting to search engines
+
+After deploying:
+
+1. Submit your sitemap URL to [Google Search Console](https://search.google.com/search-console/)
+2. Submit to [Bing Webmaster Tools](https://www.bing.com/webmasters/)
+3. Add the sitemap URL to your `robots.txt`
+
+## Robots.txt
+
+Create a `public/robots.txt` file to control crawler access:
+
+```txt title="public/robots.txt"
+User-agent: *
+Allow: /
+
+Sitemap: https://your-domain.com/sitemap-index.xml
+```
+
+For sites that should not be indexed (e.g., staging environments), use:
+
+```txt title="public/robots.txt"
+User-agent: *
+Disallow: /
+```
+
+## Structured data (JSON-LD)
+
+Add structured data for rich search results. The most useful types for marketing sites include:
+
+### Organization
+
+Add this to your layout's `<head>` or to individual pages:
+
+```html title="In <head>"
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Your Company",
+  "url": "https://your-domain.com",
+  "logo": "https://your-domain.com/assets/logo.png",
+  "sameAs": [
+    "https://github.com/your-username",
+    "https://twitter.com/your-handle"
+  ]
+}
+</script>
+```
+
+### WebSite (with search action)
+
+```html
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Your Site",
+  "url": "https://your-domain.com",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://your-domain.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+```
+
+### BlogPosting
+
+For blog posts, add article structured data:
+
+```astro
+<script type="application/ld+json" define:vars={{ post }}>
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.data.title,
+  "description": post.data.description,
+  "datePublished": post.data.pubDate.toISOString(),
+  "author": {
+    "@type": "Person",
+    "name": post.data.author
+  }
+}
+</script>
+```
+
+## Favicon and icons
+
+varsha includes a favicon setup. For complete browser and device support:
+
+| File | Size | Purpose |
+| --- | --- | --- |
+| `public/assets/favicon.png` | 32×32 | Standard favicon |
+| `public/assets/logo.png` | 180×180 | Apple touch icon |
+| `public/assets/favicon.svg` | SVG | Modern browsers (optional) |
+
+Add these to your layout `<head>`:
+
+```html
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.png" />
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+<link rel="apple-touch-icon" href="/assets/logo.png" />
+```
+
+## Theme color
+
+The theme color meta tag controls the browser UI color on mobile devices:
+
+```html
+<meta name="theme-color" content="#f0eee9" />
+```
+
+Update this value to match your brand color for light mode. For dark mode support, add a media query variant:
+
+```html
+<meta name="theme-color" content="#1a1b26" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f0eee9" media="(prefers-color-scheme: light)" />
+```
+
+## Language and locale
+
+Set the `lang` attribute on `<html>` in `MarketingLayout.astro`:
+
+```astro
+<html lang="en">
+```
+
+For multilingual sites, Starlight automatically handles locale-specific `lang` attributes on documentation pages.
+
+## Canonical URLs
+
+`MarketingLayout` automatically generates canonical URLs from the `canonicalPath` prop and the `site` config value. Always provide a `canonicalPath` for every marketing page:
+
+```astro
+<MarketingLayout
+  canonicalPath="/pricing/"
+  {/* ... */}
+>
+```
+
+## SEO checklist
+
+Before going live, verify:
+
+<CardGrid>
+  <Card title="Site URL set">
+    `site` in `astro.config.mjs` points to your production domain.
+  </Card>
+  <Card title="Titles and descriptions">
+    Every page has a unique `<title>` and meta description.
+  </Card>
+  <Card title="OG images">
+    Default and per-page OG images are 1200x630 and branded.
+  </Card>
+  <Card title="Sitemap works">
+    `/sitemap-index.xml` returns valid XML with all your pages.
+  </Card>
+  <Card title="robots.txt">
+    Crawlers are allowed (or blocked for staging).
+  </Card>
+  <Card title="Structured data">
+    Organization and WebSite JSON-LD are present on the homepage.
+  </Card>
+</CardGrid>
+
+## Performance and Core Web Vitals
+
+As an Astro static site, varsha achieves excellent Core Web Vitals by default:
+
+- **Zero JS by default** on marketing pages
+- **Preloaded fonts** to prevent layout shift
+- **Static generation** for fast Time to First Byte (TTFB)
+- **Optimized images** when using Astro's `<Image>` component
+
+Use [PageSpeed Insights](https://pagespeed.web.dev/) or [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview/) to audit your production site after deployment.
+
+## Next steps
+
+- Review [deployment options](/docs/persistence-remote/)
+- Set up [analytics integrations](/docs/integrations/)
+- See [troubleshooting](/docs/troubleshooting/) for common SEO issues

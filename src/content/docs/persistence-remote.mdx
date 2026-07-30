@@ -1,0 +1,236 @@
+---
+title: Deployment
+description: Deploy your varsha site to Vercel, Netlify, Cloudflare Pages, GitHub Pages, or any static hosting platform.
+slug: deployment
+---
+
+import { Card, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
+
+varsha generates a fully static site that can be deployed to any hosting platform that supports static files. The production build outputs to the `dist/` directory.
+
+## Build for production
+
+Before deploying, create a production build:
+
+```bash
+npm run build
+```
+
+This generates optimized static HTML, CSS, and JavaScript in `dist/`. To preview the build locally before deploying:
+
+```bash
+npm run preview
+```
+
+## Deploying to Vercel
+
+Vercel is the recommended platform for varsha sites. Since varsha uses static output, no adapter is needed — Vercel auto-detects Astro projects.
+
+<Tabs>
+  <TabItem label="Vercel CLI">
+    Install the Vercel CLI and deploy:
+
+    ```bash
+    npm install -g vercel
+    vercel
+    ```
+
+    For production deployment:
+
+    ```bash
+    vercel --prod
+    ```
+  </TabItem>
+  <TabItem label="Git connection (recommended)">
+    1. Push your code to GitHub, GitLab, or Bitbucket.
+    2. Go to [vercel.com/new](https://vercel.com/new) and import your repository.
+    3. Vercel auto-detects Astro and configures the correct build settings:
+       - **Framework preset:** Astro
+       - **Build command:** `npm run build`
+       - **Output directory:** `dist`
+    4. Click "Deploy".
+  </TabItem>
+</Tabs>
+
+Vercel automatically handles:
+
+- SSL certificates
+- Global CDN
+- Preview deployments for pull requests
+- Automatic deployments on every push
+- Custom domain configuration
+
+## Deploying to Netlify
+
+<Tabs>
+  <TabItem label="Netlify CLI">
+    Install the Netlify CLI and deploy:
+
+    ```bash
+    npm install -g netlify-cli
+    netlify deploy
+    ```
+
+    For production:
+
+    ```bash
+    netlify deploy --prod
+    ```
+  </TabItem>
+  <TabItem label="Git connection">
+    1. Push your code to GitHub or GitLab.
+    2. Go to [app.netlify.com](https://app.netlify.com) and click "Add new site" > "Import an existing project".
+    3. Select your repository.
+    4. Configure build settings:
+       - **Build command:** `npm run build`
+       - **Publish directory:** `dist`
+    5. Click "Deploy site".
+  </TabItem>
+</Tabs>
+
+### Netlify configuration
+
+Create a `netlify.toml` file in your project root for consistent configuration:
+
+```toml title="netlify.toml"
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+```
+
+## Deploying to Cloudflare Pages
+
+1. Push your code to GitHub or GitLab.
+2. Log in to the [Cloudflare dashboard](https://dash.cloudflare.com/) and navigate to Pages.
+3. Click "Create a project" > "Connect to Git".
+4. Select your repository.
+5. Configure build settings:
+   - **Framework preset:** Astro
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+6. Click "Save and Deploy".
+
+Cloudflare Pages also supports preview deployments and custom domains.
+
+## Deploying to GitHub Pages
+
+1. Create a GitHub Actions workflow at `.github/workflows/deploy.yml`:
+
+```yaml title=".github/workflows/deploy.yml"
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+2. In your repository settings, enable GitHub Pages and set the source to "GitHub Actions".
+3. Update `astro.config.mjs` to set the correct `site` URL for GitHub Pages:
+
+```js title="astro.config.mjs"
+export default defineConfig({
+  site: 'https://your-username.github.io',
+  base: '/your-repo-name', // Omit this if deploying to a custom domain
+  // ...
+});
+```
+
+## Other static hosts
+
+varsha works with any static hosting provider. The general steps are:
+
+1. Run `npm run build`
+2. Upload the contents of `dist/` to your host
+
+Compatible platforms include:
+
+- **Surge:** `npx surge dist`
+- **Firebase Hosting:** Use `firebase deploy` with `dist/` as the public directory
+- **AWS S3 + CloudFront:** Upload `dist/` to an S3 bucket with static website hosting enabled
+- **Nginx/Apache:** Serve `dist/` as the web root
+- **Docker:** Use any static file server (e.g., nginx:alpine) to serve `dist/`
+
+## Environment variables
+
+varsha does not require any environment variables for basic operation. If you add integrations that require API keys or secrets (e.g., analytics, CMS), create a `.env` file:
+
+```bash title=".env"
+PUBLIC_ANALYTICS_ID=your-analytics-id
+```
+
+Variables prefixed with `PUBLIC_` are available in client-side code. Never commit `.env` files containing secrets to version control. Add `.env` to `.gitignore`.
+
+## Post-deployment checklist
+
+After deploying to production:
+
+<CardGrid>
+  <Card title="Verify your domain">
+    Ensure your custom domain points correctly and SSL is active. Update the `site` property in `astro.config.mjs` to your production domain before building.
+  </Card>
+  <Card title="Test all pages">
+    Visit key pages (home, docs, blog) to confirm they render correctly in production.
+  </Card>
+  <Card title="Check SEO tags">
+    Use [Google's Rich Results Test](https://search.google.com/test/rich-results) or social media debuggers to verify OG tags render correctly.
+  </Card>
+  <Card title="Submit sitemap">
+    Submit your `sitemap-index.xml` (generated automatically by `@astrojs/sitemap`) to Google Search Console.
+  </Card>
+  <Card title="Test themes">
+    Switch between themes using the `/` key to ensure all palettes render correctly in the production build.
+  </Card>
+  <Card title="Verify attribution">
+    Confirm the "Built with varsha by myndlabs" credit appears on all pages.
+  </Card>
+</CardGrid>
+
+## Continuous deployment
+
+For the best experience, connect your Git repository to your hosting platform. This enables:
+
+- **Automatic deployments:** Every push to `main` triggers a production deploy
+- **Preview deployments:** Every pull request gets a unique preview URL
+- **Rollbacks:** Revert to previous deployments instantly
+- **Build logs:** Debug failed builds from your host's dashboard
+
+## Next steps
+
+- Configure [SEO & metadata](/docs/socket-api/) for better search visibility
+- Set up [analytics and integrations](/docs/integrations/)
+- Review [troubleshooting](/docs/troubleshooting/) if you run into build or deploy errors

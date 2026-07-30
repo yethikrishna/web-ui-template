@@ -1,0 +1,205 @@
+---
+/**
+ * Newsletter — Email signup form.
+ *
+ * Renders an accessible newsletter subscription form with a visually-hidden
+ * (but screen-reader-available) label, an email input with native validation
+ * attributes, a submit button, and a privacy hint linked via
+ * aria-describedby. The form posts to `action` when provided; otherwise it
+ * is ready to be wired up with a client-side handler.
+ *
+ * Props:
+ *   title: string               - section headline (required)
+ *   description?: string        - supporting copy
+ *   placeholder?: string        - input placeholder (default 'your@email.com')
+ *   buttonText?: string         - submit label (default 'Subscribe')
+ *   action?: string             - form action URL
+ */
+interface Props {
+  title: string;
+  description?: string;
+  placeholder?: string;
+  buttonText?: string;
+  action?: string;
+}
+
+const {
+  title,
+  description,
+  placeholder = 'your@email.com',
+  buttonText = 'Subscribe',
+  action,
+} = Astro.props;
+---
+
+<section class="newsletter" aria-labelledby="newsletter-title">
+  <div class="newsletter__inner">
+    <h2 class="newsletter__title" id="newsletter-title">{title}</h2>
+    {description && <p class="newsletter__desc">{description}</p>}
+
+    <form
+      class="newsletter__form"
+      action={action}
+      method="post"
+      novalidate
+    >
+      <label class="newsletter__label" for="newsletter-email">
+        Email address
+      </label>
+      <div class="newsletter__field">
+        <input
+          class="newsletter__input"
+          type="email"
+          id="newsletter-email"
+          name="email"
+          placeholder={placeholder}
+          required
+          autocomplete="email"
+          aria-required="true"
+          aria-describedby="newsletter-hint"
+        />
+        <button class="newsletter__submit" type="submit">
+          {buttonText}
+        </button>
+      </div>
+      <p class="newsletter__hint" id="newsletter-hint">
+        We respect your privacy. Unsubscribe at any time.
+      </p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .newsletter {
+    padding: 4rem 1.5rem;
+  }
+
+  .newsletter__inner {
+    max-width: 40rem;
+    margin-inline: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 3rem 2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--bg-elevated);
+  }
+
+  .newsletter__title {
+    margin: 0;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+
+  .newsletter__desc {
+    margin: 0;
+    max-width: 48ch;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .newsletter__form {
+    width: 100%;
+    margin-top: 0.5rem;
+    text-align: left;
+  }
+
+  /* Visually hidden but available to assistive tech */
+  .newsletter__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .newsletter__field {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .newsletter__input {
+    flex: 1;
+    min-width: 0;
+    height: 2.6rem;
+    padding: 0 0.9rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    transition: border-color 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .newsletter__input::placeholder {
+    color: var(--muted-2);
+  }
+
+  .newsletter__input:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-soft);
+  }
+
+  .newsletter__submit {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.6rem;
+    padding: 0 1.25rem;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-md);
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.12s ease, border-color 0.12s ease;
+  }
+
+  .newsletter__submit:hover {
+    background: color-mix(in srgb, var(--accent) 86%, var(--ink));
+    border-color: color-mix(in srgb, var(--accent) 86%, var(--ink));
+  }
+
+  .newsletter__submit:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .newsletter__hint {
+    margin: 0.6rem 0 0;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    .newsletter {
+      padding: 3rem 1.25rem;
+    }
+    .newsletter__inner {
+      padding: 2.25rem 1.25rem;
+    }
+    .newsletter__field {
+      flex-direction: column;
+    }
+    .newsletter__submit {
+      width: 100%;
+    }
+  }
+</style>

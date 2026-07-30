@@ -1,0 +1,271 @@
+---
+title: Content & blog
+description: Write content in Markdown and MDX, manage Astro content collections, publish blog posts, and organize documentation in varsha.
+slug: content-blog
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha uses Astro's [content collections](https://docs.astro.build/en/guides/content-collections/) to manage Markdown and MDX content for the blog and documentation. This guide covers how to write, organize, and publish content.
+
+## Content collections
+
+Content collections are defined in `src/content.config.ts`. varsha configures two collections out of the box:
+
+| Collection | Directory | Purpose | Format |
+| --- | --- | --- | --- |
+| `blog` | `src/content/blog/` | Blog posts | Markdown (`.md`) |
+| `docs` | `src/content/docs/` | Documentation | MDX (`.mdx`) |
+
+Each collection has a schema that validates frontmatter fields and provides TypeScript type safety.
+
+## Writing blog posts
+
+Create a new `.md` file in `src/content/blog/` to publish a blog post:
+
+```md title="src/content/blog/launching-varsha.md"
+---
+title: "Launching varsha: A premium website starter"
+description: "Why we built varsha and how it helps founders ship faster."
+date: "2025-01-20"
+author: "Your Name"
+tags: ["starter", "astro"]
+---
+
+This is the body of your blog post. It supports full Markdown syntax.
+
+## Features
+
+- Bullet lists work
+- **Bold** and *italic* text
+- [Links](https://myndlabs.tech)
+- `inline code`
+
+### Code blocks
+
+```js
+console.log("Hello from varsha!");
+```
+
+> Blockquotes are also styled.
+```
+
+### Blog post frontmatter
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `title` | `string` | Yes | Post title (also used for SEO) |
+| `description` | `string` | Yes | Short summary for meta tags and listing pages |
+| `date` | `string` (ISO date) | Yes | Publication date (e.g., `"2025-01-20"`) |
+| `author` | `string` | No | Author name displayed on the post |
+| `ogImage` | `string` | No | Path to an Open Graph/social share image for the post |
+| `tags` | `string[]` | No | Array of tags for categorization |
+| `draft` | `boolean` | No | If `true`, the post is not published in production |
+
+### Draft posts
+
+Set `draft: true` in frontmatter to exclude a post from production builds:
+
+```md
+---
+title: "Work in progress"
+description: "This post is not ready yet."
+date: "2025-02-01"
+draft: true
+---
+```
+
+Drafts are visible during development (`npm run dev`) but excluded from `npm run build`.
+
+### Adding images to blog posts
+
+Place blog post images in `public/assets/blog/` or in `src/assets/` for Astro-optimized images. Reference them in Markdown:
+
+```md
+![Alt text for the image](/assets/blog/my-image.png)
+```
+
+## Writing documentation (MDX)
+
+Documentation pages use MDX, which allows you to embed React/Astro components and use richer formatting than plain Markdown.
+
+### Creating a new doc page
+
+Create an `.mdx` file in `src/content/docs/` (or a locale subdirectory):
+
+```mdx title="src/content/docs/new-page.mdx"
+---
+title: "My New Doc Page"
+description: "A brief description of this page."
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+Content goes here. You can use **Markdown** syntax and import components.
+
+<CardGrid>
+  <Card title="Related">
+    Link to related pages.
+  </Card>
+</CardGrid>
+```
+
+### Doc frontmatter
+
+Starlight supports a rich set of frontmatter fields for docs:
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `title` | `string` | Page title (required) |
+| `description` | `string` | Meta description (required) |
+| `slug` | `string` | Override the auto-generated URL slug |
+| `template` | `'doc' \| 'splash'` | Page template (`splash` for wide hero landing pages) |
+| `hero` | `object` | Hero configuration for splash pages |
+| `sidebar` | `object` | Sidebar configuration (label, order, group) |
+| `head` | `array` | Additional tags to inject into `<head>` |
+| `lastUpdated` | `boolean` | Show last updated date |
+| `prev` | `boolean \| { label, link }` | Previous page navigation override |
+| `next` | `boolean \| { label, link }` | Next page navigation override |
+| `pagefind` | `boolean` | Whether to include in search (default: `true`) |
+
+### Using Starlight components
+
+Every doc page can use Starlight's built-in components. Import them at the top of your MDX file:
+
+```mdx
+import { Card, CardGrid, Tabs, TabItem, Steps, Aside } from '@astrojs/starlight/components';
+```
+
+**Card and CardGrid:**
+
+```mdx
+<CardGrid>
+  <Card title="Feature one" icon="rocket">
+    Description of feature one.
+  </Card>
+  <Card title="Feature two" icon="puzzle">
+    Description of feature two.
+  </Card>
+</CardGrid>
+```
+
+**Tabs:**
+
+```mdx
+<Tabs>
+  <TabItem label="npm">
+    npm install
+  </TabItem>
+  <TabItem label="pnpm">
+    pnpm install
+  </TabItem>
+</Tabs>
+```
+
+**Aside callouts:**
+
+```mdx
+:::tip[Pro tip]
+This is a helpful tip.
+:::
+
+:::caution
+This action cannot be undone.
+:::
+
+:::danger[Critical]
+Read this before proceeding.
+:::
+```
+
+**Steps:**
+
+```mdx
+<Steps>
+1. First, do this.
+2. Then, do that.
+3. Finally, verify.
+</Steps>
+```
+
+## Linking between pages
+
+Use relative paths or root-relative paths for internal links:
+
+```mdx
+[Getting started](/docs/install/)
+[Project structure](/docs/concepts/)
+```
+
+Starlight automatically resolves locale-specific links. In Japanese or Chinese docs, links like `/docs/install/` will automatically resolve to `/ja/docs/install/` or `/zh-cn/docs/install/`.
+
+## Organizing docs for i18n
+
+The `src/content/docs/` directory follows Starlight's locale structure:
+
+```text
+src/content/docs/
+├── index.mdx            # English (root locale)
+├── install.mdx
+├── ja/
+│   ├── index.mdx        # Japanese
+│   └── install.mdx
+└── zh-cn/
+    ├── index.mdx        # Simplified Chinese
+    └── install.mdx
+```
+
+When adding a new English doc page, create corresponding translated files in `ja/` and `zh-cn/` to keep the documentation complete across locales.
+
+## Updating the blog listing
+
+The blog listing page at `src/pages/blog/index.astro` automatically displays all published (non-draft) blog posts sorted by date. You do not need to manually update it when adding new posts.
+
+## RSS feed
+
+If you want to add an RSS feed for the blog, install the Astro RSS package:
+
+```bash
+npm install @astrojs/rss
+```
+
+Then create `src/pages/rss.xml.js`:
+
+```js title="src/pages/rss.xml.js"
+import rss from '@astrojs/rss';
+import { getCollection } from 'astro:content';
+import { site } from '../../consts';
+
+export async function GET(context) {
+  const posts = await getCollection('blog');
+  return rss({
+    title: 'varsha Blog',
+    description: 'News and updates from varsha.',
+    site: context.site,
+    items: posts.map((post) => ({
+      ...post.data,
+      link: `/blog/${post.slug}/`,
+    })),
+  });
+}
+```
+
+## Next steps
+
+<CardGrid>
+  <Card title="Components reference">
+    Use Starlight and custom components in your MDX content.
+
+    [Components →](/docs/plugins/)
+  </Card>
+  <Card title="SEO & metadata">
+    Optimize your content for search engines and social sharing.
+
+    [SEO & metadata →](/docs/socket-api/)
+  </Card>
+  <Card title="Deployment">
+    Deploy your content to production.
+
+    [Deployment →](/docs/persistence-remote/)
+  </Card>
+</CardGrid>

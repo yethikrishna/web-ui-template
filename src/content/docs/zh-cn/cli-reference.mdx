@@ -1,0 +1,110 @@
+---
+title: CSS 设计 Token
+description: varsha 完整的设计 Token 参考。颜色系统、排版、间距、圆角、阴影以及如何创建自定义主题。
+slug: css-tokens
+---
+
+varsha 的设计系统构建在 CSS 自定义属性（CSS 变量）之上。所有颜色、字体、间距、圆角和阴影都是 Token 化的，支持一致的主题切换和轻松自定义。
+
+## 颜色 Token
+
+所有主题实现同一套语义化颜色 Token：
+
+| Token | 用途 |
+| --- | --- |
+| `--color-bg` | 页面背景 |
+| `--color-fg` | 主要文本/前景色 |
+| `--color-muted` | 次要文本、辅助信息 |
+| `--color-accent` | 主要强调色（链接、按钮、高亮） |
+| `--color-surface` | 卡片、面板、输入框背景 |
+| `--color-border` | 边框、分隔线 |
+
+**Tokyo Night（默认深色）：**
+```css
+:root[data-theme="tokyo-night"] {
+  --color-bg: #1a1b26;
+  --color-fg: #c0caf5;
+  --color-muted: #9aa5ce;
+  --color-accent: #7aa2f7;
+  --color-surface: #24283b;
+  --color-border: #414868;
+}
+```
+
+## 排版 Token
+
+```css
+--font-sans: 'Inter', system-ui, sans-serif;
+--font-mono: 'JetBrains Mono', ui-monospace, monospace;
+--font-display: 'Inter', system-ui, sans-serif;
+
+--text-xs: 0.75rem;
+--text-sm: 0.875rem;
+--text-base: 1rem;
+--text-lg: 1.125rem;
+--text-xl: 1.25rem;
+--text-2xl: 1.5rem;
+--text-hero: clamp(2.5rem, 5vw, 4rem);
+
+--leading-tight: 1.2;
+--leading-normal: 1.5;
+--leading-relaxed: 1.65;
+```
+
+## 间距 Token
+
+所有间距使用 4px 基线：
+
+```css
+--space-1: 0.25rem;
+--space-2: 0.5rem;
+--space-3: 0.75rem;
+--space-4: 1rem;
+--space-6: 1.5rem;
+--space-8: 2rem;
+--space-12: 3rem;
+--space-16: 4rem;
+--space-24: 6rem;
+--section-padding: clamp(3rem, 8vw, 6rem);
+```
+
+## 圆角 Token
+
+```css
+--radius-sm: 0.25rem;
+--radius-md: 0.5rem;
+--radius-lg: 0.75rem;
+--radius-xl: 1rem;
+--radius-full: 9999px;
+```
+
+## 阴影 Token
+
+```css
+--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+```
+
+## 容器和布局
+
+```css
+--container-max: 72rem;
+--container-narrow: 48rem;
+```
+
+## 自定义 Token
+
+在 `src/styles/global.css` 中覆盖这些 Token：
+
+```css title="src/styles/global.css"
+:root {
+  --color-accent: #ff6b6b;
+  --font-sans: 'Poppins', system-ui, sans-serif;
+  --radius-lg: 1rem;
+}
+```
+
+## 创建自定义主题
+
+添加新的 `[data-theme="your-theme"]` 选择器并在 ThemeSwitcher 组件中注册。参见[主题指南](/zh-cn/docs/keyboard/)。

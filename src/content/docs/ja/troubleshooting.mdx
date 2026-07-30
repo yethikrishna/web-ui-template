@@ -1,0 +1,148 @@
+---
+title: トラブルシューティング
+description: varsha開発時のよくある問題と解決方法。ビルドエラー、デプロイの問題、開発サーバーの問題、テーマの問題など。
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+このページでは、varshaを使用する際によく遭遇する問題とその解決方法を説明します。
+
+## インストールの問題
+
+### 依存関係のインストールが失敗する
+
+**症状：** `npm install`がエラーで失敗する
+
+**解決方法：**
+
+1. Node.jsバージョンを確認（18.17.0または20.3.0+が必要）：
+   ```bash
+   node --version
+   ```
+2. `node_modules`と`package-lock.json`を削除して再インストール：
+   ```bash
+   rm -rf node_modules package-lock.json
+   npm install
+   ```
+3. npmキャッシュをクリア：
+   ```bash
+   npm cache clean --force
+   ```
+
+### EACCES / 権限エラー
+
+npmでグローバルパッケージのインストール時に権限エラーが発生する場合は、nvmやfnmなどのNodeバージョンマネージャーを使用するか、npmのプレフィックスを変更してください。
+
+## 開発サーバーの問題
+
+### ポート4321が既に使用されている
+
+**症状：** `npm run dev`で「Port 4321 is already in use」エラー
+
+**解決方法：** 別のポートで起動：
+```bash
+npm run dev -- --port 3000
+```
+
+### ホットリロードが動作しない
+
+WSL2またはネットワークドライブを使用している場合、ファイル監視が動作しないことがあります：
+
+1. WSL2の場合：プロジェクトファイルがLinuxファイルシステム上にあることを確認
+2. またはポーリングモードを有効化：
+   ```bash
+   CHOKIDAR_USEPOLLING=true npm run dev
+   ```
+
+### ページが真っ白になる
+
+ブラウザのコンソールでJavaScriptエラーを確認してください。よくある原因：
+- 存在しないコンポーネントをインポートしている
+- Astroコンポーネントで無効なpropsを渡している
+- CSSが読み込まれていない
+
+## ビルドエラー
+
+### `document is not defined`または`window is not defined`
+
+Astroはデフォルトでサーバーサイドレンダリングを使用します。ブラウザAPIにアクセスするには：
+
+```astro
+<script>
+  // クライアントサイドのコードは<script>タグ内に記述
+  const theme = localStorage.getItem('theme');
+</script>
+```
+
+または、ブラウザAPIを使用するコンポーネントに`client:load`ディレクティブを使用：
+
+```astro
+<ThemeSwitcher client:load />
+```
+
+### コンテンツコレクションのエラー
+
+ブログ記事のfrontmatterに問題がある場合、ビルドエラーが発生します：
+
+- すべての記事に`title`、`description`、`pubDate`があることを確認
+- `pubDate`が有効な日付形式（`YYYY-MM-DD`）であることを確認
+- `draft: true`の記事は本番ビルドから除外される
+
+### ビルド後に画像が表示されない
+
+- `src/assets/`の画像はAstroコンポーネントでインポートする必要があります
+- `public/`の画像は`/image-name.png`のようにルートからの絶対パスで参照
+- 大文字と小文字が一致していることを確認（デプロイ後に問題になることがあります）
+
+## デプロイの問題
+
+### Vercelデプロイが失敗する
+
+1. ビルドログで具体的なエラーを確認
+2. Node.jsバージョンがVercelのプロジェクト設定で正しく設定されていることを確認
+3. ビルドコマンドが`npm run build`で、出力ディレクトリが`dist`であることを確認
+
+### Netlifyビルドが失敗する
+
+ビルドコマンドが`npm run build`、公開ディレクトリが`dist`に設定されていることを確認してください。
+
+### Cloudflare Pagesビルドがタイムアウトする
+
+1. ビルドコマンドが`npm run build`であることを確認
+2. ビルド出力ディレクトリが`dist`であることを確認
+3. 必要に応じて環境変数を追加
+
+### デプロイ後に404エラーが発生
+
+- カスタムドメインのDNS伝播を待つ（最長48時間）
+- ホスティングプラットフォームのリダイレクト/リライトルールを確認
+- Astroの`build.format`設定がデフォルト（`directory`）であることを確認
+
+## スタイリングの問題
+
+### テーマが適用されない
+
+- `data-theme`属性が`<html>`要素に設定されていることを確認
+- テーマのCSSがグローバルCSSファイルに含まれていることを確認
+- ブラウザのDevToolsで`getComputedStyle(document.documentElement).getPropertyValue('--color-bg')`をチェック
+
+### CSSカスタムプロパティが未定義
+
+トークンを使用する前に`:root`または`[data-theme]`セレクタで定義されていることを確認してください。
+
+## 助けを求める
+
+それでも問題が解決しない場合：
+
+<CardGrid>
+  <Card title="GitHub Issues">
+    バグ報告や機能リクエストはGitHubに投稿してください。
+
+    [Issueを作成 →](https://github.com/yethikrishna/web-ui-template/issues)
+  </Card>
+  <Card title="ドキュメント">
+    関連するドキュメントページでガイダンスを確認してください。
+
+    [ドキュメントに戻る →](/ja/docs/)
+  </Card>
+</CardGrid>

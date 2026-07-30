@@ -1,0 +1,243 @@
+---
+title: Troubleshooting
+description: Common issues, build errors, deployment problems, and solutions when working with varsha.
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+This guide covers common issues you may encounter when building, customizing, or deploying a varsha site, along with solutions and workarounds.
+
+## Build errors
+
+### `npm run build` fails with Node version error
+
+**Symptom:** The build fails with an error about unsupported Node.js syntax or an "engine" requirement.
+
+**Solution:** Ensure you are using Node.js 18.17.0+, 20.3.0+, or later. Check your version:
+
+```bash
+node --version
+```
+
+If you have an older version, upgrade via [nodejs.org](https://nodejs.org/) or a version manager like [nvm](https://github.com/nvm-sh/nvm) or [fnm](https://github.com/Schniz/fnm).
+
+### `Error: Cannot find module '@astrojs/vercel'` (or other integration)
+
+**Symptom:** Build fails with a module resolution error for an Astro integration.
+
+**Solution:** varsha uses static output and does not require any adapter. If you added an adapter for SSR and are missing the dependency, install it:
+
+```bash
+npm install
+```
+
+If you no longer need SSR, remove the adapter from `astro.config.mjs` and revert to `output: 'static'`. See the [Integrations guide](/docs/integrations/).
+
+### Content collection schema validation errors
+
+**Symptom:** Build fails with a Zod validation error about blog post or doc frontmatter.
+
+**Solution:** Check the frontmatter of your content files against the schema defined in `src/content.config.ts`. Common issues:
+
+- Missing required fields (`title`, `description`, `pubDate` for blog posts)
+- Incorrect date format (use ISO `"2025-01-20"` format)
+- Typo in field names
+
+### Sitemap generation fails
+
+**Symptom:** Build error related to `@astrojs/sitemap`.
+
+**Solution:** Ensure `site` is set in `astro.config.mjs`. The sitemap integration requires an absolute URL:
+
+```js
+export default defineConfig({
+  site: 'https://your-domain.com',
+  // ...
+});
+```
+
+### Port 4321 already in use
+
+**Symptom:** `npm run dev` fails because the port is occupied.
+
+**Solution:** Specify a different port:
+
+```bash
+npm run dev -- --port 3000
+```
+
+## Development server issues
+
+### Changes not reflecting in the browser
+
+**Symptom:** You edit a file but the browser does not update.
+
+**Solution:**
+
+1. Hard-refresh the browser (Ctrl+Shift+R or Cmd+Shift+R)
+2. Check that the file is saved
+3. Restart the dev server: press `Ctrl+C` and run `npm run dev` again
+4. Clear browser cache if the issue persists
+
+### Styles not applying on custom pages
+
+**Symptom:** Your new marketing page renders without the expected styling.
+
+**Solution:**
+
+1. Ensure your page uses `MarketingLayout` — it loads the global CSS
+2. Wrap page content in `<main class="page">` for proper padding
+3. Use the documented CSS classes: `.hero`, `.section`, `.container`, `.feature-grid`, etc.
+4. Check that you are using CSS tokens (`var(--bg)`, `var(--fg)`) rather than hardcoded colors
+
+### Theme switcher not working
+
+**Symptom:** Pressing `/` or `t` does not open the theme switcher.
+
+**Solution:**
+
+1. Make sure you are on a marketing page that uses `MarketingLayout` (the theme switcher is included in that layout)
+2. Check that your cursor is not in an input field, textarea, or code editor
+3. The theme switcher script is in `MarketingLayout.astro` — verify it has not been removed
+
+### Attribution credit not visible
+
+**Symptom:** The "Built with varsha" credit does not appear.
+
+**Solution:** The BuiltWith credit should appear automatically on pages using `MarketingLayout`. If it is missing:
+
+1. Do not attempt to hide or remove it — it is required
+2. Check that `MarketingLayout.astro` still includes the `<BuiltWith>` component and the self-healing script
+3. Verify the `builtwith-credit` CSS class is not being overridden to `display: none`
+
+The self-healing script re-injects the credit every 2.5 seconds if it is removed. If you see it repeatedly reappearing, it means something on your page is actively removing it.
+
+## Deployment issues
+
+### Vercel deployment fails
+
+**Symptom:** Vercel build fails or the deployed site shows an error.
+
+**Solution:**
+
+1. Ensure the build command is `npm run build` and output directory is `dist`
+2. Verify Node.js version in Vercel project settings (use 18.x or 20.x)
+3. Check build logs for specific errors
+4. Ensure all environment variables are configured in Vercel dashboard
+
+### Netlify deployment shows 404 on subpages
+
+**Symptom:** Direct navigation to `/about/` or `/blog/post/` returns a404 on Netlify.
+
+**Solution:** Create a `public/_redirects` file:
+
+```txt title="public/_redirects"
+/*    /index.html   200
+```
+
+Or use a `netlify.toml` as shown in the [Deployment guide](/docs/persistence-remote/#deploying-to-netlify).
+
+### Cloudflare Pages CSS or assets not loading
+
+**Symptom:** Site loads but appears unstyled, or images are broken.
+
+**Solution:**
+
+1. Verify the build output directory is set to `dist`
+2. Check that the build command completed successfully (look for "Build complete" in logs)
+3. Ensure you are not using Node.js features that require a newer version than Cloudflare's default
+
+### GitHub Pages shows 404
+
+**Symptom:** Pages site returns 404 after deployment.
+
+**Solution:**
+
+1. Ensure `base` in `astro.config.mjs` matches your repository name (e.g., `base: '/varsha'`)
+2. Wait a few minutes for GitHub Pages to propagate after the first deploy
+3. Check that the Pages source is set to "GitHub Actions" in repository settings
+
+### OG images not appearing in social shares
+
+**Symptom:** Links shared on Twitter, Slack, or other platforms show no preview image.
+
+**Solution:**
+
+1. Verify the OG image URL in `astro.config.mjs` and `MarketingLayout.astro` uses an absolute URL
+2. Ensure `site` is set to your production domain
+3. Test with [Twitter Card Validator](https://cards-dev.twitter.com/validator) or [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
+4. OG images must be 1200x630 pixels and publicly accessible
+
+### Sitemap returns 404
+
+**Symptom:** Visiting `/sitemap-index.xml` returns a 404 error.
+
+**Solution:**
+
+1. Ensure `@astrojs/sitemap` is in your dependencies and `astro.config.mjs`
+2. Set `site` in `astro.config.mjs` to your production domain
+3. Run `npm run build` and check that `dist/sitemap-index.xml` exists
+4. The sitemap is only generated during `npm run build`, not in `npm run dev`
+
+## Localization issues
+
+### Japanese or Chinese docs not showing
+
+**Symptom:** Locale routes (`/ja/docs/`, `/zh-cn/docs/`) return 404.
+
+**Solution:**
+
+1. Verify the locale is configured in `astro.config.mjs` under `locales`
+2. Check that the locale directory exists (`src/content/docs/ja/` or `src/content/docs/zh-cn/`)
+3. Each locale directory needs an `index.mdx` file
+4. Restart the dev server after adding new locale directories
+
+## Content issues
+
+### Blog post not appearing in listing
+
+**Symptom:** A new blog post does not show up on the `/blog/` page.
+
+**Solution:**
+
+1. Ensure the file is in `src/content/blog/` with a `.md` extension
+2. Check that `draft: true` is not set in the frontmatter (drafts are hidden in production)
+3. Verify required frontmatter fields (`title`, `description`, `pubDate`)
+4. Restart the dev server
+
+### Images in blog posts not loading
+
+**Symptom:** Blog post images show broken image icons.
+
+**Solution:**
+
+- Place images in `public/assets/blog/` and reference them as `/assets/blog/image.png`
+- Or place them in `src/assets/` and import them for Astro optimization
+- Do not use relative paths like `./image.png` in Markdown content
+
+## Performance issues
+
+### Lighthouse reports low performance score
+
+**Solution:**
+
+1. Use Astro's `<Image>` component for raster images (from `src/assets/`)
+2. Avoid adding unnecessary JavaScript to marketing pages
+3. Preload critical fonts (already done in `MarketingLayout.astro`)
+4. Use WebP or AVIF formats for images
+5. Minimize third-party scripts — use Partytown for non-essential scripts
+
+## Getting help
+
+If you encounter an issue not covered here:
+
+1. Search existing [GitHub issues](https://github.com/yethikrishna/web-ui-template/issues)
+2. Check the [Astro documentation](https://docs.astro.build/) for framework-specific questions
+3. Open a new issue with reproduction steps, your Node version, and the error message
+4. Follow [@yethikrishnar](https://instagram.com/yethikrishnar) on Instagram for updates
+
+## Next steps
+
+- Review the [deployment guide](/docs/persistence-remote/) for platform-specific setup
+- Check [integrations](/docs/integrations/) for adapter configuration
+- Browse the [components reference](/docs/plugins/) for usage examples

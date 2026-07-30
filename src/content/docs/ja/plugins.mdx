@@ -1,0 +1,239 @@
+---
+title: コンポーネント
+description: varshaのビルトインコンポーネントの完全リファレンス。MarketingLayout、BuiltWith、ヒーローカード、フィーチャーグリッド、テーマスイッチャーなど。
+slug: components
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varshaには、マーケティングサイトを構築するための再利用可能なコンポーネントがいくつか付属しています。このリファレンスでは、各コンポーネントのプロパティと使用方法について説明します。
+
+## MarketingLayout
+
+すべてのマーケティングページのルートレイアウト。ヘッダー、フッター、テーマスイッチャー、SEOメタタグ、帰属表示を提供します。
+
+```astro
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+
+<MarketingLayout
+  title="Page Title"
+  description="Page description for SEO."
+  canonicalPath="/page-path/"
+  image="/custom-og.png"
+>
+  <!-- ページコンテンツ -->
+</MarketingLayout>
+```
+
+| プロパティ | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `title` | `string` | はい | ページタイトル |
+| `description` | `string` | はい | メタディスクリプション |
+| `canonicalPath` | `string` | はい | 正規URLパス |
+| `image` | `string` | いいえ | カスタムOG画像のパス |
+
+## BuiltWith
+
+「Built with varsha by myndlabs」の帰属バッジを表示します。このコンポーネントは`MarketingLayout`によって自動的に含まれます。
+
+```astro
+---
+import BuiltWith from '../components/BuiltWith.astro';
+---
+
+<BuiltWith />
+```
+
+**重要：** このコンポーネントは削除しないでください。これはvarshaの使用条件で必要な帰属表示であり、[https://myndlabs.tech](https://myndlabs.tech)にリンクする必要があります。
+
+## Hero.astro
+
+ランディングページ用のヒーローセクションコンポーネント。
+
+```astro
+---
+import Hero from '../components/Hero.astro';
+---
+
+<Hero
+  title="Build beautiful websites fast."
+  subtitle="A premium Astro starter with themes, docs, and blog."
+  primaryCta={{ text: "Get started", href: "/docs/install/" }}
+  secondaryCta={{ text: "View on GitHub", href: "https://github.com/yethikrishna/web-ui-template" }}
+/>
+```
+
+| プロパティ | 型 | 説明 |
+| --- | --- | --- |
+| `title` | `string` | メインのヒーロー見出し |
+| `subtitle` | `string` | サブタイトル/説明文 |
+| `primaryCta` | `{ text, href }` | プライマリCTAボタン |
+| `secondaryCta` | `{ text, href }` | セカンダリCTAボタン |
+
+## ThemeSwitcher
+
+テーマ切り替えモーダル。`MarketingLayout`によって自動的に含まれます。ユーザーは`/`または`t`を押して開くことができます。
+
+```astro
+---
+import ThemeSwitcher from '../components/ThemeSwitcher.astro';
+---
+
+<ThemeSwitcher />
+```
+
+## Footer.astro
+
+ナビゲーションリンクとソーシャルリンクを含むサイトフッター。
+
+```astro
+---
+import Footer from '../components/Footer.astro';
+---
+
+<Footer />
+```
+
+フッターのリンクとコンテンツは`src/components/Footer.astro`を編集してカスタマイズします。
+
+## セクションユーティリティクラス
+
+専用コンポーネントはありませんが、マーケティングページでは以下のCSSクラスを使用できます：
+
+```astro
+<section class="hero">
+  <!-- フルワイドのヒーローセクション -->
+</section>
+
+<section class="section">
+  <div class="container">
+    <!-- 標準コンテンツセクション -->
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <!-- 代替背景のセクション -->
+  </div>
+</section>
+```
+
+## カードグリッドパターン
+
+`.card-grid`クラスと`.card`クラスを使用して、フィーチャーグリッドなどを作成します：
+
+```astro
+<div class="card-grid">
+  <div class="card">
+    <h3>Feature One</h3>
+    <p>Description of feature one.</p>
+  </div>
+  <div class="card">
+    <h3>Feature Two</h3>
+    <p>Description of feature two.</p>
+  </div>
+  <div class="card">
+    <h3>Feature Three</h3>
+    <p>Description of feature three.</p>
+  </div>
+</div>
+```
+
+グリッドは利用可能なスペースに基づいて自動的にレスポンシブに調整されます。
+
+## ボタン
+
+ボタンスタイルはユーティリティクラスを通じて利用できます：
+
+```astro
+<a href="/docs/" class="btn btn-primary">Get started</a>
+<a href="/blog/" class="btn btn-secondary">Read the blog</a>
+<a href="https://github.com/..." class="btn btn-ghost">View on GitHub</a>
+```
+
+| クラス | 用途 |
+| --- | --- |
+| `.btn-primary` | ページの主要CTA |
+| `.btn-secondary` | セカンダリアクション |
+| `.btn-ghost` | 控えめな/テキストのみのアクション |
+
+## Starlightドキュメントコンポーネント
+
+ドキュメントページ（MDX）では、Starlightの組み込みコンポーネントを使用できます：
+
+```mdx
+import { Card, CardGrid, Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+
+<Aside type="tip">
+  これは役立つヒントです。
+</Aside>
+
+<Tabs>
+  <TabItem label="npm">npm install</TabItem>
+  <TabItem label="pnpm">pnpm add</TabItem>
+</Tabs>
+```
+
+よく使用されるStarlightコンポーネント：
+- `<Card>` / `<CardGrid>` — カードレイアウト
+- `<Tabs>` / `<TabItem>` — タブ付きコンテンツ
+- `<Aside>` — コールアウトボックス（tip, note, caution, danger）
+- `<Steps>` — 番号付きステップリスト
+- `<Icon>` — アイコン
+
+## カスタムコンポーネントの作成
+
+独自の再利用可能なコンポーネントを`src/components/`に作成できます：
+
+```astro title="src/components/FeatureCard.astro"
+---
+const { icon, title, children } = Astro.props;
+---
+
+<div class="card feature-card">
+  {icon && <span class="feature-icon">{icon}</span>}
+  <h3>{title}</h3>
+  <p>{children}</p>
+</div>
+
+<style>
+  .feature-card {
+    text-align: center;
+  }
+  .feature-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: var(--space-3);
+  }
+</style>
+```
+
+ページで使用：
+
+```astro
+---
+import FeatureCard from '../components/FeatureCard.astro';
+---
+
+<div class="card-grid">
+  <FeatureCard icon="⚡" title="Fast">Lightning-fast performance.</FeatureCard>
+  <FeatureCard icon="🎨" title="Beautiful">18+ built-in themes.</FeatureCard>
+</div>
+```
+
+## 次のステップ
+
+<CardGrid>
+  <Card title="CSSトークン">
+    コンポーネントをスタイルするためのすべてのデザイントークンを学びます。
+
+    [CSSトークン →](/ja/docs/cli-reference/)
+  </Card>
+  <Card title="ページとレイアウト">
+    これらのコンポーネントを使ってページを構成する方法を学びます。
+
+    [ページとレイアウト →](/ja/docs/how-to-work/)
+  </Card>
+</CardGrid>

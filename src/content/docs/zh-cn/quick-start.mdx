@@ -1,0 +1,182 @@
+---
+title: 快速开始
+description: 如何在 5 分钟内使用 varsha 创建并发布你的第一个自定义页面。涵盖启动开发服务器、编辑内容、添加页面和部署。
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+本快速入门将带你完成创建第一个自定义页面并将 varsha 站点准备好部署的步骤。假设你已经[安装了 varsha](/zh-cn/docs/install/)。
+
+## 1. 启动开发服务器
+
+如果开发服务器尚未运行，启动它：
+
+```bash
+npm run dev
+```
+
+在浏览器中打开 [http://localhost:4321](http://localhost:4321)，你应该能看到 varsha 的首页。
+
+## 2. 更新站点元数据
+
+打开 `astro.config.mjs` 并更新站点配置以匹配你的品牌：
+
+```js title="astro.config.mjs"
+export default defineConfig({
+  site: 'https://your-domain.com', // 替换为你的域名
+  // ...
+  integrations: [
+    sitemap(),
+    starlight({
+      title: 'Your Product Name',
+      description: 'A short description of your product or service.',
+      // ...
+    }),
+  ],
+});
+```
+
+## 3. 创建第一个页面
+
+在 `src/pages/about.astro` 创建一个新文件：
+
+```astro title="src/pages/about.astro"
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+
+<MarketingLayout
+  title="About Us"
+  description="Learn about our company and mission."
+  canonicalPath="/about/"
+>
+  <main class="page">
+    <section class="hero">
+      <h1>About Us</h1>
+      <p>We build tools that help people ship faster.</p>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Our Mission</h2>
+        <p>
+          This is your first custom page. Edit it freely — add sections,
+          components, images, and whatever else your site needs.
+        </p>
+      </div>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+访问 [http://localhost:4321/about](http://localhost:4321/about) 查看新页面。它将自动继承站点页眉、页脚、主题切换器和 "Built with varsha" 署名。
+
+## 4. 添加导航链接
+
+打开 `src/components/MarketingLayout.astro`，在导航中添加新页面的链接：
+
+```astro title="src/components/MarketingLayout.astro"
+<div class="nav-links">
+  <a href="/">Home</a>
+  <a href="/about/">About</a>
+  <!-- 现有链接 -->
+</div>
+```
+
+记得同时更新移动端导航面板（`.nav-menu-panel`）以保持桌面和移动端导航同步。
+
+## 5. 尝试主题
+
+在任意页面按 `/` 或 `t` 键打开主题切换器。varsha 内置 18+ 主题：
+
+- Tokyo Night（默认深色）/ Tokyo Day（默认浅色）
+- Catppuccin / Catppuccin Latte
+- Nord
+- Dracula
+- Gruvbox / Gruvbox Light
+- Kanagawa / Kanagawa Lotus
+- Rose Pine / Rose Pine Dawn
+- 等等
+
+你选择的主题会保存在 `localStorage` 中，跨会话保持。
+
+## 6. 添加博客文章
+
+在 `src/content/blog/my-first-post.md` 创建一篇新博客文章：
+
+```md title="src/content/blog/my-first-post.md"
+---
+title: "My First Post"
+description: "Hello world from my varsha site."
+pubDate: "2025-01-15"
+---
+
+Welcome to my blog! This is my first post powered by varsha.
+
+## What's next
+
+- Write more posts
+- Customize the design
+- Deploy to production
+```
+
+访问 [http://localhost:4321/blog/](http://localhost:4321/blog/) 查看文章。
+
+## 7. 构建生产版本
+
+准备好上线后，创建生产构建：
+
+```bash
+npm run build
+```
+
+部署前在本地预览生产构建：
+
+```bash
+npm run preview
+```
+
+静态输出将生成在 `dist/` 目录中，可以部署到任何静态托管平台。
+
+## 8. 部署
+
+最快的部署方式是使用 Vercel：
+
+```bash
+npx vercel
+```
+
+或者将你的 Git 仓库连接到 Vercel、Netlify、Cloudflare Pages，每次推送时自动部署。有关平台特定的说明，请参阅[部署指南](/zh-cn/docs/persistence-remote/)。
+
+## 完成了什么
+
+在 5 分钟内，你已经：
+
+1. 启动了 varsha 开发服务器
+2. 更新了站点元数据
+3. 使用 `MarketingLayout` 创建了新页面
+4. 添加了导航链接
+5. 探索了主题
+6. 发布了博客文章
+7. 创建了生产构建
+8. 了解了如何部署
+
+## 下一步
+
+<CardGrid>
+  <Card title="页面与布局">
+    深入了解如何创建页面、使用布局和构建内容。
+
+    [页面与布局 →](/zh-cn/docs/how-to-work/)
+  </Card>
+  <Card title="自定义">
+    使用颜色、字体和元数据品牌化你的网站。
+
+    [自定义 →](/zh-cn/docs/configuration/)
+  </Card>
+  <Card title="部署">
+    部署到 Vercel、Netlify、Cloudflare Pages 或静态托管。
+
+    [部署 →](/zh-cn/docs/persistence-remote/)
+  </Card>
+</CardGrid>

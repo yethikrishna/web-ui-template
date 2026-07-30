@@ -1,0 +1,194 @@
+---
+title: プロジェクト構造
+description: varshaのディレクトリ構造、主要ファイル、src/、pages/、components/、content/、public/の理解と、astro.config.mjsの設定方法。
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varshaは、規約ベースの明確なプロジェクト構造に従っています。このガイドでは、各ディレクトリの役割と主要ファイルの場所について説明します。
+
+## ルートレベルの構造
+
+```
+my-varsha-site/
+├── public/              # 静的アセット（バンドル処理なしで配信）
+├── src/                 # すべてのソースコード
+│   ├── assets/          # ビルドで処理される画像とアセット
+│   ├── components/      # 再利用可能なUIコンポーネント
+│   ├── content/         # Markdown/MDXコンテンツ（ブログ、ドキュメント）
+│   ├── layouts/         # ページレイアウトコンポーネント
+│   ├── pages/           # ファイルベースルーティング
+│   └── styles/          # グローバルCSSとCSS変数
+├── astro.config.mjs     # Astroの設定とインテグレーション
+├── package.json         # 依存関係とスクリプト
+└── tsconfig.json        # TypeScript設定
+```
+
+## `src/` — ソースコード
+
+### `src/pages/`
+
+Astroのファイルベースルーティングが使用されます。このディレクトリのすべての`.astro`、`.md`、`.mdx`ファイルは自動的にルートになります。
+
+```
+src/pages/
+├── index.astro          # ホームページ (/)
+├── about.astro          # /about/ のようなカスタムページを追加
+├── blog/
+│   ├── index.astro      # ブログ一覧 (/blog/)
+│   └── [...slug].astro  # 個別のブログ記事 (/blog/post-name/)
+├── docs/
+│   └── [...slug].astro  # Starlightドキュメントルート
+└── 404.astro            # カスタム404ページ
+```
+
+**例：** `src/pages/pricing.astro`を作成すると自動的に`/pricing/`になります。
+
+### `src/components/`
+
+マーケティングサイト全体で使用される再利用可能なUIコンポーネントが含まれます：
+
+```
+src/components/
+├── MarketingLayout.astro  # マーケティングページのメインレイアウト
+├── Hero.astro             # ヒーローセクション
+├── BuiltWith.astro        # 「Built with varsha」クレジット
+├── ThemeSwitcher.astro    # テーマ切り替えUI
+├── Footer.astro           # サイトフッター
+└── [その他のUIコンポーネント]
+```
+
+**重要：** `MarketingLayout.astro`はマーケティングページのプライマリレイアウトです。これはヘッダー、フッター、テーマスイッチャー、帰属表示を提供します。
+
+### `src/content/`
+
+コンテンツコレクションが格納されます — Astroの型安全なコンテンツ管理システムです：
+
+```
+src/content/
+├── blog/               # ブログ記事（Markdown/MDX）
+│   ├── first-post.md
+│   └── second-post.md
+├── docs/               # Starlightドキュメント
+│   ├── index.mdx
+│   ├── install.mdx
+│   ├── ja/             # 日本語版ドキュメント
+│   │   ├── index.mdx
+│   │   └── ...
+│   └── zh-cn/          # 簡体字中国語版ドキュメント
+│       ├── index.mdx
+│       └── ...
+└── config.ts           # コンテンツコレクションスキーマ
+```
+
+各ブログ記事にはfrontmatterが必要です：
+
+```md
+---
+title: "Post Title"
+description: "A brief description."
+pubDate: "2025-01-15"
+---
+```
+
+### `src/layouts/`
+
+ページとブログ記事のレイアウトコンポーネントが含まれます：
+
+```
+src/layouts/
+└── BlogPost.astro      # 個別のブログ記事のレイアウト
+```
+
+StarlightドキュメントのレイアウトはStarlightインテグレーションによって自動的に処理されることに注意してください。
+
+### `src/styles/`
+
+グローバルCSS、テーマトークン、スタイルユーティリティが含まれます：
+
+```
+src/styles/
+├── global.css          # リセット、ベーススタイル、テーマ変数
+└── marketing.css       # マーケティングサイトのスタイル
+```
+
+CSSカスタムプロパティ（テーマトークン）はここで定義され、テーマスイッチャーで使用されます。[CSSトークン](/ja/docs/cli-reference/)を参照してください。
+
+### `src/assets/`
+
+ビルド処理（最適化、ハッシュ化など）が必要な画像、フォント、その他のアセットを配置します。Astroはこれらのアセットをインポート時に自動的に最適化します。
+
+## `public/` — 静的アセット
+
+このディレクトリのファイルはルートにそのまま配信され、ビルド処理されません：
+
+```
+public/
+├── favicon.svg
+├── robots.txt
+├── og-image.png        # ソーシャル共有画像
+└── _headers            # Cloudflare Pagesのヘッダー（使用する場合）
+```
+
+## ルート設定ファイル
+
+### `astro.config.mjs`
+
+Astroフレームワークの中心的な設定ファイルです。以下を制御します：
+
+- **サイトURL：** SEOとsitemapのためのベースURL
+- **インテグレーション：** Starlightドキュメント、sitemapなど
+- **ビルド設定：** 出力モード（静的）
+- **Starlight設定：** サイドバー、テーマ、i18n、検索
+
+```js title="astro.config.mjs"
+import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
+import sitemap from '@astrojs/sitemap';
+
+export default defineConfig({
+  site: 'https://your-domain.com',
+  integrations: [
+    sitemap(),
+    starlight({
+      title: 'Your Product',
+      // サイドバー、テーマ、i18n設定
+    }),
+  ],
+  output: 'static',
+});
+```
+
+### `package.json`
+
+依存関係、スクリプト、プロジェクトメタデータが含まれます。主な依存関係：
+
+- `astro` — コアフレームワーク
+- `@astrojs/starlight` — ドキュメントフレームワーク
+- `@astrojs/sitemap` — 自動sitemap生成
+
+### `tsconfig.json`
+
+TypeScript設定。AstroはフルTypeScriptをサポートしており、`.astro`コンポーネントで型チェックが可能です。
+
+## 次のステップ
+
+この構造を理解したら、以下のガイドを参照してください：
+
+<CardGrid>
+  <Card title="ページとレイアウト">
+    ページの作成方法とMarketingLayoutの使用方法を学びます。
+
+    [ページとレイアウト →](/ja/docs/how-to-work/)
+  </Card>
+  <Card title="カスタマイズ">
+    カラー、タイポグラフィ、ブランディングを変更します。
+
+    [カスタマイズ →](/ja/docs/configuration/)
+  </Card>
+  <Card title="コンテンツとブログ">
+    コンテンツコレクションとブログ記事の書き方。
+
+    [コンテンツとブログ →](/ja/docs/session-state/)
+  </Card>
+</CardGrid>

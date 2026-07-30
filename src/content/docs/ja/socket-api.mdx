@@ -1,0 +1,159 @@
+---
+title: SEOとメタデータ
+description: 検索エンジンとソーシャルシェアのためにvarshaサイトを最適化する方法。OGタグ、サイトマップ、robots.txt、構造化データ。
+slug: seo
+---
+
+varshaにはSEOのベストプラクティスが標準で組み込まれています。このガイドでは、サイトが検索エンジンとソーシャルプラットフォーム向けに適切に最適化されていることを確認する方法を説明します。
+
+## 基本設定
+
+### サイトURL
+
+`astro.config.mjs`の`site`プロパティを設定して、正しい絶対URLがOGタグとサイトマップで使用されるようにします：
+
+```js title="astro.config.mjs"
+export default defineConfig({
+  site: 'https://your-domain.com',
+  // ...
+});
+```
+
+### ページのメタデータ
+
+すべてのマーケティングページは`MarketingLayout`を使用してメタタグを設定する必要があります：
+
+```astro
+<MarketingLayout
+  title="Page Title"
+  description="A compelling description of 150-160 characters for search results."
+  canonicalPath="/page-path/"
+>
+```
+
+## Open Graphとソーシャルメタタグ
+
+varshaは自動的に以下を生成します：
+
+- `<meta property="og:title">` — ページタイトル
+- `<meta property="og:description">` — ページの説明
+- `<meta property="og:image">` — ソーシャルシェア画像
+- `<meta property="og:url">` — 正規URL
+- `<meta property="og:type">` — website
+- `<meta name="twitter:card">` — summary_large_image
+
+### デフォルトOG画像
+
+`public/og-image.png`をあなたのブランド画像に置き換えます。推奨サイズは**1200x630px**です。
+
+ページ固有のOG画像を設定するには、`MarketingLayout`に`image`プロパティを渡します：
+
+```astro
+<MarketingLayout
+  title="Product Launch"
+  description="Announcing our new product."
+  canonicalPath="/launch/"
+  image="/launch-og.png"
+>
+```
+
+## サイトマップ
+
+varshaには`@astrojs/sitemap`がプリインストールされており、ビルド時に自動的に`sitemap.xml`を生成します。サイトマップは以下に含まれます：
+
+- すべての`.astro`ページ
+- すべてのブログ記事
+- すべてのドキュメントページ
+
+ビルド後、`dist/sitemap.xml`でサイトマップを確認できます。
+
+### サイトマップからのページ除外
+
+サイトマップからページを除外するには、`astro.config.mjs`でsitemap設定を使用します：
+
+```js title="astro.config.mjs"
+import sitemap from '@astrojs/sitemap';
+
+sitemap({
+  filter: (page) => !page.includes('/internal/'),
+})
+```
+
+## robots.txt
+
+`public/robots.txt`で検索エンジンのクローラーを設定します：
+
+```txt title="public/robots.txt"
+User-agent: *
+Allow: /
+Disallow: /admin/
+
+Sitemap: https://your-domain.com/sitemap.xml
+```
+
+## 構造化データ（JSON-LD）
+
+リッチスニペットのための構造化データを追加します。ページの`<head>`にJSON-LDスクリプトを配置します：
+
+```astro title="src/pages/index.astro"
+<MarketingLayout title="Home" description="..." canonicalPath="/">
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Your Company",
+    "url": "https://your-domain.com",
+    "logo": "https://your-domain.com/logo.png",
+    "sameAs": [
+      "https://github.com/your-username",
+      "https://twitter.com/your-handle"
+    ]
+  })} />
+  <!-- ページコンテンツ -->
+</MarketingLayout>
+```
+
+ブログ記事には`BlogPosting`スキーマを使用：
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Post Title",
+  "datePublished": "2025-01-15",
+  "author": { "@type": "Person", "name": "Author Name" }
+}
+```
+
+## パフォーマンスとCore Web Vitals
+
+varshaは以下によりデフォルトで優れたパフォーマンスを提供します：
+
+- **デフォルトでゼロJS：** Astroは必要な場合にのみJavaScriptを送信
+- **画像最適化：** Astroの組み込み画像最適化を使用
+- **CSS最小化：** ビルド時に自動的に最小化
+- **プリロード：** 重要なアセットは自動的にプリロード
+
+### 画像のベストプラクティス
+
+- 適切な`width`と`height`属性を設定してCLSを防止
+- 写真にはWebP/AVIF形式を使用
+- 装飾画像には`loading="lazy"`を使用
+- ヒーロー画像には`fetchpriority="high"`を使用
+
+## 多言語SEO
+
+varshaはi18nをサポートしています。各ロケールが適切な`lang`属性と`hreflang`タグを持つことを確認してください。Starlightはドキュメントページにこれを自動的に処理します。
+
+## SEOチェックリスト
+
+デプロイ前に以下を確認してください：
+
+- [ ] `site`が`astro.config.mjs`で正しく設定されている
+- [ ] すべてのページにユニークな`title`と`description`がある
+- [ ] `og-image.png`がカスタマイズされている
+- [ ] `robots.txt`が正しく設定されている
+- [ ] `favicon.svg`がカスタマイズされている
+- [ ] ページの見出しに適切な見出し階層（h1→h2→h3）が使用されている
+- [ ] すべての画像に`alt`テキストがある
+- [ ] サイトマップが`/sitemap.xml`でアクセス可能である
+- [ ] Google Search Consoleを設定している

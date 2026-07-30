@@ -1,0 +1,161 @@
+---
+title: 设计系统
+description: varsha 的设计原则、组件理念、排版层级、间距系统和可访问性标准。
+slug: design-system
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha 的设计系统旨在为生产级网站提供一致性、美观性和可访问性。你可以基于经过验证的模式构建，而不是从零开始。
+
+## 设计原则
+
+<CardGrid>
+  <Card title="默认即美观">
+    所有默认值都经过精心挑选。颜色、排版、间距和组件都经过协调，提供精致的外观和感觉。
+  </Card>
+  <Card title="默认即高速">
+    利用 Astro 的零 JS 架构，营销页面尽可能保持轻量。仅在需要时添加交互性。
+  </Card>
+  <Card title="默认可访问">
+    语义化 HTML、适当的对比度、键盘导航和屏幕阅读器支持均开箱即用。
+  </Card>
+  <Card title="可定制">
+    基于 Token 的系统允许你更改颜色、字体和间距，而不会破坏底层结构。
+  </Card>
+</CardGrid>
+
+## 排版层级
+
+varsha 使用三种字体：
+
+| Token | 用途 | 回退 |
+| --- | --- | --- |
+| `--font-display` | Hero 标题、大标题 | 系统 sans-serif |
+| `--font-sans` | 正文、导航、UI 文本 | system-ui |
+| `--font-mono` | 代码块、技术标签 | ui-monospace |
+
+字号遵循流式排版：
+
+- **Hero：** `clamp(2.5rem, 5vw, 4rem)` — 随视口调整
+- **h1：** `clamp(2rem, 4vw, 3rem)`
+- **h2：** `clamp(1.5rem, 3vw, 2.25rem)`
+- **h3：** `1.25rem`
+- **正文：** `1rem`（16px，可访问性基线）
+- **小号：** `0.875rem`
+
+行高：标题 1.2，正文 1.6-1.7。
+
+## 间距系统
+
+间距使用 4px 基线以保持一致的节奏：
+
+```css
+--space-1: 0.25rem;  /* 4px */
+--space-2: 0.5rem;   /* 8px */
+--space-4: 1rem;     /* 16px */
+--space-8: 2rem;     /* 32px */
+--space-16: 4rem;    /* 64px */
+--section-padding: clamp(3rem, 8vw, 6rem);
+```
+
+## 颜色系统
+
+所有颜色通过语义化 Token 应用。不要直接使用原始 HEX 值 — 使用 Token 以确保主题正确切换。
+
+```css
+--color-bg:        /* 页面背景 */
+--color-fg:        /* 主要文本 */
+--color-muted:     /* 次要文本 */
+--color-accent:    /* 主要强调色 */
+--color-surface:   /* 卡片/面板背景 */
+--color-border:    /* 边框 */
+```
+
+每种颜色都有手动调整的明暗变体，满足 WCAG AA 对比度（4.5:1+）。
+
+## 组件模式
+
+### 区块结构
+
+营销页面遵循可重复的模式：
+
+```
+hero → section → section.alt → section → CTA
+```
+
+- `.hero` — 带有大标题和 CTA 的介绍区块
+- `.section` — 标准内边距的内容区块
+- `.section.alt` — 交替背景的区块
+- 内容始终用 `.container` 包装以限制最大宽度
+
+### 卡片
+
+卡片使用 `border-radius: var(--radius-lg)`、微妙阴影和一致内边距。
+
+### 按钮
+
+| 变体 | 用途 |
+| --- | --- |
+| `.btn-primary` | 页面主要操作（CTA） |
+| `.btn-secondary` | 次要操作 |
+| `.btn-ghost` | 低调操作 |
+
+## 圆角和阴影
+
+```css
+--radius-sm: 0.25rem;
+--radius-md: 0.5rem;
+--radius-lg: 0.75rem;
+--radius-xl: 1rem;
+--radius-full: 9999px;
+
+--shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+--shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+--shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+```
+
+## 可访问性
+
+varsha 满足以下可访问性标准：
+
+- **对比度：** 所有文本与背景满足 WCAG AA
+- **键盘导航：** 所有交互元素可通过 Tab 键访问
+- **焦点指示器：** 清晰的 `focus-visible` 样式
+- **语义化 HTML：** 适当的 `<nav>`、`<main>`、`<section>`、`<h1>-<h3>` 使用
+- **屏幕阅读器：** 地标、aria 标签、适当的 alt 文本
+
+## 响应式设计
+
+断点采用移动优先：
+
+```css
+@media (min-width: 640px)  { /* sm */ }
+@media (min-width: 768px)  { /* md */ }
+@media (min-width: 1024px) { /* lg */ }
+@media (min-width: 1280px) { /* xl */ }
+```
+
+## 主题系统
+
+主题通过 CSS 自定义属性实现，使用 `data-theme` 属性切换。所有 18+ 内置主题遵循此模式。参见[主题指南](/zh-cn/docs/keyboard/)了解如何创建自定义主题。
+
+## 相关指南
+
+<CardGrid>
+  <Card title="CSS Token">
+    所有 CSS 自定义属性和设计 Token 的完整参考。
+
+    [CSS Token →](/zh-cn/docs/cli-reference/)
+  </Card>
+  <Card title="主题">
+    切换主题和创建自定义主题。
+
+    [主题 →](/zh-cn/docs/keyboard/)
+  </Card>
+  <Card title="组件参考">
+    内置组件及其使用方法。
+
+    [组件 →](/zh-cn/docs/plugins/)
+  </Card>
+</CardGrid>

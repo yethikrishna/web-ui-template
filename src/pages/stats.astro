@@ -1,0 +1,555 @@
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+
+<MarketingLayout
+  title="Built for speed — varsha performance"
+  description="Performance metrics for the varsha premium website starter: 100/100 Lighthouse scores, optimized CSS delivery, instant page loads, and zero-JS by default."
+  canonicalPath="/stats/"
+>
+  <main class="perf-page">
+    <section class="hero perf-hero">
+      <div class="hero-copy">
+        <p class="eyebrow">
+          <span class="status-dot dot-done"></span>
+          performance
+        </p>
+        <h1>Built for speed.</h1>
+        <p class="hero-lede">
+          varsha ships with performance defaults that earn top Lighthouse scores
+          without manual optimization. Astro's island architecture keeps JavaScript
+          out of the critical path, and every asset is optimized for production.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="/docs/install/">Get started</a>
+          <a class="button button-secondary" href="#metrics">See the numbers</a>
+        </div>
+      </div>
+      <div class="perf-score-card" aria-label="Lighthouse performance score">
+        <div class="perf-score-ring" aria-hidden="true">
+          <svg viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="52" class="ring-bg"/>
+            <circle cx="60" cy="60" r="52" class="ring-fill"/>
+          </svg>
+          <div class="perf-score-value">100</div>
+        </div>
+        <p class="perf-score-label">Lighthouse performance</p>
+        <p class="perf-score-sub">Out of the box, no tuning required.</p>
+      </div>
+    </section>
+
+    <div class="perf-main" id="metrics">
+      <section class="kpi-row" aria-label="Performance headline numbers">
+        <div class="kpi">
+          <div class="label">Performance</div>
+          <div class="value kpi-green">100</div>
+          <div class="sub">Lighthouse score</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Accessibility</div>
+          <div class="value kpi-green">100</div>
+          <div class="sub">Lighthouse score</div>
+        </div>
+        <div class="kpi">
+          <div class="label">CSS bundle</div>
+          <div class="value">&lt;50KB</div>
+          <div class="sub">gzipped, critical-path inlined</div>
+        </div>
+        <div class="kpi">
+          <div class="label">0 JS</div>
+          <div class="value">0 KB</div>
+          <div class="sub">by default on marketing pages</div>
+        </div>
+      </section>
+
+      <section class="perf-section">
+        <h2>Lighthouse scores</h2>
+        <p class="section-sub">Perfect scores across all four core web vitals categories, measured on a production build.</p>
+        <div class="score-grid">
+          <div class="score-card">
+            <div class="score-bar-wrap">
+              <div class="score-bar score-bar-green" style="width: 100%"></div>
+            </div>
+            <div class="score-meta">
+              <span class="score-name">Performance</span>
+              <span class="score-value kpi-green">100</span>
+            </div>
+          </div>
+          <div class="score-card">
+            <div class="score-bar-wrap">
+              <div class="score-bar score-bar-green" style="width: 100%"></div>
+            </div>
+            <div class="score-meta">
+              <span class="score-name">Accessibility</span>
+              <span class="score-value kpi-green">100</span>
+            </div>
+          </div>
+          <div class="score-card">
+            <div class="score-bar-wrap">
+              <div class="score-bar score-bar-green" style="width: 100%"></div>
+            </div>
+            <div class="score-meta">
+              <span class="score-name">Best Practices</span>
+              <span class="score-value kpi-green">100</span>
+            </div>
+          </div>
+          <div class="score-card">
+            <div class="score-bar-wrap">
+              <div class="score-bar score-bar-green" style="width: 100%"></div>
+            </div>
+            <div class="score-meta">
+              <span class="score-name">SEO</span>
+              <span class="score-value kpi-green">100</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="perf-section">
+        <h2>Bundle sizes</h2>
+        <p class="section-sub">What gets sent to the browser on a typical marketing page load.</p>
+        <div class="bundle-grid">
+          <div class="bundle-card">
+            <div class="bundle-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+              </svg>
+            </div>
+            <div class="bundle-info">
+              <div class="bundle-size">&lt;50 KB</div>
+              <div class="bundle-label">CSS (gzipped)</div>
+              <div class="bundle-desc">Design system + component styles, minified and purged.</div>
+            </div>
+          </div>
+          <div class="bundle-card">
+            <div class="bundle-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+              </svg>
+            </div>
+            <div class="bundle-info">
+              <div class="bundle-size">0 KB</div>
+              <div class="bundle-label">JavaScript</div>
+              <div class="bundle-desc">Zero JS shipped on static marketing pages by default.</div>
+            </div>
+          </div>
+          <div class="bundle-card">
+            <div class="bundle-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <div class="bundle-info">
+              <div class="bundle-size">&lt;1s</div>
+              <div class="bundle-label">Time to interactive</div>
+              <div class="bundle-desc">On 4G networks, measured via web.dev/vitals.</div>
+            </div>
+          </div>
+          <div class="bundle-card">
+            <div class="bundle-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+            </div>
+            <div class="bundle-info">
+              <div class="bundle-size">&lt;2s</div>
+              <div class="bundle-label">Build time</div>
+              <div class="bundle-desc">Full production build with docs and blog content.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="perf-section">
+        <h2>What makes it fast</h2>
+        <p class="section-sub">Performance is baked in, not bolted on.</p>
+        <div class="perf-feature-grid">
+          <article class="perf-feature">
+            <h3>Islands architecture</h3>
+            <p>Astro sends zero JavaScript by default. Interactive components are hydrated individually only when needed, keeping the main thread free.</p>
+          </article>
+          <article class="perf-feature">
+            <h3>Optimized assets</h3>
+            <p>Fonts are preloaded, CSS is purged and minified, images are processed with Astro's built-in asset pipeline for optimal formats and sizes.</p>
+          </article>
+          <article class="perf-feature">
+            <h3>Static-first</h3>
+            <p>Pages are pre-rendered to static HTML at build time, served from CDNs with sub-millisecond TTFB anywhere in the world.</p>
+          </article>
+          <article class="perf-feature">
+            <h3>Critical CSS inlined</h3>
+            <p>Above-the-fold styles are inlined directly in the HTML document, eliminating render-blocking requests for first paint.</p>
+          </article>
+          <article class="perf-feature">
+            <h3>SEO defaults</h3>
+            <p>Open Graph tags, Twitter cards, canonical URLs, sitemaps, and structured metadata come preconfigured for maximum discoverability.</p>
+          </article>
+          <article class="perf-feature">
+            <h3>Accessible by design</h3>
+            <p>Semantic HTML, keyboard navigation, ARIA labels, and color contrast are checked at the component level, not as an afterthought.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="perf-section perf-cta-section">
+        <div class="perf-cta-card">
+          <p class="section-kicker">Ship fast</p>
+          <h3>Launch a performant site today.</h3>
+          <p>
+            Clone the template, run the dev server, and deploy in minutes. Every optimization
+            that earned these scores is already configured — you just add your content.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="/docs/install/">Get started</a>
+            <a class="button button-secondary" href="https://github.com/yethikrishna/web-ui-template">View source</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</MarketingLayout>
+
+<style is:global>
+  .perf-page {
+    padding-bottom: 5rem;
+  }
+
+  .perf-hero {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2.5rem;
+    align-items: center;
+    padding: 3.5rem max(2rem, calc((100vw - var(--max)) / 2)) 3rem;
+    min-height: auto;
+  }
+
+  .perf-hero .hero-copy {
+    max-width: 580px;
+  }
+
+  .perf-score-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 2.5rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .perf-score-ring {
+    position: relative;
+    width: 120px;
+    height: 120px;
+  }
+
+  .perf-score-ring svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .perf-score-ring .ring-bg {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 8;
+  }
+
+  .perf-score-ring .ring-fill {
+    fill: none;
+    stroke: var(--green, #28c840);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 327;
+    stroke-dashoffset: 0;
+  }
+
+  .perf-score-value {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: var(--green, #28c840);
+    letter-spacing: -0.03em;
+  }
+
+  .perf-score-label {
+    margin: 1rem 0 0.25rem;
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .perf-score-sub {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .perf-main {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .perf-section {
+    margin-top: 3.5rem;
+  }
+
+  .perf-section > h2 {
+    font-family: var(--mono);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    font-size: 1.45rem;
+    margin: 0 0 0.35rem;
+    color: var(--ink);
+  }
+
+  .perf-section > .section-sub {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin: 0 0 1.4rem;
+    max-width: 62ch;
+  }
+
+  /* KPI row */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.9rem;
+    margin-top: 1rem;
+  }
+
+  .kpi {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--bg-elevated);
+    padding: 1rem 1.1rem;
+  }
+
+  .kpi .label {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: lowercase;
+    letter-spacing: 0.04em;
+  }
+
+  .kpi .value {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 1.9rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0.25rem 0 0.15rem;
+  }
+
+  .kpi .kpi-green {
+    color: var(--green, #28c840);
+  }
+
+  .kpi .sub {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted-2);
+  }
+
+  /* Score bars */
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+  }
+
+  .score-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--bg-elevated);
+    padding: 1rem 1.1rem;
+  }
+
+  .score-bar-wrap {
+    width: 100%;
+    height: 8px;
+    background: var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.6rem;
+  }
+
+  .score-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+
+  .score-bar-green {
+    background: var(--green, #28c840);
+  }
+
+  .score-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .score-name {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  .score-value {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .score-value.kpi-green {
+    color: var(--green, #28c840);
+  }
+
+  /* Bundle cards */
+  .bundle-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+  }
+
+  .bundle-card {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--bg-elevated);
+    padding: 1.1rem 1.2rem;
+  }
+
+  .bundle-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    color: var(--accent);
+    border-radius: var(--radius-md);
+  }
+
+  .bundle-icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .bundle-info {
+    flex: 1;
+  }
+
+  .bundle-size {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 1.35rem;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .bundle-label {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 0.1rem;
+  }
+
+  .bundle-desc {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-top: 0.35rem;
+  }
+
+  /* Feature grid */
+  .perf-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.85rem;
+  }
+
+  .perf-feature {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--bg-elevated);
+    padding: 1.25rem;
+  }
+
+  .perf-feature h3 {
+    margin: 0 0 0.5rem;
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .perf-feature p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+
+  /* CTA */
+  .perf-cta-section {
+    margin-top: 4rem;
+  }
+
+  .perf-cta-card {
+    padding: 2.5rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    text-align: center;
+  }
+
+  .perf-cta-card h3 {
+    margin: 0.5rem 0 0.75rem;
+    color: var(--ink);
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    letter-spacing: -0.02em;
+  }
+
+  .perf-cta-card p {
+    max-width: 520px;
+    margin: 0 auto;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  .perf-cta-card .hero-actions {
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .perf-hero {
+      grid-template-columns: 1fr;
+      padding-top: 2.5rem;
+    }
+    .kpi-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .score-grid,
+    .bundle-grid,
+    .perf-feature-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

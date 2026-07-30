@@ -1,0 +1,239 @@
+---
+title: Customization
+description: Customize your varsha site — branding, colors, typography, metadata, site configuration, and the required attribution notice.
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha is designed to be a starting point that you can fully brand as your own. This guide covers the most common customization tasks: updating site metadata, changing colors and typography, configuring the navigation, and understanding the attribution requirement.
+
+## Site metadata
+
+The primary configuration file is `astro.config.mjs`. Update the following values for your site:
+
+```js title="astro.config.mjs"
+export default defineConfig({
+  // Your production domain (used for sitemaps, canonical URLs, OG tags)
+  site: 'https://your-domain.com',
+
+  integrations: [
+    sitemap(),
+    starlight({
+      // The name shown in the docs header and browser tab
+      title: 'Your Product',
+      // A short description for meta tags and search results
+      description: 'A premium website built with varsha.',
+      // Favicon
+      favicon: '/assets/favicon.png',
+      // ...
+    }),
+  ],
+});
+```
+
+### Social links
+
+Update the social links in the Starlight config:
+
+```js title="astro.config.mjs"
+social: [
+  {
+    icon: 'github',
+    label: 'GitHub',
+    href: 'https://github.com/your-username/your-repo',
+  },
+  // Add or remove social platforms as needed
+  // Supported icons: github, twitter, discord, youtube, mastodon, linkedin, slack, etc.
+],
+```
+
+### Open Graph and Twitter cards
+
+Default OG and Twitter images are configured in the `head` array of the Starlight config in `astro.config.mjs`. Replace these with your own branded images:
+
+```js title="astro.config.mjs"
+head: [
+  {
+    tag: 'meta',
+    attrs: { property: 'og:image', content: 'https://your-domain.com/assets/og-card.png' },
+  },
+  { tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
+  { tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
+  // ...
+],
+```
+
+Place your OG image in `public/assets/og-card.png` at 1200x630 pixels.
+
+## Navigation
+
+### Marketing pages (MarketingLayout)
+
+Edit the navigation links in `src/components/MarketingLayout.astro`. There are two places to update:
+
+1. **Desktop navigation** (`.nav-links` div)
+2. **Mobile navigation** (`.nav-menu-panel` div)
+
+```astro title="src/components/MarketingLayout.astro"
+<div class="nav-links">
+  <a href="/">Home</a>
+  <a href="/features/">Features</a>
+  <a href="/pricing/">Pricing</a>
+  <a href="/blog/">Blog</a>
+  <a href="/docs/">Docs</a>
+</div>
+```
+
+### Documentation sidebar
+
+The documentation sidebar is configured in `astro.config.mjs` under `starlight({ sidebar: [...] })`. Each section has a label and a list of items:
+
+```js title="astro.config.mjs"
+sidebar: [
+  {
+    label: 'Start here',
+    items: [
+      { label: 'Overview', slug: 'docs' },
+      { label: 'Getting started', slug: 'docs/install' },
+      // Add or remove items here
+    ],
+  },
+  // Add more sections as needed
+],
+```
+
+Localized labels are provided via the `translations` property on each section and item.
+
+## Branding
+
+### Logo and favicon
+
+Replace the following files with your own branded assets:
+
+| File | Purpose |
+| --- | --- |
+| `public/assets/favicon.png` | Browser favicon (32x32 or larger PNG) |
+| `public/assets/logo.png` | Apple touch icon and logo fallback |
+| `src/assets/logo.svg` | SVG logo used in docs splash and other places |
+
+After replacing the favicon, update the version query parameter in `MarketingLayout.astro` to bust caches:
+
+```astro
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.png?v=15" />
+```
+
+### Colors and themes
+
+varsha uses CSS custom properties (design tokens) defined in `public/css/style.css`. Themes are switched via the `data-palette` attribute on `<html>`. Each palette defines its own set of CSS variables.
+
+To change the default theme, modify the inline script in `MarketingLayout.astro`:
+
+```astro title="src/components/MarketingLayout.astro"
+var system = window.matchMedia("(prefers-color-scheme: dark)").matches
+  ? "tokyo-night"        // Default dark theme
+  : "tokyo-night-day";   // Default light theme
+```
+
+See the [Themes guide](/docs/keyboard/) for a complete list of built-in themes and instructions for creating custom themes. See [CSS tokens](/docs/cli-reference/) for the full token reference.
+
+### Typography
+
+varsha uses JetBrains Mono as its primary font, preloaded from `public/assets/jbm.woff2`. To use a different font:
+
+1. Place your font file(s) in `public/assets/`
+2. Update the `@font-face` declaration in `public/css/style.css`
+3. Update the preload link in `MarketingLayout.astro`:
+
+```astro
+<link rel="preload" href="/assets/your-font.woff2" as="font" type="font/woff2" crossorigin />
+```
+
+4. Update the `--font-sans`, `--font-mono`, and `--font-serif` CSS variables for each theme palette in `public/css/style.css`.
+
+## Footer and CTA
+
+Update the call-to-action button in the navigation (`nav-cta` link) in `src/components/MarketingLayout.astro`:
+
+```astro
+<a class="nav-cta" href="/docs/install/">Get started</a>
+```
+
+## Attribution requirement
+
+:::important[Please keep the attribution]
+varsha is free and open-source. In exchange for using this starter, we require that the "Built with varsha by myndlabs" credit link remains visible on your site. This attribution appears as:
+
+- A floating corner badge on marketing pages
+- A footer link on documentation pages
+
+The credit is rendered by the `<BuiltWith>` component and protected by a self-healing script that automatically re-injects it if it is hidden or removed from the DOM.
+
+We put significant work into building and maintaining varsha. The attribution helps other builders discover the starter and supports continued development.
+:::
+
+If you are using varsha for a commercial project and would like to discuss removing or rebranding the attribution, please reach out via [Instagram @yethikrishnar](https://instagram.com/yethikrishnar) or through [myndlabs.tech](https://myndlabs.tech).
+
+The attribution code is marked with HTML comments `<!-- varsha-builtwith:start -->` and `<!-- varsha-builtwith:end -->` in both `MarketingLayout.astro` and `BuiltWith.astro`. Do not modify or remove these blocks.
+
+## Internationalization (i18n)
+
+varsha ships with English, Japanese, and Simplified Chinese documentation out of the box.
+
+To add a new locale:
+
+1. Create a new directory under `src/content/docs/` (e.g., `src/content/docs/ko/` for Korean)
+2. Copy all `.mdx` files from the English root into the new directory
+3. Translate the content and frontmatter
+4. Add the locale to `astro.config.mjs`:
+
+```js title="astro.config.mjs"
+locales: {
+  root: { label: 'English', lang: 'en' },
+  ja: { label: '日本語', lang: 'ja' },
+  'zh-cn': { label: '简体中文', lang: 'zh-CN' },
+  ko: { label: '한국어', lang: 'ko' }, // New locale
+},
+```
+
+5. Add translations for sidebar labels in the `translations` property of each sidebar item.
+
+To remove a locale, delete its directory and remove it from the `locales` config.
+
+## Custom CSS
+
+### Marketing site styles
+
+Global marketing styles are in `public/css/style.css`. This file contains:
+
+- Theme palette definitions (CSS custom properties for each theme)
+- Layout styles (header, navigation, footer)
+- Component styles (hero, feature cards, buttons)
+- Theme switcher styles
+- BuiltWith attribution styles
+- Responsive breakpoints
+
+Add your custom styles at the end of this file or create a separate CSS file and link it in `MarketingLayout.astro`.
+
+### Documentation styles
+
+Starlight customizations are in `src/styles/starlight.css`. Use this file to override Starlight's default theme styles to match your brand.
+
+## Next steps
+
+<CardGrid>
+  <Card title="Themes">
+    Explore all 18+ built-in themes or create your own custom color palette.
+
+    [Themes →](/docs/keyboard/)
+  </Card>
+  <Card title="CSS tokens">
+    Browse the complete design token reference — colors, typography, spacing, shadows.
+
+    [CSS tokens →](/docs/cli-reference/)
+  </Card>
+  <Card title="Design system">
+    Understand the design principles behind varsha's components and patterns.
+
+    [Design system →](/docs/design-system/)
+  </Card>
+</CardGrid>

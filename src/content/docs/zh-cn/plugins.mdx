@@ -1,0 +1,116 @@
+---
+title: 组件
+description: varsha 内置组件的完整参考。MarketingLayout、BuiltWith、Hero 卡片、功能网格、主题切换器等。
+slug: components
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha 附带多个可复用组件，用于构建营销网站。本参考介绍每个组件的属性和使用方法。
+
+## MarketingLayout
+
+所有营销页面的根布局。提供页眉、页脚、主题切换器、SEO 元标签和署名。
+
+```astro
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+
+<MarketingLayout
+  title="Page Title"
+  description="Page description for SEO."
+  canonicalPath="/page-path/"
+  image="/custom-og.png"
+>
+  <!-- 页面内容 -->
+</MarketingLayout>
+```
+
+| 属性 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `title` | `string` | 是 | 页面标题 |
+| `description` | `string` | 是 | 元描述 |
+| `canonicalPath` | `string` | 是 | 规范 URL 路径 |
+| `image` | `string` | 否 | 自定义 OG 图片路径 |
+
+## BuiltWith
+
+显示 "Built with varsha by myndlabs" 署名徽标。由 `MarketingLayout` 自动引入。**请勿删除** — 这是使用条款要求的署名，必须链接到 [https://myndlabs.tech](https://myndlabs.tech)。
+
+## Hero
+
+落地页的 Hero 区块组件。
+
+```astro
+---
+import Hero from '../components/Hero.astro';
+---
+
+<Hero
+  title="Build beautiful websites fast."
+  subtitle="A premium Astro starter."
+  primaryCta={{ text: "Get started", href: "/docs/install/" }}
+  secondaryCta={{ text: "GitHub", href: "https://github.com/yethikrishna/web-ui-template" }}
+/>
+```
+
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| `title` | `string` | 主 Hero 标题 |
+| `subtitle` | `string` | 副标题/描述 |
+| `primaryCta` | `{ text, href }` | 主要 CTA 按钮 |
+| `secondaryCta` | `{ text, href }` | 次要 CTA 按钮 |
+
+## ThemeSwitcher
+
+主题切换模态框。由 `MarketingLayout` 自动引入。用户可以按 `/` 或 `t` 键打开。
+
+## Footer
+
+包含导航链接和社交链接的站点页脚。在 `src/components/Footer.astro` 中自定义。
+
+## 区块工具类
+
+营销页面可使用以下 CSS 类：
+
+- `.hero` — 全宽 Hero 区块
+- `.section` / `.section.alt` — 内容区块
+- `.container` — 最大宽度容器
+- `.card-grid` / `.card` — 响应式卡片网格
+- `.btn` / `.btn-primary` / `.btn-secondary` / `.btn-ghost` — 按钮样式
+
+## Starlight 文档组件
+
+文档页面（MDX）可使用 Starlight 内置组件：`<Card>`、`<CardGrid>`、`<Tabs>`、`<TabItem>`、`<Aside>`、`<Steps>`、`<Icon>`。
+
+## 创建自定义组件
+
+在 `src/components/` 创建自己的可复用组件：
+
+```astro title="src/components/FeatureCard.astro"
+---
+const { icon, title, children } = Astro.props;
+---
+
+<div class="card">
+  {icon && <span class="icon">{icon}</span>}
+  <h3>{title}</h3>
+  <p>{children}</p>
+</div>
+```
+
+## 下一步
+
+<CardGrid>
+  <Card title="CSS Token">
+    设计 Token 完整参考。
+
+    [CSS Token →](/zh-cn/docs/cli-reference/)
+  </Card>
+  <Card title="页面与布局">
+    学习如何使用这些组件构建页面。
+
+    [页面与布局 →](/zh-cn/docs/how-to-work/)
+  </Card>
+</CardGrid>

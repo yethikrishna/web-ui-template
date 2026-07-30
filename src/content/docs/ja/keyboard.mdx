@@ -1,0 +1,109 @@
+---
+title: テーマ
+description: varshaのビルトインテーマの切り替え、ライト/ダークモード、カラーパレット、カスタムテーマの作成方法。18以上のテーマが利用可能。
+slug: themes
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varshaには厳選された18以上のカラーテーマが付属しており、ボタンクリックまたはキーボードショートカットで即座に切り替えられます。すべてのテーマはマーケティングページとStarlightドキュメントの両方に適用されます。
+
+## テーマの切り替え
+
+テーマスイッチャーを開くには2つの方法があります：
+
+1. 任意のページのナビゲーションにあるテーマボタン（パレットアイコン）をクリック
+2. 任意のページで`/`または`t`を押す
+
+テーマを選択すると即座に適用され、`localStorage`に保存されるため、次回アクセス時にも選択したテーマが維持されます。
+
+## ビルトインテーマ
+
+<CardGrid>
+  <Card title="Tokyo Night / Tokyo Day">
+    デフォルトテーマ。深いネイビーの背景と柔らかいパステルカラーのダークテーマ、明るいライトテーマのセット。コードと読み物の両方に最適化されています。
+  </Card>
+  <Card title="Catppuccin / Catppuccin Latte">
+    温かみのあるパステルカラーパレット。人気のCatppuccinテーマからインスパイアされた、親しみやすいダークとライトのペア。
+  </Card>
+  <Card title="Nord">
+    アイシーブルーを基調とした冷たく落ち着いたダークテーマ。Arctic Ice StudioのNordカラーパレットに基づいています。
+  </Card>
+  <Card title="Dracula">
+    鮮やかなパープルとピンクのアクセントが特徴の人気のあるダークテーマ。長時間のコーディングセッションに最適です。
+  </Card>
+  <Card title="Gruvbox / Gruvbox Light">
+    レトロな温かみのあるダークテーマと、明るい砂色のライトテーマ。レトロなターミナルの美学。
+  </Card>
+  <Card title="Kanagawa / Kanagawa Lotus">
+    葛飾北斎の「神奈川沖浪裏」にインスパイアされた日本のカラーパレット。深い青と落ち着いたトーン。
+  </Card>
+  <Card title="Rose Pine / Rose Pine Dawn">
+    ソフトなピンクとパープルのエレガントなテーマ。ダークとライトの両バリアントがあります。
+  </Card>
+  <Card title="One Dark / One Light">
+    Atomエディタのクラシックなテーマ。親しみやすくバランスの取れた配色。
+  </Card>
+</CardGrid>
+
+その他のテーマ：Solarized Dark/Light、Monokai、Ayu Dark/Light、Night Owl、Synthwave '84、Github Dark/Lightなど。
+
+## デフォルトテーマの設定
+
+デフォルトテーマを変更するには、`src/styles/global.css`の`:root`セレクタを更新します：
+
+```css title="src/styles/global.css"
+:root {
+  /* デフォルトをnordに設定 */
+  --color-bg: #2e3440;
+  --color-fg: #d8dee9;
+  --color-muted: #a3be8c;
+  --color-accent: #88c0d0;
+  --color-surface: #3b4252;
+  --color-border: #4c566a;
+}
+```
+
+または、ThemeSwitcherのJavaScriptを変更してデフォルトを設定します。
+
+## カスタムテーマの作成
+
+独自のテーマを作成するには、`src/styles/global.css`に新しいCSSセレクタを追加します：
+
+```css title="src/styles/global.css"
+:root[data-theme="my-brand"] {
+  --color-bg: #0f172a;        /* ページ背景 */
+  --color-fg: #f1f5f9;        /* メインテキスト */
+  --color-muted: #94a3b8;     /* セカンダリテキスト */
+  --color-accent: #6366f1;    /* リンクとボタン */
+  --color-surface: #1e293b;   /* カードの背景 */
+  --color-border: #334155;    /* 境界線 */
+}
+```
+
+次に、ThemeSwitcherコンポーネント（`src/components/ThemeSwitcher.astro`）にテーマを追加します：
+
+```astro title="src/components/ThemeSwitcher.astro"
+const themes = [
+  // 既存のテーマ...
+  { id: 'my-brand', name: 'My Brand', type: 'dark' },
+];
+```
+
+### テーマデザインのヒント
+
+1. **コントラスト比を確認する：** テキストと背景のコントラストは少なくとも4.5:1（WCAG AA）にする
+2. **既存のテーマから始める：** 近いテーマをコピーして値を調整する
+3. **両方のモードをテストする：** ダークとライトの両方のバリアントを作成する
+4. **ドキュメントでテストする：** マーケティングページとドキュメントの両方でテーマが良く見えることを確認する
+5. **アクセントカラーを控えめに：** アクセントカラーはボタンとリンクに使用 — 支配的すぎないように
+
+## ライト/ダークモードの動作
+
+- ユーザーが明示的にテーマを選択すると、その選択が保存されます
+- 初回訪問時は、システムの`prefers-color-scheme`設定を尊重する場合があります
+- デフォルトはTokyo Night（ダーク）です
+
+## 帰属表示について
+
+すべてのテーマで「Built with varsha by myndlabs」クレジットが表示されることに注意してください。これは意図的なものであり、削除しないでください。このクレジットは[https://myndlabs.tech](https://myndlabs.tech)にリンクする必要があります。

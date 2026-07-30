@@ -1,0 +1,209 @@
+---
+title: カスタマイズ
+description: ブランディング、カラー、タイポグラフィ、メタデータ、サイト設定を変更してvarshaサイトをカスタマイズする方法。帰属表示の維持方法も含む。
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varshaはブランドに合わせて高度にカスタマイズ可能です。このガイドでは、サイト設定、カラー、タイポグラフィ、メタデータの変更方法を説明します。
+
+## 重要：帰属表示について
+
+varshaは無料のオープンソーススターターです。サイト上の「Built with varsha by myndlabs」クレジットリンク（[https://myndlabs.tech](https://myndlabs.tech)にリンク）は**削除しないでください**。この帰属表示はスターターの継続的な開発をサポートします。
+
+- このクレジットはデフォルトで`MarketingLayout`の`BuiltWith`コンポーネントを通じてレンダリングされます
+- ホームページ、マーケティングページ、ドキュメントの右下隅に表示されます
+- テーマと一貫性を保つためにスタイルを変更することはできますが、削除したり、リンクを外したり、見えなくしたりしないでください
+- この帰属表示は全テーマ（18以上）の隅に表示されます — これは意図的なものです
+
+## サイト設定
+
+### サイト名と説明
+
+`astro.config.mjs`を開き、Starlight設定を更新します：
+
+```js title="astro.config.mjs"
+starlight({
+  title: 'Your Product Name',
+  description: 'A short description of your product.',
+  // ...
+})
+```
+
+### ドメイン
+
+sitemapとOG URLのために`site`プロパティを更新します：
+
+```js title="astro.config.mjs"
+export default defineConfig({
+  site: 'https://your-domain.com',
+  // ...
+});
+```
+
+### ナビゲーションリンク
+
+`src/components/MarketingLayout.astro`でナビゲーションリンクを更新します。デスクトップ（`.nav-links`）とモバイルナビゲーションパネル（`.nav-menu-panel`）の両方を更新することを忘れないでください。
+
+### ソーシャルリンク
+
+`astro.config.mjs`のStarlight設定でソーシャルリンクを設定します：
+
+```js title="astro.config.mjs"
+starlight({
+  social: {
+    github: 'https://github.com/yethikrishna/web-ui-template',
+    // 独自のリンクを追加
+  },
+})
+```
+
+## カラーとテーマ
+
+varshaには18以上のビルトインテーマが付属しており、CSSカスタムプロパティを通じて完全にカスタマイズ可能です。
+
+### テーマの変更
+
+エンドユーザーは任意のページで`/`または`t`を押すとテーマスイッチャーを開くことができます。デフォルトテーマを設定するには、`src/styles/global.css`のCSS変数を変更します：
+
+```css title="src/styles/global.css"
+:root {
+  --color-bg: #1a1b26;
+  --color-fg: #c0caf5;
+  --color-accent: #7aa2f7;
+  /* フルテーマカスタマイズについてはCSSトークン参照 */
+}
+```
+
+### カスタムカラーパレットの作成
+
+独自のテーマを作成するには、[テーマガイド](/ja/docs/keyboard/)を参照してください。
+
+## タイポグラフィ
+
+### フォントの変更
+
+フォントは`src/components/MarketingLayout.astro`とStarlightの`customCss`設定を通じて読み込まれます。フォントを変更するには：
+
+1. Google Fontsまたはフォントファイルをプロジェクトに追加
+2. `src/styles/global.css`でフォントファミリーを更新：
+
+```css title="src/styles/global.css"
+:root {
+  --font-sans: 'Your Font', system-ui, sans-serif;
+  --font-mono: 'Your Mono', monospace;
+  --font-display: 'Your Display Font', sans-serif;
+}
+```
+
+### フォントサイズ
+
+CSS変数を使用してフォントサイズを調整：
+
+```css
+:root {
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-hero: clamp(2.5rem, 5vw, 4rem);
+}
+```
+
+## ロゴとファビコン
+
+- **ロゴ：** `src/assets/logo.svg`をあなたのロゴに置き換えます
+- **ファビコン：** `public/favicon.svg`をあなたのファビコンに置き換えます
+- **OG画像：** ソーシャル共有画像のために`public/og-image.png`を置き換えます（推奨サイズ：1200x630）
+
+## メタデータとSEO
+
+各ページは`MarketingLayout`を通じて適切なメタタグを設定する必要があります：
+
+```astro
+<MarketingLayout
+  title="Your Page Title"
+  description="A compelling description for SEO."
+  canonicalPath="/your-page/"
+>
+```
+
+サイト全体のSEO設定については[SEOとメタデータ](/ja/docs/socket-api/)を参照してください。
+
+## サイドバー構成
+
+ドキュメントのサイドバーは`astro.config.mjs`のStarlight設定で定義されています：
+
+```js title="astro.config.mjs"
+starlight({
+  sidebar: [
+    {
+      label: 'Start here',
+      items: [
+        { label: 'Overview', link: '/docs/' },
+        { label: 'Getting started', link: '/docs/install/' },
+        // ページを追加/削除/並べ替え
+      ],
+    },
+  ],
+})
+```
+
+## ローカライズ
+
+varshaは英語、日本語、簡体字中国語を標準でサポートしています。言語を追加または変更するには：
+
+1. 新しいロケールディレクトリを`src/content/docs/`に作成（例：`fr/`）
+2. Starlightの`locales`設定を更新：
+
+```js title="astro.config.mjs"
+starlight({
+  locales: {
+    root: { label: 'English', lang: 'en' },
+    ja: { label: '日本語', lang: 'ja' },
+    'zh-cn': { label: '简体中文', lang: 'zh-CN' },
+    // fr: { label: 'Français', lang: 'fr' },
+  },
+})
+```
+
+3. 新しいロケールの翻訳ファイルを作成
+
+## フッターのカスタマイズ
+
+フッターは`src/components/Footer.astro`で定義されています。著作権情報、リンク、ソーシャルアイコンを更新できます。帰属表示を維持することを忘れないでください。
+
+## カスタムCSS
+
+スタイルをさらにカスタマイズするには、`src/styles/`のCSSファイルに追加するか、コンポーネントにスコープ付き`<style>`ブロックを追加します：
+
+```astro
+<style>
+  .hero h1 {
+    font-style: italic;
+  }
+</style>
+```
+
+グローバルに利用可能なCSSトークンとカスタムプロパティの完全なリストは[CSSトークン](/ja/docs/cli-reference/)を参照してください。
+
+## 次のステップ
+
+<CardGrid>
+  <Card title="テーマ">
+    ビルトインテーマの切り替えとカスタムテーマの作成方法。
+
+    [テーマ →](/ja/docs/keyboard/)
+  </Card>
+  <Card title="CSSトークン">
+    完全なデザイントークンリファレンス。
+
+    [CSSトークン →](/ja/docs/cli-reference/)
+  </Card>
+  <Card title="デザインシステム">
+    varshaのデザイン原則とコンポーネント哲学。
+
+    [デザインシステム →](/ja/docs/design-system/)
+  </Card>
+</CardGrid>

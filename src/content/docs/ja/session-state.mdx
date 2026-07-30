@@ -1,0 +1,186 @@
+---
+title: コンテンツとブログ
+description: MarkdownとMDXでコンテンツを作成し、Astroコンテンツコレクションを管理し、ブログ記事を公開する方法。
+slug: content-blog
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varshaはAstroのコンテンツコレクションを使用して、ブログ記事とドキュメントページの両方を管理します。このガイドでは、コンテンツの作成、コレクションの管理、ブログ記事の公開方法について説明します。
+
+## コンテンツコレクションについて
+
+Astroのコンテンツコレクションは、Markdown/MDXコンテンツを管理するための型安全な方法を提供します。varshaには2つのコレクションがあります：
+
+| コレクション | ディレクトリ | 目的 |
+| --- | --- | --- |
+| `blog` | `src/content/blog/` | ブログ記事 |
+| `docs` | `src/content/docs/` | Starlightドキュメント（自動処理） |
+
+コレクションスキーマは`src/content/config.ts`で定義されています。
+
+## ブログ記事の作成
+
+新しいブログ記事を作成するには、`src/content/blog/`に`.md`または`.mdx`ファイルを追加します：
+
+```md title="src/content/blog/launch-announcement.md"
+---
+title: "Launching varsha: A Premium Website Starter"
+description: "Today we're launching varsha, a beautiful Astro starter template."
+pubDate: "2025-01-15"
+author: "Your Name"
+tags: ["launch", "announcement", "astro"]
+---
+
+Today we're excited to announce the launch of **varsha**, our premium
+website starter template built on Astro.
+
+## Why varsha?
+
+We built varsha because we were tired of starting every new project from
+scratch. Every website needs a hero section, features grid, footer,
+documentation, and blog — varsha gives you all of that out of the box.
+
+## What's included
+
+- 18+ beautiful themes
+- Starlight documentation with search
+- Blog with MDX support
+- SEO optimization
+- Zero-config deployment
+```
+
+### ブログ記事のfrontmatter
+
+| フィールド | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `title` | `string` | はい | 記事タイトル |
+| `description` | `string` | はい | SEOと記事一覧のための短い説明 |
+| `pubDate` | `string` | はい | 公開日（`"YYYY-MM-DD"`形式） |
+| `author` | `string` | いいえ | 著者名 |
+| `tags` | `string[]` | いいえ | タグの配列 |
+| `heroImage` | `string` | いいえ | ヒーロー画像のパス |
+| `draft` | `boolean` | いいえ | `true`の場合、記事が公開されない |
+
+## MDXの使用
+
+MDXを使用すると、Markdownコンテンツ内でJSXコンポーネントを使用できます。ブログ記事でMDXを使用するには、ファイル拡張子を`.mdx`にします：
+
+```mdx title="src/content/blog/feature-showcase.mdx"
+---
+title: "Feature Showcase"
+description: "See varsha components in action."
+pubDate: "2025-01-20"
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Built-in Components
+
+Here are some components you can use in MDX:
+
+<CardGrid>
+  <Card title="Fast" icon="rocket">
+    Zero JavaScript by default means lightning-fast pages.
+  </Card>
+  <Card title="Beautiful" icon="sparkles">
+    18+ themes with carefully designed color palettes.
+  </Card>
+</CardGrid>
+```
+
+## 記事の一覧表示
+
+ブログ記事は`src/pages/blog/index.astro`のブログ一覧ページに自動的に表示されます。このページはコンテンツコレクションから記事を取得します：
+
+```astro
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/BlogPost.astro';
+
+const posts = await getCollection('blog', ({ data }) => {
+  return import.meta.env.DEV || !data.draft;
+});
+
+const sortedPosts = posts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+```
+
+## ドラフト記事
+
+下書き中の記事は`draft: true`を設定します：
+
+```md
+---
+title: "Coming Soon"
+description: "This post is not ready yet."
+pubDate: "2025-02-01"
+draft: true
+---
+```
+
+ドラフトは開発環境では表示されますが、プロダクションビルドでは除外されます。
+
+## ドキュメントコンテンツ
+
+ドキュメントページはStarlightによって処理され、`src/content/docs/`にあります。ドキュメントページは以下のfrontmatterを使用します：
+
+```md
+---
+title: "Page Title"
+description: "A short description for SEO and the sidebar."
+---
+```
+
+ローカライズ版ドキュメントは`ja/`および`zh-cn/`サブディレクトリに配置します。
+
+## 画像の追加
+
+### コンテンツ内の画像
+
+ブログ記事やドキュメントで画像を使用する場合：
+
+1. 最適化が必要な画像は`src/assets/`に配置し、MDXでインポート
+2. 最適化が不要な静的画像は`public/`に配置
+
+```mdx
+---
+title: "Post with Images"
+description: "A post demonstrating images."
+pubDate: "2025-01-25"
+---
+
+import myImage from '../../assets/my-image.png';
+
+![Alt text](../../../assets/my-image.png)
+```
+
+## RSSフィード
+
+varshaはブログのRSSフィードを自動生成する場合があります。設定を確認し、`@astrojs/rss`インテグレーションを追加してフィードを有効にすることを検討してください。
+
+## ベストプラクティス
+
+1. **説明的な説明文を書く** — `description`フィールドはSEOと記事一覧のカードに使用されます
+2. **一貫した日付形式を使用する** — `YYYY-MM-DD`に固める
+3. **タグを効果的に使う** — 関連コンテンツをグループ化するのに役立ちます
+4. **長い記事には見出しを使う** — スキャンしやすいよう、コンテンツを`##`セクションに分割
+5. **ドラフトを本番環境にデプロイしない** — デプロイ前に`draft: true`を確認
+6. **MDXコンポーネントは控えめに使う** — コンテンツを過度にカスタムコンポーネントに依存させない
+
+## 次のステップ
+
+<CardGrid>
+  <Card title="ページとレイアウト">
+    ページとレイアウトの作成方法について詳しく学びます。
+
+    [ページとレイアウト →](/ja/docs/how-to-work/)
+  </Card>
+  <Card title="SEOとメタデータ">
+    コンテンツが検索エンジンとソーシャル共有で最適化されていることを確認します。
+
+    [SEOとメタデータ →](/ja/docs/socket-api/)
+  </Card>
+</CardGrid>

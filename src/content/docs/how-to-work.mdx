@@ -1,0 +1,247 @@
+---
+title: Pages & layouts
+description: Learn how to create pages in varsha, use the MarketingLayout component, compose reusable sections, and structure your site navigation.
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha uses Astro's file-based routing and provides a `MarketingLayout` component that gives every marketing page a consistent header, navigation, footer, theme system, and attribution.
+
+## Creating pages
+
+Every `.astro` file in `src/pages/` automatically becomes a route. The file path determines the URL:
+
+| File | URL |
+| --- | --- |
+| `src/pages/index.astro` | `/` |
+| `src/pages/about.astro` | `/about` |
+| `src/pages/pricing.astro` | `/pricing` |
+| `src/pages/blog/index.astro` | `/blog` |
+| `src/pages/blog/[slug].astro` | `/blog/:slug` (dynamic) |
+
+### Basic page structure
+
+Every marketing page should use `MarketingLayout`:
+
+```astro title="src/pages/about.astro"
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+
+<MarketingLayout
+  title="About Us"
+  description="Learn about our company and mission."
+  canonicalPath="/about/"
+>
+  <main class="page">
+    <section class="hero">
+      <h1>About Us</h1>
+      <p>Your hero subtitle goes here.</p>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Section heading</h2>
+        <p>Section content goes here.</p>
+      </div>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+## MarketingLayout props
+
+The `MarketingLayout` component accepts the following props:
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `title` | `string` | Yes | Page title (used in `<title>` and OG tags) |
+| `description` | `string` | Yes | Meta description for SEO and social sharing |
+| `canonicalPath` | `string` | Yes | Canonical URL path (e.g., `/about/`) |
+| `ogType` | `'website' \| 'article'` | No | Open Graph type (default: `'website'`) |
+| `ogImage` | `string` | No | Custom OG image path (default: `/assets/og-card-v8.png`) |
+| `ogImageAlt` | `string` | No | Alt text for OG image (default: `'varsha'`) |
+
+### Example: Blog post layout
+
+For article-type pages, use `ogType: 'article'`:
+
+```astro title="src/pages/blog/[slug].astro"
+<MarketingLayout
+  title={post.data.title}
+  description={post.data.description}
+  canonicalPath={`/blog/${post.slug}/`}
+  ogType="article"
+>
+  <!-- article content -->
+</MarketingLayout>
+```
+
+## Composing page sections
+
+varsha's global CSS (`public/css/style.css`) provides utility classes for common page patterns:
+
+### Hero section
+
+```astro
+<section class="hero">
+  <h1>Your headline here</h1>
+  <p>A compelling subtitle that explains your value proposition.</p>
+  <div class="hero-actions">
+    <a href="/docs/install/" class="button button--primary">Get started</a>
+    <a href="/docs/" class="button button--secondary">Read docs</a>
+  </div>
+</section>
+```
+
+### Feature grid
+
+```astro
+<section class="section">
+  <div class="container">
+    <h2>Features</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>Fast by default</h3>
+        <p>Astro ships zero JavaScript by default for static pages.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Beautiful themes</h3>
+        <p>18+ built-in color themes with one-click switching.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Content first</h3>
+        <p>Markdown and MDX with full content collections support.</p>
+      </div>
+    </div>
+  </div>
+</section>
+```
+
+## Adding navigation links
+
+When you create a new page, add it to the navigation in `src/components/MarketingLayout.astro`. There are two navigation areas to update:
+
+1. **Desktop nav:** `.nav-links` div
+2. **Mobile nav:** `.nav-menu-panel` div (inside the `<details>` element)
+
+```astro title="src/components/MarketingLayout.astro"
+<div class="nav-links">
+  <a href="/">Home</a>
+  <a href="/about/">About</a>
+  <a href="/pricing/">Pricing</a>
+  <a href="/blog/">Blog</a>
+  <a href="/docs/">Docs</a>
+</div>
+```
+
+Keep the mobile and desktop navigation links in sync to ensure a consistent experience across devices.
+
+## Using BuiltWith
+
+The `BuiltWith` component renders the required attribution link. It is automatically included at the bottom of `MarketingLayout` and Starlight's custom Footer. You do not need to add it manually to pages.
+
+If you create a completely custom layout without `MarketingLayout`, include the attribution:
+
+```astro
+---
+import BuiltWith from '../components/BuiltWith.astro';
+---
+
+<!-- Your layout content -->
+
+<BuiltWith variant="corner" />
+```
+
+Available variants:
+
+| Variant | Appearance |
+| --- | --- |
+| `footer` | Inline footer credit (used in Starlight footer) |
+| `corner` | Floating corner badge (default on marketing pages) |
+| `docs` | Documentation-specific styling |
+
+:::caution[Do not remove the attribution]
+The "Built with varsha by myndlabs" credit is protected by a self-healing script that re-injects it if removed. We ask that you keep this attribution to support continued development of the starter. See [Customization](/docs/configuration/) for more details.
+:::
+
+## Custom error pages
+
+Create a `404.astro` page in `src/pages/` for a custom 404 experience:
+
+```astro title="src/pages/404.astro"
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+
+<MarketingLayout title="Page not found" description="The page you are looking for does not exist." canonicalPath="/404/">
+  <main class="page">
+    <section class="hero">
+      <h1>404</h1>
+      <p>Page not found.</p>
+      <a href="/" class="button button--primary">Go home</a>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+## Dynamic routes
+
+For pages generated from data (like blog posts), use Astro's dynamic routes with `getStaticPaths()`:
+
+```astro title="src/pages/blog/[slug].astro"
+---
+import { getCollection } from 'astro:content';
+import MarketingLayout from '../../components/MarketingLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<MarketingLayout
+  title={post.data.title}
+  description={post.data.description}
+  canonicalPath={`/blog/${post.slug}/`}
+  ogType="article"
+>
+  <main class="page">
+    <article class="section">
+      <div class="container">
+        <h1>{post.data.title}</h1>
+        <time datetime={post.data.pubDate.toISOString()}>
+          {post.data.pubDate.toLocaleDateString()}
+        </time>
+        <Content />
+      </div>
+    </article>
+  </main>
+</MarketingLayout>
+```
+
+## Next steps
+
+<CardGrid>
+  <Card title="Customization">
+    Brand your site with colors, fonts, metadata, and configuration options.
+
+    [Customization →](/docs/configuration/)
+  </Card>
+  <Card title="Design system">
+    Understand the design tokens and component philosophy.
+
+    [Design system →](/docs/design-system/)
+  </Card>
+  <Card title="Components reference">
+    See all available components and their props.
+
+    [Components →](/docs/plugins/)
+  </Card>
+</CardGrid>

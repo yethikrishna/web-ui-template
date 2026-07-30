@@ -1,0 +1,299 @@
+---
+/**
+ * Pricing — Pricing tier cards.
+ *
+ * Renders an optional section heading followed by a responsive grid of
+ * pricing plans. A plan marked `featured: true` receives visual emphasis:
+ * an accent border, an elevated background, a subtle scale, and a
+ * "Popular" badge. Each plan lists its features and a CTA button.
+ *
+ * Props:
+ *   kicker?: string
+ *   title?: string
+ *   plans: Array<{
+ *     name: string;
+ *     price: string;
+ *     period?: string;
+ *     description?: string;
+ *     features: string[];
+ *     cta: { text: string; href: string };
+ *     featured?: boolean;
+ *   }>
+ */
+interface PlanCta {
+  text: string;
+  href: string;
+}
+
+interface Plan {
+  name: string;
+  price: string;
+  period?: string;
+  description?: string;
+  features: string[];
+  cta: PlanCta;
+  featured?: boolean;
+}
+
+interface Props {
+  plans: Plan[];
+  title?: string;
+  kicker?: string;
+}
+
+const { plans, title, kicker } = Astro.props;
+
+const headingId = title ? 'pricing-title' : undefined;
+---
+
+<section class="pricing" aria-labelledby={headingId}>
+  <div class="pricing__inner">
+    {(kicker || title) && (
+      <header class="pricing__head">
+        {kicker && <p class="pricing__kicker">{kicker}</p>}
+        {title && <h2 class="pricing__title" id={headingId}>{title}</h2>}
+      </header>
+    )}
+
+    <div class="pricing__grid">
+      {plans.map((plan) => (
+        <article class={`plan ${plan.featured ? 'plan--featured' : ''}`}>
+          {plan.featured && (
+            <span class="plan__badge" aria-label="Most popular plan">Popular</span>
+          )}
+          <header class="plan__head">
+            <h3 class="plan__name">{plan.name}</h3>
+            <div class="plan__price">
+              <span class="plan__amount">{plan.price}</span>
+              {plan.period && <span class="plan__period">/{plan.period}</span>}
+            </div>
+            {plan.description && <p class="plan__desc">{plan.description}</p>}
+          </header>
+
+          <ul class="plan__features" role="list">
+            {plan.features.map((feature) => (
+              <li class="plan__feature">
+                <span class="plan__check" aria-hidden="true">&#10003;</span>
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+
+          <a
+            class={`btn ${plan.featured ? 'btn--primary' : 'btn--secondary'} plan__cta`}
+            href={plan.cta.href}
+          >
+            {plan.cta.text}
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pricing {
+    padding: 4rem 1.5rem;
+  }
+
+  .pricing__inner {
+    max-width: var(--max);
+    margin-inline: auto;
+  }
+
+  .pricing__head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    align-items: center;
+  }
+
+  .pricing__kicker {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .pricing__title {
+    margin: 0;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+
+  .pricing__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .plan {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.75rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--bg-elevated);
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+
+  .plan:hover {
+    border-color: var(--line-strong);
+  }
+
+  /* Featured plan emphasis */
+  .plan--featured {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent-soft) 60%, var(--bg-elevated));
+    transform: translateY(-4px);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+
+  .plan--featured:hover {
+    transform: translateY(-6px);
+  }
+
+  .plan__badge {
+    position: absolute;
+    top: -0.7rem;
+    left: 1.75rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-md);
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .plan__head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .plan__name {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .plan__price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+  }
+
+  .plan__amount {
+    font-family: var(--mono);
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+
+  .plan__period {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .plan__desc {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+
+  .plan__features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+  }
+
+  .plan__feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+
+  .plan__check {
+    flex-shrink: 0;
+    color: var(--green);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .plan__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.6rem;
+    padding: 0 1.1rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-md);
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.12s ease, color 0.12s ease, background 0.12s ease;
+  }
+
+  .btn--primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+
+  .btn--primary:hover {
+    background: color-mix(in srgb, var(--accent) 86%, var(--ink));
+    border-color: color-mix(in srgb, var(--accent) 86%, var(--ink));
+  }
+
+  .btn--secondary {
+    background: transparent;
+    color: var(--ink-soft);
+  }
+
+  .btn--secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .plan__cta:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 640px) {
+    .pricing {
+      padding: 3rem 1.25rem;
+    }
+    .pricing__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

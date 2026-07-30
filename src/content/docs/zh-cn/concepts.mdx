@@ -1,0 +1,190 @@
+---
+title: 项目结构
+description: 了解 varsha 的目录结构、关键文件，以及 src/、pages/、components/、content/、public/ 各目录和 astro.config.mjs 的作用。
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha 遵循清晰的约定式项目结构。本指南解释每个目录的用途以及关键文件的位置。
+
+## 根目录结构
+
+```
+my-varsha-site/
+├── public/              # 静态资源（直接分发，不经过打包）
+├── src/                 # 所有源代码
+│   ├── assets/          # 需要构建处理的图片和资源
+│   ├── components/      # 可复用 UI 组件
+│   ├── content/         # Markdown/MDX 内容（博客、文档）
+│   ├── layouts/         # 页面布局组件
+│   ├── pages/           # 文件式路由
+│   └── styles/          # 全局 CSS 和 CSS 变量
+├── astro.config.mjs     # Astro 配置和集成
+├── package.json         # 依赖和脚本
+└── tsconfig.json        # TypeScript 配置
+```
+
+## `src/` — 源代码
+
+### `src/pages/`
+
+使用 Astro 的文件式路由。此目录中的每个 `.astro`、`.md`、`.mdx` 文件自动成为路由。
+
+```
+src/pages/
+├── index.astro          # 首页 (/)
+├── about.astro          # 添加如 /about/ 的自定义页面
+├── blog/
+│   ├── index.astro      # 博客列表 (/blog/)
+│   └── [...slug].astro  # 单篇博客文章 (/blog/post-name/)
+├── docs/
+│   └── [...slug].astro  # Starlight 文档路由
+└── 404.astro            # 自定义 404 页面
+```
+
+**示例：** 创建 `src/pages/pricing.astro` 会自动变为 `/pricing/`。
+
+### `src/components/`
+
+包含整个营销站点使用的可复用 UI 组件：
+
+```
+src/components/
+├── MarketingLayout.astro  # 营销页面主布局
+├── Hero.astro             # Hero 区块
+├── BuiltWith.astro        # "Built with varsha" 署名
+├── ThemeSwitcher.astro    # 主题切换 UI
+├── Footer.astro           # 页脚
+└── [其他 UI 组件]
+```
+
+**重要：** `MarketingLayout.astro` 是营销页面的主要布局，提供页眉、页脚、主题切换器和署名。
+
+### `src/content/`
+
+存放内容集合 — Astro 的类型安全内容管理系统：
+
+```
+src/content/
+├── blog/               # 博客文章（Markdown/MDX）
+│   ├── first-post.md
+│   └── second-post.md
+├── docs/               # Starlight 文档
+│   ├── index.mdx
+│   ├── install.mdx
+│   ├── ja/             # 日文文档
+│   └── zh-cn/          # 简体中文文档
+└── config.ts           # 内容集合 schema
+```
+
+每篇博客文章需要 frontmatter：
+
+```md
+---
+title: "Post Title"
+description: "A brief description."
+pubDate: "2025-01-15"
+---
+```
+
+### `src/layouts/`
+
+包含页面和博客文章的布局组件：
+
+```
+src/layouts/
+└── BlogPost.astro      # 单篇博客文章布局
+```
+
+注意 Starlight 文档布局由 Starlight 集成自动处理。
+
+### `src/styles/`
+
+包含全局 CSS、主题 Token 和样式工具：
+
+```
+src/styles/
+├── global.css          # 重置、基础样式、主题变量
+└── marketing.css       # 营销站点样式
+```
+
+CSS 自定义属性（主题 Token）在此定义，供主题切换器使用。参见 [CSS Token](/zh-cn/docs/cli-reference/)。
+
+### `src/assets/`
+
+放置需要构建处理（优化、哈希等）的图片、字体和其他资源。Astro 在导入时自动优化这些资源。
+
+## `public/` — 静态资源
+
+此目录中的文件直接在根路径分发，不经过构建处理：
+
+```
+public/
+├── favicon.svg
+├── robots.txt
+├── og-image.png        # 社交分享图片
+└── _headers            # Cloudflare Pages 头文件（如使用）
+```
+
+## 根配置文件
+
+### `astro.config.mjs`
+
+Astro 框架的核心配置文件，控制：
+
+- **站点 URL：** SEO 和站点地图的基础 URL
+- **集成：** Starlight 文档、sitemap 等
+- **构建配置：** 输出模式（静态）
+- **Starlight 配置：** 侧边栏、主题、i18n、搜索
+
+```js title="astro.config.mjs"
+import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
+import sitemap from '@astrojs/sitemap';
+
+export default defineConfig({
+  site: 'https://your-domain.com',
+  integrations: [
+    sitemap(),
+    starlight({
+      title: 'Your Product',
+      // 侧边栏、主题、i18n 配置
+    }),
+  ],
+  output: 'static',
+});
+```
+
+### `package.json`
+
+包含依赖、脚本和项目元数据。主要依赖：
+
+- `astro` — 核心框架
+- `@astrojs/starlight` — 文档框架
+- `@astrojs/sitemap` — 自动站点地图生成
+
+### `tsconfig.json`
+
+TypeScript 配置。Astro 完全支持 TypeScript，可在 `.astro` 组件中进行类型检查。
+
+## 下一步
+
+了解项目结构后，请参阅：
+
+<CardGrid>
+  <Card title="页面与布局">
+    学习如何创建页面和使用 MarketingLayout。
+
+    [页面与布局 →](/zh-cn/docs/how-to-work/)
+  </Card>
+  <Card title="自定义">
+    更改颜色、字体和品牌。
+
+    [自定义 →](/zh-cn/docs/configuration/)
+  </Card>
+  <Card title="内容与博客">
+    编写内容集合和博客文章。
+
+    [内容与博客 →](/zh-cn/docs/session-state/)
+  </Card>
+</CardGrid>

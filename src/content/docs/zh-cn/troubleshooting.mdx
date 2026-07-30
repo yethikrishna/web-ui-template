@@ -1,0 +1,154 @@
+---
+title: 故障排除
+description: 常见问题和解决方案。构建错误、部署问题、主题故障、开发服务器问题等。
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+遇到 varsha 问题？本指南涵盖最常见问题及其解决方案。
+
+## 构建错误
+
+### "Cannot find module" 错误
+
+删除 `node_modules` 并重新安装：
+
+```bash
+rm -rf node_modules package-lock.json
+npm install
+```
+
+Windows 用户使用：
+
+```powershell
+Remove-Item -Recurse -Force node_modules, package-lock.json
+npm install
+```
+
+### "Port 4321 is already in use"
+
+另一个进程正在占用开发服务器端口。终止现有进程或更改端口：
+
+```bash
+npm run dev -- --port 4322
+```
+
+### 构建因内存错误失败
+
+大型项目可能需要增加 Node 内存限制：
+
+```bash
+NODE_OPTIONS="--max-old-space-size=4096" npm run build
+```
+
+## 样式问题
+
+### 主题未应用
+
+确认 `<html>` 标签有 `data-theme` 属性。检查 `ThemeSwitcher.astro` 是否正确初始化。
+
+### 营销页面和文档之间的样式冲突
+
+营销页面样式在 `src/styles/marketing.css` 中，Starlight 主题在 Starlight 内部管理。如果添加全局样式，请使用正确的选择器范围。
+
+### 字体未加载
+
+确认 Google Fonts 链接在 `MarketingLayout.astro` 和 Starlight 配置中。如果使用自定义字体，确保在 CSS 中正确声明 `@font-face`。
+
+## 部署问题
+
+### Vercel 部署失败
+
+1. 检查构建命令是否为 `npm run build`
+2. 确认输出目录为 `dist`（默认）
+3. 检查是否有环境变量缺失
+4. 查看 Vercel 构建日志中的具体错误
+
+### 页面返回 404
+
+1. 确认文件存在于 `src/pages/` 目录中
+2. 检查文件名是否正确（Astro 使用文件式路由）
+3. 动态路由需要 `getStaticPaths()`
+4. 检查 `astro.config.mjs` 中的 `base` 设置是否正确
+
+### 资源路径错误
+
+如果部署到子路径（如 GitHub Pages），在 `astro.config.mjs` 中设置 `base`：
+
+```js
+export default defineConfig({
+  site: 'https://username.github.io',
+  base: '/repo-name/',
+});
+```
+
+## 开发服务器问题
+
+### 热重载不工作
+
+1. 确认文件保存在 `src/` 目录中
+2. 检查文件名是否使用正确的扩展名
+3. 尝试重启开发服务器
+4. 清除浏览器缓存
+
+### 主题切换器不工作
+
+1. 检查浏览器控制台是否有 JavaScript 错误
+2. 确认 `localStorage` 可用
+3. 检查 `data-theme` 属性是否在 `<html>` 标签上
+
+## 内容问题
+
+### 博客文章未出现在列表中
+
+1. 检查文件是否在 `src/content/blog/` 中
+2. 确认 frontmatter 包含 `title`、`description`、`pubDate`
+3. 检查是否设置了 `draft: true`
+4. 重启开发服务器（内容集合有时需要刷新）
+
+### MDX 组件未渲染
+
+1. 确认在 MDX 文件中正确导入组件
+2. 检查组件路径是否正确
+3. 确认组件存在于 `src/components/` 中
+
+## Windows 特定问题
+
+### 行尾符（CRLF vs LF）
+
+Windows 默认使用 CRLF 行尾符。在 `.gitattributes` 中设置：
+
+```
+* text=auto eol=lf
+```
+
+### 路径长度限制
+
+Windows 有 260 字符路径限制。启用长路径或将项目移到更短的目录路径。
+
+### PowerShell 命令问题
+
+使用 PowerShell 时，某些 bash 命令不同。参考本指南中提供的 PowerShell 等效命令。
+
+## 性能问题
+
+### Lighthouse 分数低
+
+1. 图片使用 Astro 内置的 `<Image>` 组件
+2. 避免向客户端页面添加不必要的 JavaScript
+3. 使用 `loading="lazy"` 延迟加载屏幕外图片
+4. 将第三方脚本移到页面底部或使用 `defer`
+
+### 构建时间长
+
+1. 大量图片使用 Astro 图片优化可能较慢
+2. 考虑使用远程图片 CDN
+3. 排除不需要优化的文件
+
+## 获取帮助
+
+如果仍有问题：
+
+1. 查看 [GitHub Issues](https://github.com/yethikrishna/web-ui-template/issues)
+2. 在 Instagram [@yethikrishnar](https://instagram.com/yethikrishnar) 联系
+3. 访问 [myndlabs.tech](https://myndlabs.tech) 获取支持

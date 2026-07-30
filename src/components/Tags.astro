@@ -1,0 +1,83 @@
+---
+/**
+ * Tags — List of pill-shaped tag badges.
+ *
+ * Renders a labeled list of tag pills. The visible label also serves as the
+ * accessible name of the wrapping navigation landmark (via aria-labelledby),
+ * so screen readers announce it once. Tags render as spans; swap for
+ * `<a>` elements when tag pages exist.
+ *
+ * Props:
+ *   tags: string[]          - tag labels (required)
+ *   label?: string          - visible + accessible label (default 'Tags')
+ */
+interface Props {
+  tags: string[];
+  label?: string;
+}
+
+const { tags, label = 'Tags' } = Astro.props;
+
+// Unique id so multiple Tags instances never collide.
+const labelId = `tags-label-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<nav class="tags" aria-labelledby={labelId}>
+  <span class="tags__label" id={labelId}>{label}</span>
+  <ul class="tags__list" role="list">
+    {tags.map((tag) => (
+      <li>
+        <span class="tag">{tag}</span>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .tags__label {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .tags__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    background: var(--bg-elevated);
+    color: var(--ink-soft);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.4;
+    transition: border-color 0.12s ease, color 0.12s ease, background 0.12s ease;
+  }
+
+  /* Make tags feel interactive even though they are spans, so that if they
+     are later converted to <a> elements the styling carries over. */
+  .tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+</style>

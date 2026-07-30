@@ -1,0 +1,182 @@
+---
+title: クイックスタート
+description: varshaで5分で最初のカスタムページを作成して公開する方法。開発サーバーの起動、コンテンツの編集、ページの追加、デプロイまで。
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+このクイックスタートでは、最初のカスタムページを作成し、varshaサイトをデプロイ準備するまでの手順を説明します。既に[varshaをインストール](/ja/docs/install/)済みであることを前提としています。
+
+## 1. 開発サーバーを起動
+
+開発サーバーが起動していない場合は起動します：
+
+```bash
+npm run dev
+```
+
+ブラウザで[http://localhost:4321](http://localhost:4321)を開きます。varshaのランディングページが表示されるはずです。
+
+## 2. サイトメタデータを更新
+
+`astro.config.mjs`を開き、サイト設定を自分のブランドに合わせて更新します：
+
+```js title="astro.config.mjs"
+export default defineConfig({
+  site: 'https://your-domain.com', // 自分のドメインに置き換え
+  // ...
+  integrations: [
+    sitemap(),
+    starlight({
+      title: 'Your Product Name',
+      description: 'A short description of your product or service.',
+      // ...
+    }),
+  ],
+});
+```
+
+## 3. 最初のページを作成
+
+`src/pages/about.astro`に新しいファイルを作成します：
+
+```astro title="src/pages/about.astro"
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+
+<MarketingLayout
+  title="About Us"
+  description="Learn about our company and mission."
+  canonicalPath="/about/"
+>
+  <main class="page">
+    <section class="hero">
+      <h1>About Us</h1>
+      <p>We build tools that help people ship faster.</p>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Our Mission</h2>
+        <p>
+          This is your first custom page. Edit it freely — add sections,
+          components, images, and whatever else your site needs.
+        </p>
+      </div>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+[http://localhost:4321/about](http://localhost:4321/about)にアクセスすると、新しいページが表示されます。サイトヘッダー、フッター、テーマスイッチャー、「Built with varsha」の帰属表示が自動的に継承されます。
+
+## 4. ナビゲーションリンクを追加
+
+`src/components/MarketingLayout.astro`を開き、ナビゲーションに新しいページへのリンクを追加します：
+
+```astro title="src/components/MarketingLayout.astro"
+<div class="nav-links">
+  <a href="/">Home</a>
+  <a href="/about/">About</a>
+  <!-- 既存のリンク -->
+</div>
+```
+
+モバイルとデスクトップのナビゲーションを同期させるため、モバイルナビパネル（`.nav-menu-panel`）も同様に更新してください。
+
+## 5. テーマを試す
+
+任意のページで`/`または`t`を押すと、テーマスイッチャーが開きます。varshaには18以上のテーマが付属しています：
+
+- Tokyo Night（デフォルトダーク）/ Tokyo Day（デフォルトライト）
+- Catppuccin / Catppuccin Latte
+- Nord
+- Dracula
+- Gruvbox / Gruvbox Light
+- Kanagawa / Kanagawa Lotus
+- Rose Pine / Rose Pine Dawn
+- その他多数
+
+選択したテーマは`localStorage`に保存され、セッションをまたいで維持されます。
+
+## 6. ブログ記事を追加
+
+`src/content/blog/my-first-post.md`に新しいブログ記事を作成します：
+
+```md title="src/content/blog/my-first-post.md"
+---
+title: "My First Post"
+description: "Hello world from my varsha site."
+pubDate: "2025-01-15"
+---
+
+Welcome to my blog! This is my first post powered by varsha.
+
+## What's next
+
+- Write more posts
+- Customize the design
+- Deploy to production
+```
+
+[http://localhost:4321/blog/](http://localhost:4321/blog/)にアクセスすると、記事が表示されます。
+
+## 7. プロダクションビルド
+
+公開準備ができたら、プロダクションビルドを作成します：
+
+```bash
+npm run build
+```
+
+デプロイ前にローカルでプロダクションビルドをプレビュー：
+
+```bash
+npm run preview
+```
+
+静的出力は`dist/`ディレクトリに生成され、任意の静的ホストにデプロイできます。
+
+## 8. デプロイ
+
+最速のデプロイ方法はVercelです：
+
+```bash
+npx vercel
+```
+
+または、GitリポジトリをVercel、Netlify、Cloudflare Pagesに接続して、プッシュのたびに自動デプロイを行います。プラットフォーム固有の手順は[デプロイガイド](/ja/docs/persistence-remote/)を参照してください。
+
+## 完了したこと
+
+5分以内に以下を完了しました：
+
+1. varsha開発サーバーを起動
+2. サイトメタデータを更新
+3. `MarketingLayout`を使用して新しいページを作成
+4. ナビゲーションリンクを追加
+5. テーマを探索
+6. ブログ記事を公開
+7. プロダクションビルドを作成
+8. デプロイ方法を確認
+
+## 次のステップ
+
+<CardGrid>
+  <Card title="ページとレイアウト">
+    ページの作成、レイアウトの使用、コンテンツの構造化について詳しく学びます。
+
+    [ページとレイアウト →](/ja/docs/how-to-work/)
+  </Card>
+  <Card title="カスタマイズ">
+    カラー、フォント、メタデータでサイトをブランディングします。
+
+    [カスタマイズ →](/ja/docs/configuration/)
+  </Card>
+  <Card title="デプロイ">
+    Vercel、Netlify、Cloudflare Pages、または静的ホスティングにデプロイします。
+
+    [デプロイ →](/ja/docs/persistence-remote/)
+  </Card>
+</CardGrid>

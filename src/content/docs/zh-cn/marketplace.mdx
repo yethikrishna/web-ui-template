@@ -1,0 +1,123 @@
+---
+title: 示例
+description: 使用 varsha 构建的示例站点、启动模板变体和社区项目。获取灵感，看看 varsha 能做什么。
+slug: examples
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+看看真实世界中的 varsha 项目，获取灵感，了解其他人如何使用这个启动模板。
+
+## 官方示例
+
+<CardGrid>
+  <Card title="founder.myndlabs.tech" icon="star">
+    **myndlabs.tech 创始人个人网站**
+
+    varsha 的官方展示站点。展示落地页、博客和文档的实际应用。访问 [founder.myndlabs.tech](https://founder.myndlabs.tech) 查看。
+  </Card>
+  <Card title="默认启动模板" icon="rocket">
+    **基础 varsha 启动模板**
+
+    包含完整营销网站、博客和文档的开箱即用模板。在 [GitHub](https://github.com/yethikrishna/web-ui-template) 开始使用。
+  </Card>
+</CardGrid>
+
+## 常见使用模式
+
+<CardGrid>
+  <Card title="SaaS 落地页">
+    Hero 区块、功能网格、定价表、客户评价、CTA 区块。使用 `MarketingLayout` + 功能卡片组件。
+  </Card>
+  <Card title="个人作品集">
+    关于部分、项目展示、博客、联系方式。将 accent 颜色改为个人品牌颜色。
+  </Card>
+  <Card title="产品文档站点">
+    Starlight 文档作为主站点。添加营销落地页用于产品推广。
+  </Card>
+  <Card title="创业公司网站">
+    首页、关于、团队、博客、文档、联系表单。为 SEO 配置 OG 图片和元数据。
+  </Card>
+</CardGrid>
+
+## 启动模板变体
+
+varsha 可作为多种网站类型的起点：
+
+### 极简博客
+
+删除营销页面，专注博客。保留 `MarketingLayout` 用于博客列表和文章页面，自定义为博客主题。
+
+### 文档优先站点
+
+以 Starlight 文档为主，添加最少的营销落地页。适合开源项目和 API 文档。
+
+### 完整营销站点
+
+完整使用所有营销组件 — Hero、功能、定价、评价、CTA、博客、文档。适合 SaaS 和产品。
+
+## 社区项目
+
+想在此展示你的 varsha 项目？在 Instagram [@yethikrishnar](https://instagram.com/yethikrishnar) 联系我们，或在 [GitHub](https://github.com/yethikrishna/web-ui-template) 提交 PR。
+
+## 快速开始模板
+
+```bash
+# 创建新项目
+npx degit yethikrishna/web-ui-template my-site
+cd my-site
+npm install
+npm run dev
+```
+
+## 构建示例
+
+以下是展示不同 varsha 功能的代码片段：
+
+### 简单落地页
+
+```astro
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+<MarketingLayout title="My Product" description="..." canonicalPath="/">
+  <main class="page">
+    <section class="hero">
+      <h1>Ship faster.</h1>
+      <p>The all-in-one platform for builders.</p>
+      <a href="/docs/install/" class="btn btn-primary">Get started</a>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+### 博客索引页面
+
+```astro
+---
+import { getCollection } from 'astro:content';
+import MarketingLayout from '../../components/MarketingLayout.astro';
+const posts = await getCollection('blog');
+---
+<MarketingLayout title="Blog" description="..." canonicalPath="/blog/">
+  <main class="page">
+    <section class="section">
+      <div class="container">
+        <h1>Blog</h1>
+        {posts.map(post => (
+          <article>
+            <h2><a href={`/blog/${post.slug}/`}>{post.data.title}</a></h2>
+            <p>{post.data.description}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+## 下一步
+
+- [快速开始](/zh-cn/docs/quick-start/) 构建你的第一个页面
+- [项目结构](/zh-cn/docs/concepts/) 了解文件布局
+- [自定义](/zh-cn/docs/configuration/) 使 varsha 成为你的

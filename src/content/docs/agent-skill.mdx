@@ -1,0 +1,175 @@
+---
+title: Agent skill file
+description: The SKILL.md file that teaches AI coding agents (TRAE, Cursor, Copilot, Claude Code) how to work effectively with a varsha project.
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha ships with an agent skill file (also called a "SKILL.md" or agent instructions file) that helps AI coding assistants understand the project structure, conventions, and best practices. When placed in your repository root, AI agents can read it to give more accurate, context-aware assistance.
+
+## What is an agent skill file?
+
+AI coding agents (TRAE, Cursor, GitHub Copilot, Claude Code, Windsurf, etc.) work best when they understand your project's conventions upfront. An agent skill file is a Markdown document placed in your repository that:
+
+- Explains the project architecture
+- Documents coding conventions
+- Lists key files and their purposes
+- Provides patterns for common tasks
+- Sets rules for what agents should and should not modify
+
+When an AI agent starts working in your repository, it can read this file to ground its responses in your project's specific patterns.
+
+## The varsha agent skill file
+
+Below is the recommended content for a `SKILL.md` file to place at the root of your varsha project. You can customize it for your specific site.
+
+````markdown title="SKILL.md"
+# varsha Site — Agent Instructions
+
+You are working on a website built with **varsha**, a premium Astro-based website starter by myndlabs.tech.
+
+## Project overview
+
+- **Framework:** Astro (static site generation)
+- **Docs:** Starlight (in `src/content/docs/`)
+- **Blog:** Astro content collections (in `src/content/blog/`)
+- **Styling:** Custom CSS with CSS custom properties (design tokens)
+- **Deployment:** Static output (no adapter needed for static hosting)
+- **Repository:** https://github.com/yethikrishna/web-ui-template
+
+## Key files and directories
+
+| Path | Purpose |
+| --- | --- |
+| `astro.config.mjs` | Central configuration: site URL, Starlight sidebar, integrations, locales |
+| `src/components/MarketingLayout.astro` | Layout for marketing pages (header, nav, footer, themes, attribution) |
+| `src/components/BuiltWith.astro` | Attribution component — DO NOT REMOVE |
+| `src/components/` | All reusable Astro components (Header, Footer, Sidebar, etc.) |
+| `src/pages/` | File-based routes. Each `.astro` file becomes a page. |
+| `src/pages/blog/` | Blog listing and dynamic post routes |
+| `src/content/blog/` | Blog posts (Markdown, `.md` files) |
+| `src/content/docs/` | Documentation pages (MDX, `.mdx` files, supports i18n) |
+| `src/content.config.ts` | Content collection schemas |
+| `src/styles/starlight.css` | Custom CSS for Starlight docs theme |
+| `public/css/style.css` | Global marketing site CSS (theme palettes, layout, components) |
+| `public/assets/` | Static assets (fonts, images, favicon) |
+| `src/assets/` | Astro-processed assets (SVG logos) |
+| `index.html` | Marketing landing page HTML |
+
+## Coding conventions
+
+1. **Components:** Use PascalCase for `.astro` component filenames (e.g., `MarketingLayout.astro`).
+2. **Pages:** Use lowercase kebab-case for page files (e.g., `about-us.astro`).
+3. **Content:** Use lowercase kebab-case for Markdown/MDX content files.
+4. **CSS:** Use BEM-inspired class names (e.g., `feature-card`, `nav-links`, `hero-actions`).
+5. **CSS tokens:** Always use CSS custom properties (`var(--bg)`, `var(--accent)`, `var(--sp-4)`) instead of hardcoded values.
+6. **Props:** Use TypeScript interfaces for component props.
+7. **Attribution:** DO NOT remove the `<BuiltWith>` component or the "Built with varsha by myndlabs" credit. It is protected by a self-healing script.
+
+## Creating a new marketing page
+
+1. Create a new `.astro` file in `src/pages/` (e.g., `src/pages/pricing.astro`)
+2. Import and use `MarketingLayout`:
+   ```astro
+   ---
+   import MarketingLayout from '../components/MarketingLayout.astro';
+   ---
+   <MarketingLayout title="Page Title" description="Page description." canonicalPath="/page-path/">
+     <main class="page">
+       <section class="hero"><h1>Title</h1></section>
+     </main>
+   </MarketingLayout>
+   ```
+3. Add navigation links to both `.nav-links` and `.nav-menu-panel` in `src/components/MarketingLayout.astro`
+4. Use existing CSS classes: `.page`, `.hero`, `.section`, `.container`, `.feature-grid`, `.feature-card`, `.button--primary`, `.button--secondary`
+
+## Creating a blog post
+
+1. Create a new `.md` file in `src/content/blog/` with frontmatter:
+   ```yaml
+   ---
+   title: "Post title"
+   description: "Post description."
+   pubDate: "2025-01-20"
+   ---
+   ```
+2. Write content in Markdown.
+3. The blog listing at `/blog/` auto-updates.
+
+## Modifying themes
+
+- Theme palettes are defined in `public/css/style.css` under `[data-palette="theme-name"]` selectors.
+- To change the default theme, modify the inline script in `MarketingLayout.astro`.
+- To add a new theme, define a new `[data-palette="my-theme"]` block with color tokens and add a button in the theme switcher panel in `MarketingLayout.astro`.
+
+## Configuration
+
+- Site metadata (title, description, URL, social links, sidebar) is in `astro.config.mjs`.
+- Navigation links are in `src/components/MarketingLayout.astro` (update both desktop and mobile nav).
+- Colors, typography, and spacing tokens are in `public/css/style.css`.
+
+## npm scripts
+
+- `npm run dev` — Start development server (localhost:4321)
+- `npm run build` — Build production site to `dist/`
+- `npm run preview` — Preview production build locally
+
+## Important rules
+
+- **DO NOT remove or hide the BuiltWith attribution.** It is required and self-healing.
+- **DO NOT modify files inside the `varsha-builtwith:start/end` HTML comment blocks.**
+- Always test in multiple themes (press `/` to switch) when making CSS changes.
+- Maintain the responsive breakpoints (640px, 768px, 1024px, 1280px).
+- Keep OG images at 1200x630 pixels.
+- When adding new doc pages, add corresponding entries in the sidebar config in `astro.config.mjs`.
+````
+
+## Using the skill file
+
+Save the above content as `SKILL.md` in your project root (alongside `package.json` and `astro.config.mjs`). Most AI coding agents will automatically discover and read it.
+
+### For TRAE
+
+TRAE automatically detects `SKILL.md` files in project roots and uses them as context for coding tasks.
+
+### For Cursor
+
+Place the file as `.cursorrules` or include it in your repository as `SKILL.md` and reference it in Cursor's project instructions.
+
+### For GitHub Copilot
+
+Copilot reads `SKILL.md` and similar instruction files when present in the workspace.
+
+### For Claude Code
+
+Claude Code can read the file when you ask it to. Reference it at the start of a session: "Read SKILL.md first and follow its conventions."
+
+## Customizing for your site
+
+After creating your varsha project, customize the skill file:
+
+1. Update the project overview to reflect your product name and purpose
+2. Add project-specific conventions (naming patterns, component patterns)
+3. List any additional tools or integrations you add (e.g., CMS, analytics)
+4. Document your deployment workflow
+5. Add any "DO NOT TOUCH" rules for critical files
+
+## Next steps
+
+<CardGrid>
+  <Card title="Project structure">
+    Familiarize yourself with how varsha projects are organized.
+
+    [Project structure →](/docs/concepts/)
+  </Card>
+  <Card title="Components reference">
+    Learn about all built-in components.
+
+    [Components →](/docs/plugins/)
+  </Card>
+  <Card title="Customization">
+    Brand your site with colors, fonts, and metadata.
+
+    [Customization →](/docs/configuration/)
+  </Card>
+</CardGrid>

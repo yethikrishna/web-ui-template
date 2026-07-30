@@ -1,0 +1,315 @@
+---
+title: Integrations
+description: Built-in and optional Astro integrations for varsha — Starlight docs, sitemap, RSS, analytics, and more.
+---
+
+import { Card, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
+
+varsha ships with a curated set of Astro integrations pre-configured for production use. This guide covers what is included out of the box and how to add additional integrations.
+
+## Included integrations
+
+The following integrations are already configured in `astro.config.mjs` and work without additional setup.
+
+### @astrojs/starlight
+
+Starlight powers varsha's documentation site. It provides:
+
+- Full-text search via Pagefind
+- Syntax-highlighted code blocks
+- i18n (English, Japanese, Simplified Chinese)
+- Dark/light theme support (extended by varsha's multi-theme system)
+- Auto-generated sidebar navigation
+- Previous/next page links
+- Table of contents
+- Edit links on GitHub
+- Last-updated timestamps
+
+Configuration is in `astro.config.mjs` under the `starlight()` options object.
+
+### @astrojs/sitemap
+
+Automatically generates a sitemap at build time:
+
+- **Output:** `/sitemap-index.xml` (and `/sitemap-0.xml` for page sets)
+- **Includes:** All static pages, documentation, and blog posts
+- **Respects:** The `site` value in `astro.config.mjs` for absolute URLs
+
+No additional configuration is needed. Ensure `site` is set to your production domain.
+
+### Static output (no adapter needed)
+
+varsha uses Astro's `output: 'static'` mode by default. This means no server adapter is required — the build produces pure HTML/CSS/JS in the `dist/` directory that can be deployed to any static host:
+
+- **Vercel:** Auto-detects Astro projects. No adapter or configuration needed.
+- **Netlify:** Set build command to `npm run build` and publish directory to `dist`.
+- **Cloudflare Pages:** Framework preset: Astro, build output: `dist`.
+- **GitHub Pages:** Upload `dist/` via GitHub Actions.
+- **Any static host:** Upload the contents of `dist/`.
+
+If you later need SSR (server-side rendering), you can add an adapter:
+
+<Tabs>
+  <TabItem label="Vercel (SSR)">
+    ```bash
+    npm install @astrojs/vercel
+    ```
+
+    ```js title="astro.config.mjs"
+    import vercel from '@astrojs/vercel';
+
+    export default defineConfig({
+      output: 'server',
+      adapter: vercel(),
+      // ...
+    });
+    ```
+  </TabItem>
+  <TabItem label="Netlify (SSR)">
+    ```bash
+    npm install @astrojs/netlify
+    ```
+
+    ```js title="astro.config.mjs"
+    import netlify from '@astrojs/netlify';
+
+    export default defineConfig({
+      output: 'server',
+      adapter: netlify(),
+      // ...
+    });
+    ```
+  </TabItem>
+  <TabItem label="Cloudflare (SSR)">
+    ```bash
+    npm install @astrojs/cloudflare
+    ```
+
+    ```js title="astro.config.mjs"
+    import cloudflare from '@astrojs/cloudflare';
+
+    export default defineConfig({
+      output: 'server',
+      adapter: cloudflare(),
+      // ...
+    });
+    ```
+  </TabItem>
+</Tabs>
+
+## Adding integrations
+
+Astro's integration ecosystem makes it easy to add functionality. Install and configure integrations in `astro.config.mjs`.
+
+### Analytics
+
+Add popular analytics providers:
+
+**Google Analytics:**
+
+```bash
+npm install @astrojs/google-analytics
+```
+
+Add a script tag directly to `MarketingLayout.astro` or use a partytown integration.
+
+**Plausible / Umami / Simple Analytics:**
+
+Add their script tags to the `<head>` of `MarketingLayout.astro` or to the Starlight `head` array in `astro.config.mjs`:
+
+```js title="astro.config.mjs"
+head: [
+  {
+    tag: 'script',
+    attrs: {
+      src: 'https://plausible.io/js/script.js',
+      'data-domain': 'your-domain.com',
+      defer: true,
+    },
+  },
+],
+```
+
+**Vercel Analytics:**
+
+```bash
+npm install @vercel/analytics
+```
+
+Then import and add the `<Analytics />` component to your layout.
+
+### RSS feed
+
+varsha includes `@astrojs/rss` pre-configured. The RSS feed is generated automatically at build time at `/rss.xml` from all published blog posts. See the [Content & blog guide](/docs/session-state/#rss-feed) for customization options.
+
+### Image optimization
+
+Astro's built-in `<Image>` component and `astro:assets` provide automatic image optimization:
+
+```astro
+---
+import { Image } from 'astro:assets';
+import myImage from '../assets/my-image.png';
+---
+
+<Image src={myImage} alt="Description" width={800} height={400} />
+```
+
+Images in `src/assets/` are processed at build time. Images in `public/` are served as-is.
+
+### MDX extensions
+
+Add MDX plugins for enhanced Markdown processing:
+
+```bash
+npm install rehype-autolink-headings rehype-slug
+```
+
+Configure in `astro.config.mjs`:
+
+```js title="astro.config.mjs"
+markdown: {
+  rehypePlugins: [
+    'rehype-slug',
+    ['rehype-autolink-headings', { behavior: 'append' }],
+  ],
+},
+```
+
+### Tailwind CSS
+
+To use Tailwind CSS alongside varsha's design system:
+
+```bash
+npx astro add tailwind
+```
+
+This installs `@astrojs/tailwind` and creates a `tailwind.config.mjs`. You can use Tailwind utility classes alongside varsha's CSS tokens.
+
+:::tip
+Consider using varsha's built-in CSS tokens before adding Tailwind. The token system is designed to work seamlessly with the theme switcher.
+:::
+
+### Partytown (third-party scripts)
+
+For improved performance with third-party scripts (analytics, chat widgets), use Partytown to offload them to a web worker:
+
+```bash
+npx astro add partytown
+```
+
+### Sitemap customization
+
+The sitemap is automatically generated by `@astrojs/sitemap`. Customize it in `astro.config.mjs`:
+
+```js title="astro.config.mjs"
+import sitemap from '@astrojs/sitemap';
+
+sitemap({
+  // Exclude specific pages
+  exclude: ['/admin/', '/internal/'],
+  // Custom serialization
+  serialize(item) {
+    if (item.url === 'https://your-domain.com/') {
+      item.changefreq = 'weekly';
+      item.priority = 1.0;
+    }
+    return item;
+  },
+}),
+```
+
+### Icon sets
+
+Use `astro-icon` for easy icon access:
+
+```bash
+npm install astro-icon
+```
+
+```astro
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<Icon name="github" />
+<Icon name="twitter" />
+```
+
+## Customizing Starlight
+
+The Starlight integration is extensively customizable. Common customizations include:
+
+### Custom CSS
+
+Add custom CSS to override Starlight defaults via `src/styles/starlight.css`:
+
+```js title="astro.config.mjs"
+starlight({
+  customCss: ['./src/styles/starlight.css'],
+}),
+```
+
+### Custom components
+
+Override Starlight's built-in components:
+
+```js title="astro.config.mjs"
+starlight({
+  components: {
+    Banner: './src/components/Banner.astro',
+    Header: './src/components/Header.astro',
+    Sidebar: './src/components/Sidebar.astro',
+    SiteTitle: './src/components/SiteTitle.astro',
+    Footer: './src/components/Footer.astro',
+  },
+}),
+```
+
+### Edit link
+
+Configure the "Edit page" link:
+
+```js title="astro.config.mjs"
+starlight({
+  editLink: {
+    baseUrl: 'https://github.com/your-username/your-repo/edit/main/',
+  },
+}),
+```
+
+Set `editLink: false` to disable.
+
+### Pagination
+
+Control previous/next page links at the bottom of doc pages:
+
+```mdx
+---
+title: My page
+prev: false
+next:
+  label: 'Next topic'
+  link: '/docs/next-page/'
+---
+```
+
+## Next steps
+
+<CardGrid>
+  <Card title="Deployment">
+    Deploy with your preferred platform — Vercel, Netlify, Cloudflare, or static hosting.
+
+    [Deployment →](/docs/persistence-remote/)
+  </Card>
+  <Card title="SEO & metadata">
+    Configure sitemap, robots, OG tags, and structured data.
+
+    [SEO & metadata →](/docs/socket-api/)
+  </Card>
+  <Card title="Customization">
+    Brand your site and configure the sidebar and navigation.
+
+    [Customization →](/docs/configuration/)
+  </Card>
+</CardGrid>

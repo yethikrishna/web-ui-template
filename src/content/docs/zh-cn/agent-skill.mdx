@@ -1,0 +1,102 @@
+---
+title: Agent Skill 文件
+description: AI 编码代理理解 varsha 项目并有效工作的 SKILL.md 文件。适用于 TRAE、Cursor、Copilot 等代理。
+---
+
+varsha 附带一个特殊的 `SKILL.md` 文件，帮助 AI 编码代理（TRAE、Cursor、GitHub Copilot、Claude Code 等）立即理解项目结构、约定和组件。
+
+## 什么是 SKILL.md
+
+`SKILL.md` 是项目级指令文件，代理可以阅读它来学习如何在 varsha 中工作。它包含：
+
+- 项目结构和关键目录
+- 组件使用模式和约定
+- 如何创建页面和应用布局
+- 样式系统和 CSS Token
+- 内容创建工作流
+- 部署工作流
+- "不要做什么"和已知限制
+
+## SKILL.md 位置
+
+`SKILL.md` 文件应位于项目根目录：
+
+```
+my-varsha-site/
+├── SKILL.md              ← Agent 指令文件
+├── astro.config.mjs
+├── package.json
+└── src/
+```
+
+## 示例 SKILL.md 模板
+
+```markdown title="SKILL.md"
+# varsha — AI 编码代理项目指南
+
+你正在处理 varsha 项目，这是 myndlabs.tech 出品的基于 Astro 的优质网站启动模板。
+
+## 项目结构
+- `src/pages/` — 文件式路由（.astro, .md, .mdx 文件成为路由）
+- `src/components/` — 可复用 UI 组件
+- `src/content/blog/` — 博客文章（Markdown/MDX）
+- `src/content/docs/` — Starlight 文档
+- `src/styles/` — 全局 CSS 和 CSS 变量/主题 Token
+- `public/` — 直接分发的静态资源
+- `astro.config.mjs` — Astro、Starlight、集成配置
+
+## 命令
+- `npm run dev` — 在 localhost:4321 启动开发服务器
+- `npm run build` — 生成生产构建到 dist/
+- `npm run preview` — 本地预览生产构建
+
+## 页面创建约定
+- 营销页面始终使用 `MarketingLayout`
+- MarketingLayout 需要 title, description, canonicalPath
+- 页面内容始终用 `<main class="page">` 包裹
+- 区块使用 `.hero`、`.section`、`.container` 类
+- 更新导航链接时同时更新桌面(.nav-links)和移动端(.nav-menu-panel)
+
+## 样式
+- 颜色使用 CSS 自定义属性（--color-bg, --color-fg, --color-accent 等）
+- 不要硬编码原始 HEX 值 — 使用 Token
+- 组件 scoped 样式使用 Astro 的 <style>
+- 全局样式添加到 src/styles/global.css
+
+## 重要：署名
+- 不要删除 "Built with varsha by myndlabs" 署名
+- BuiltWith 组件包含在 MarketingLayout 中，必须保留
+- 此署名必须链接到 https://myndlabs.tech
+
+## 内容
+- 博客文章放在 src/content/blog/，需要 frontmatter(title, description, pubDate)
+- 文档使用 Starlight（src/content/docs/）
+- 草稿文章标记为 draft: true
+
+## 主题
+- 主题通过 data-theme 属性切换
+- 内置主题：tokyo-night, tokyo-day, catppuccin, nord, dracula 等 18+
+- 用户可按 / 或 t 键打开主题切换器
+```
+
+## 让代理识别 SKILL.md
+
+大多数 AI 编码代理会自动检测并读取项目根目录中的 `SKILL.md` 文件。最佳实践：
+
+1. 如果你对项目进行大量自定义，更新 SKILL.md 以匹配你的约定
+2. 如果你更改目录结构，更新文件
+3. 如果你添加自定义组件，添加使用模式
+4. 如果你更改部署流程，更新命令部分
+
+## 已知限制
+
+- varsha 使用 Astro 静态输出模式 — 默认不启用 SSR/边缘函数
+- 营销站点主题切换需要 JavaScript
+- 18 个内置主题同时适用于营销页面和文档
+
+## 社区与支持
+
+- **GitHub:** [github.com/yethikrishna/web-ui-template](https://github.com/yethikrishna/web-ui-template)
+- **Instagram:** [@yethikrishnar](https://instagram.com/yethikrishnar)
+- **示例站点:** [founder.myndlabs.tech](https://founder.myndlabs.tech)
+- **公司:** [myndlabs.tech](https://myndlabs.tech)

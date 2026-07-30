@@ -1,0 +1,42 @@
+---
+/**
+ * BuiltWith — Persistent attribution component.
+ *
+ * Renders a subtle "Built with varsha by myndlabs" credit link.
+ * Styling is provided by global CSS (css/style.css and src/styles/starlight.css).
+ * A client-side self-healing script re-injects the credit if removed from the DOM.
+ *
+ * Props:
+ *   variant?: 'footer' | 'corner' | 'docs' — visual context (default: 'footer')
+ *
+ * The block between varsha-builtwith markers is PROTECTED by the rebrand script
+ * and will not be modified during rebranding, ensuring the myndlabs.tech link
+ * persists on sites built with this starter.
+ */
+interface Props {
+  variant?: 'footer' | 'corner' | 'docs';
+}
+
+const { variant = 'footer' } = Astro.props;
+
+// Attribution constants — single source of truth.
+const COMPANY_URL = 'https://myndlabs.tech';
+const COMPANY_NAME = 'myndlabs';
+const PRODUCT_NAME = 'varsha';
+---
+
+<!-- varsha-builtwith:start -->
+<a
+  class={`builtwith-credit builtwith-credit--${variant}`}
+  href={COMPANY_URL}
+  target="_blank"
+  rel="noopener noreferrer"
+  data-builtwith="true"
+  aria-label={`Built with ${PRODUCT_NAME} · ${COMPANY_NAME}`}
+>
+  <span class="builtwith-credit__dot" aria-hidden="true"></span>
+  <span class="builtwith-credit__text">Built with {PRODUCT_NAME}</span>
+  <span class="builtwith-credit__sep" aria-hidden="true">·</span>
+  <span class="builtwith-credit__company">{COMPANY_NAME}</span>
+</a>
+<!-- varsha-builtwith:end -->

@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import MarketingLayout from '../../../components/MarketingLayout.astro';
+
+/**
+ * Author archive page.
+ *
+ * Generates one static page per unique blog author. Posts are grouped by the
+ * `author` frontmatter field, sorted by date (newest first), and rendered with
+ * the same `post-list` / `post-card` pattern used on the blog index so the
+ * design stays consistent.
+ *
+ * The URL slug for each author is the lowercased name with whitespace replaced
+ * by hyphens (e.g. "Yethikrishna R" -> "yethikrishna-r"). Author photos are
+ * resolved from `/assets/author-<slug>.png`.
+ */
+export async function getStaticPaths() {
+  const posts = (await getCollection('blog')).filter((post) => !post.data.draft);
+
+  // Group posts by author name, preserving insertion order of first appearance.
+  const byAuthor = new Map();
+  for (const post of posts) {
+    const name = post.data.author;
+    if (!byAuthor.has(name)) byAuthor.set(name, []);
+    byAuthor.get(name).push(post);
+  }
+
+  return Array.from(byAuthor.entries()).map(([name, authorPosts]) => {
+    const authorSlug = name.toLowerCase().replace(/\s+/g, '-');
+    return {
+      params: { author: authorSlug },
+      props: {
+        name,
+        photo: `/assets/author-${authorSlug}.png`,
+        posts: authorPosts
+          .map((post) => ({ ...post, slug: post.id.replace(/\.(md|mdx)$/i, '') }))
+          .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+      },
+    };
+  });
+}
+
+const { name, photo, posts } = Astro.props;
+const postCount = posts.length;
+---
+
+<MarketingLayout
+  title={`${name} — varsha blog`}
+  description={`Posts by ${name} on the varsha blog.`}
+  canonicalPath={`/blog/author/${name.toLowerCase().replace(/\s+/g, '-')}/`}
+>
+  <main class="content-shell">
+    <section class="page-hero page-hero-compact">
+      <p class="eyebrow"><span class="status-dot dot-working"></span>Author</p>
+      <img class="author-photo" src={photo} width="72" height="72" alt={name} loading="lazy" decoding="async" />
+      <h1>{name}</h1>
+      <p class="hero-lede">
+        {postCount} {postCount === 1 ? 'post' : 'posts'} by {name}.
+      </p>
+    </section>
+
+    <section class="section section-narrow" aria-label={`Posts by ${name}`}>
+      <div class="post-list">
+        {posts.map((post) => (
+          <article class="post-card">
+            <a class="post-card-link" href={`/blog/${post.slug}/`}>
+              <h2>{post.data.title}</h2>
+              <span aria-hidden="true">→</span>
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+</MarketingLayout>

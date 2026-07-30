@@ -1,0 +1,236 @@
+---
+title: Themes
+description: Explore varsha's 18+ built-in color themes, switch between light and dark mode, and create custom themes using CSS custom properties.
+slug: themes
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha ships with 18+ carefully crafted color themes out of the box. Themes can be switched by visitors with a single keypress, and their preference is persisted across sessions. This guide covers how to use, customize, and create themes.
+
+## Switching themes
+
+Press `/` or `t` on any marketing page to open the theme switcher. Use the arrow keys to preview themes, press Enter to apply, or press Escape to cancel.
+
+- **Arrow Up/Down:** Navigate themes (live preview)
+- **Enter:** Apply selected theme and save preference
+- **Escape:** Revert to previous theme and close
+- **Click:** Click any theme to apply it immediately
+
+The selected theme is saved to `localStorage` under the `varsha-palette` key and persists across visits and pages.
+
+## System preference detection
+
+On first visit, varsha automatically detects the visitor's system color preference:
+
+- **Dark mode preferred:** Defaults to Tokyo Night (`tokyo-night`)
+- **Light mode preferred:** Defaults to Tokyo Day (`tokyo-night-day`)
+
+Once a visitor manually selects a theme, their choice overrides the system preference.
+
+## Built-in themes
+
+varsha includes popular themes from the developer community. Each theme is available in a dark variant, and many have light companions.
+
+### Dark themes
+
+| Theme | Palette ID | Description |
+| --- | --- | --- |
+| Tokyo Night | `tokyo-night` | Default dark theme. Deep purples, cyans, and calm blues. Inspired by the popular VS Code theme. |
+| Catppuccin | `catppuccin` | Warm pastels with mocha tones. Soothing dark palette. |
+| Terminal | `terminal` | Classic green-on-black terminal aesthetic. |
+| Dracula | `dracula` | The iconic dark theme with purple, pink, and green accents. |
+| Nord | `nord` | Cool, arctic-inspired blue-grey palette. |
+| Gruvbox | `gruvbox` | Retro warm dark theme with yellow/orange accents. |
+| One Dark | `one-dark` | Atom's iconic dark theme with muted blues and cyans. |
+| Solarized | `solarized` | Ethan Schoonover's precision color scheme (dark variant). |
+| Kanagawa | `kanagawa` | Japanese ukiyo-e inspired dark theme with deep indigo. |
+| Rose Pine | `rose-pine` | Soothing dark theme with pine greens and rose accents. |
+| Vesper | `vesper` | Warm dark theme with orange-red accents. |
+
+### Light themes
+
+| Theme | Palette ID | Description |
+| --- | --- | --- |
+| Tokyo Day | `tokyo-night-day` | Default light theme. Clean paper background with Tokyo Night accents. |
+| Catppuccin Latte | `catppuccin-latte` | Warm light companion to Catppuccin. |
+| Gruvbox Light | `gruvbox-light` | Warm cream background with retro tones. |
+| One Light | `one-light` | Bright, clean light companion to One Dark. |
+| Solarized Light | `solarized-light` | Solarized precision colors on light background. |
+| Kanagawa Lotus | `kanagawa-lotus` | Warm, natural light theme inspired by lotus flowers. |
+| Rose Pine Dawn | `rose-pine-dawn` | Soft, warm light theme with gentle pastels. |
+
+## How themes work
+
+Themes are implemented using CSS custom properties scoped to the `data-palette` attribute on the `<html>` element. When a visitor selects a theme, varsha sets:
+
+```html
+<html data-palette="tokyo-night">
+```
+
+Each palette defines a set of color tokens in `public/css/style.css`:
+
+```css
+[data-palette="tokyo-night"] {
+  --bg: #1a1b26;
+  --fg: #c0caf5;
+  --muted: #565f89;
+  --accent: #7aa2f7;
+  --accent-fg: #1a1b26;
+  --border: #2f334d;
+  --surface: #24283b;
+  /* ... more tokens */
+}
+```
+
+The self-healing theme script in `MarketingLayout.astro` handles:
+
+1. Reading the saved preference from `localStorage`
+2. Detecting system preference on first visit
+3. Applying the `data-palette` attribute before paint (no flash)
+4. The theme switcher overlay UI
+
+## Setting the default theme
+
+To change which theme is used by default, modify the inline script in `src/components/MarketingLayout.astro`:
+
+```astro title="src/components/MarketingLayout.astro"
+var system = window.matchMedia("(prefers-color-scheme: dark)").matches
+  ? "dracula"           // Default dark theme
+  : "one-light";        // Default light theme
+```
+
+Change `"tokyo-night"` and `"tokyo-night-day"` to any palette ID from the table above.
+
+## Creating a custom theme
+
+To create a custom theme:
+
+1. Open `public/css/style.css`
+2. Add a new `[data-palette="your-theme-name"]` block
+3. Define all required semantic color tokens
+4. Add a button for your theme in the theme switcher panel in `MarketingLayout.astro`
+
+### Required color tokens
+
+Every theme must define these semantic tokens:
+
+```css
+[data-palette="my-theme"] {
+  /* Core */
+  --bg: #;           /* Page background */
+  --fg: #;           /* Primary text */
+  --muted: #;        /* Secondary text */
+  --accent: #;       /* Links, buttons, highlights */
+  --accent-fg: #;    /* Text on accent background */
+  --border: #;       /* Borders and dividers */
+  --surface: #;      /* Card/panel background */
+  --surface-hover: #;/* Card hover state */
+  --selection: #;    /* Text selection */
+
+  /* Status colors */
+  --success: #;
+  --warning: #;
+  --danger: #;
+  --info: #;
+
+  /* Code syntax */
+  --code-bg: #;
+  --code-fg: #;
+  --code-comment: #;
+  --code-keyword: #;
+  --code-string: #;
+  --code-number: #;
+  --code-function: #;
+  --code-variable: #;
+}
+```
+
+### Add to the theme switcher
+
+In `src/components/MarketingLayout.astro`, find the `.theme-overlay-list` div and add your theme button in the appropriate section (dark or light):
+
+```astro title="src/components/MarketingLayout.astro"
+<div class="theme-sep"><span>dark</span></div>
+<!-- existing themes -->
+<button type="button" role="option" data-value="my-theme">my theme</button>
+```
+
+### Example: Creating a minimal custom theme
+
+```css title="public/css/style.css"
+[data-palette="midnight"] {
+  --bg: #0f111a;
+  --fg: #e1e4e8;
+  --muted: #6a737d;
+  --accent: #58a6ff;
+  --accent-fg: #0f111a;
+  --border: #21262d;
+  --surface: #161b22;
+  --surface-hover: #1c2128;
+  --selection: rgba(88, 166, 255, 0.2);
+
+  --success: #3fb950;
+  --warning: #d29922;
+  --danger: #f85149;
+  --info: #58a6ff;
+
+  --code-bg: #161b22;
+  --code-fg: #e1e4e8;
+  --code-comment: #6a737d;
+  --code-keyword: #ff7b72;
+  --code-string: #a5d6ff;
+  --code-number: #79c0ff;
+  --code-function: #d2a8ff;
+  --code-variable: #ffa657;
+}
+```
+
+## Disabling the theme switcher
+
+If you prefer a single fixed theme for your site:
+
+1. Remove the theme switcher script from `MarketingLayout.astro`
+2. Set `data-palette` directly on the `<html>` element:
+
+```astro title="MarketingLayout.astro"
+<html lang="en" data-palette="tokyo-night">
+```
+
+3. Remove the theme hint element (`#theme-hint`) and the overlay (`#theme-overlay`)
+4. Remove the keyboard event listener for `/` and `t` keys
+
+:::tip
+Even with a fixed theme, we recommend keeping the light/dark variants and respecting `prefers-color-scheme` for accessibility.
+:::
+
+## Theme and accessibility
+
+When creating custom themes, ensure:
+
+- **Contrast ratio:** Text has at least 4.5:1 contrast against backgrounds (WCAG AA)
+- **Link visibility:** Links in body text should be distinguishable without relying solely on color
+- **Focus indicators:** Focus states should be visible in every theme (the `--shadow-glow` token is used for focus rings)
+- **Code readability:** Syntax colors should remain distinct from each other
+
+Test your theme using browser dev tools' contrast checker and with keyboard navigation.
+
+## Next steps
+
+<CardGrid>
+  <Card title="CSS tokens">
+    Browse the complete list of design tokens you can customize.
+
+    [CSS tokens →](/docs/cli-reference/)
+  </Card>
+  <Card title="Customization">
+    Learn how to brand your site with colors, fonts, and metadata.
+
+    [Customization →](/docs/configuration/)
+  </Card>
+  <Card title="Design system">
+    Understand the design principles behind varsha's theming.
+
+    [Design system →](/docs/design-system/)
+  </Card>
+</CardGrid>

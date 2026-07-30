@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Features — varsha premium website starter</title>
+        <meta
+            name="description"
+            content="Everything you need to launch: design system, built-in docs, blog, dark mode, i18n, SEO, responsive layouts, TypeScript, and more. See how varsha compares to building from scratch or other starters."
+        />
+        <meta name="theme-color" content="#f0eee9" />
+        <link rel="canonical" href="https://myndlabs.tech/compare/" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="varsha" />
+        <meta property="og:title" content="Features — varsha premium website starter" />
+        <meta
+            property="og:description"
+            content="Everything you need to launch: design system, built-in docs, blog, dark mode, i18n, SEO, and more."
+        />
+        <meta property="og:url" content="https://myndlabs.tech/compare/" />
+        <meta property="og:image" content="https://myndlabs.tech/assets/og-card-v8.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="varsha — premium website starter" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Features — varsha premium website starter" />
+        <meta
+            name="twitter:description"
+            content="Everything you need to launch with a beautiful Astro-based website starter."
+        />
+        <meta name="twitter:image" content="https://myndlabs.tech/assets/og-card-v8.png" />
+        <meta name="twitter:image:alt" content="varsha — premium website starter" />
+
+        <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.png?v=15" />
+        <link rel="apple-touch-icon" href="/assets/logo.png" />
+        <link rel="preload" href="/assets/jbm.woff2" as="font" type="font/woff2" crossorigin />
+        <script>
+            (function () {
+                var saved = localStorage.getItem("varsha-palette");
+                var system = window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "tokyo-night"
+                    : "tokyo-night-day";
+                document.documentElement.setAttribute("data-palette", saved || system);
+            })();
+        </script>
+        <link rel="stylesheet" href="/css/style.css?v=44" />
+    </head>
+    <body>
+        <header class="site-header">
+            <nav class="nav" aria-label="Primary navigation">
+                <a class="brand" href="/" aria-label="varsha home">
+                    <span class="brand-logo" aria-hidden="true"></span>
+                    <span>varsha</span>
+                </a>
+                <details class="nav-menu">
+                    <summary class="nav-menu-button" aria-label="Open navigation">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </summary>
+                    <div class="nav-menu-panel">
+                        <a href="/">Home</a>
+                        <a href="/compare/" aria-current="page">Features</a>
+                        <a href="/plugins/">Showcase</a>
+                        <a href="/blog/">Blog</a>
+                        <a href="/docs/">Docs</a>
+                        <a href="/docs/install/">Get started</a>
+                        <a href="https://github.com/yethikrishna/web-ui-template">GitHub</a>
+                        <a href="https://instagram.com/yethikrishnar">Instagram</a>
+                    </div>
+                </details>
+                <div class="nav-links">
+                    <a href="/">Home</a>
+                    <a href="/compare/" aria-current="page">Features</a>
+                    <a href="/plugins/">Showcase</a>
+                    <a href="/docs/">Docs</a>
+                    <a href="/blog/">Blog</a>
+                </div>
+                <div class="nav-tools">
+                    <a class="nav-icon-link" href="https://github.com/yethikrishna/web-ui-template" aria-label="varsha on GitHub">
+                        <svg viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.64 7.64 0 0 1 8 3.87c.68 0 1.36.09 2 .26 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+                        </svg>
+                    </a>
+                    <a class="nav-icon-link" href="https://instagram.com/yethikrishnar" aria-label="varsha on Instagram">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <circle cx="12" cy="12" r="4"/>
+                            <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+                        </svg>
+                    </a>
+                    <a class="nav-cta" href="/docs/install/">Get started</a>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero compare-hero">
+                <div class="hero-copy">
+                    <p class="eyebrow"><span class="status-dot dot-done"></span>Features</p>
+                    <h1>Everything you need to launch.</h1>
+                    <p class="hero-lede">
+                        varsha is a beautiful, premium Astro-based website starter with a built-in
+                        design system, docs, blog, dark mode, and production-ready defaults. Ship
+                        a polished site in minutes, not weeks.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button button-primary" href="/docs/install/">Get started</a>
+                        <a class="button button-secondary" href="#matrix">See the comparison</a>
+                    </div>
+                </div>
+                <div class="compare-claim-card" aria-label="varsha positioning summary">
+                    <p class="section-kicker">varsha ships with</p>
+                    <h2>Design system, docs, blog, and dark mode — out of the box.</h2>
+                    <ul class="compare-checks">
+                        <li>Curated design system with 18+ palettes</li>
+                        <li>Starlight-powered documentation</li>
+                        <li>MDX blog with collections</li>
+                        <li>Dark mode, light mode, and theme switcher</li>
+                        <li>SEO, i18n, and responsive layouts</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section compare-stack-section" id="matrix">
+                <div class="section-heading-wide">
+                    <div>
+                        <p class="section-kicker">The comparison</p>
+                        <h2>Why start from zero?</h2>
+                    </div>
+                    <p>
+                        Most starters leave you wiring up docs, blog, theming, and SEO yourself.
+                        varsha ships all of it pre-configured so you can focus on content and product.
+                    </p>
+                </div>
+
+                <div class="table-wrap comparison-matrix">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>varsha</th>
+                                <th>From scratch</th>
+                                <th>Other starters</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Design system</td>
+                                <td>yes, built-in</td>
+                                <td>build your own</td>
+                                <td>minimal or none</td>
+                            </tr>
+                            <tr>
+                                <td>Built-in docs</td>
+                                <td>yes, Starlight</td>
+                                <td>set up yourself</td>
+                                <td>rarely included</td>
+                            </tr>
+                            <tr>
+                                <td>Blog system</td>
+                                <td>yes, MDX collections</td>
+                                <td>build it</td>
+                                <td>sometimes</td>
+                            </tr>
+                            <tr>
+                                <td>Dark mode</td>
+                                <td>18+ palettes, instant switch</td>
+                                <td>implement yourself</td>
+                                <td>basic toggle</td>
+                            </tr>
+                            <tr>
+                                <td>i18n</td>
+                                <td>built-in routing</td>
+                                <td>wire up yourself</td>
+                                <td>rarely</td>
+                            </tr>
+                            <tr>
+                                <td>SEO</td>
+                                <td>OG tags, sitemap, canonical URLs</td>
+                                <td>add manually</td>
+                                <td>partial</td>
+                            </tr>
+                            <tr>
+                                <td>Responsive</td>
+                                <td>mobile-first, all breakpoints</td>
+                                <td>write all CSS</td>
+                                <td>varies</td>
+                            </tr>
+                            <tr>
+                                <td>TypeScript</td>
+                                <td>full TypeScript support</td>
+                                <td>configure yourself</td>
+                                <td>sometimes</td>
+                            </tr>
+                            <tr>
+                                <td>Components</td>
+                                <td>marketing + docs components</td>
+                                <td>design and build</td>
+                                <td>limited set</td>
+                            </tr>
+                            <tr>
+                                <td>Deploy</td>
+                                <td>zero-config, any platform</td>
+                                <td>set up pipelines</td>
+                                <td>varies</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="section compare-categories-section">
+                <div class="section-heading">
+                    <p class="section-kicker">What's inside</p>
+                    <h2>Production-ready, pixel-perfect.</h2>
+                </div>
+                <div class="differ-grid">
+                    <article class="intersection-card">
+                        <span class="card-index">varsha</span>
+                        <h3>A complete website foundation, designed for launch.</h3>
+                        <p>
+                            varsha combines a refined marketing design system with Starlight docs,
+                            an MDX blog, palette-based theming, and production-grade tooling. You
+                            get pages, components, and content collections that work together from
+                            day one — no duct-taping frameworks required.
+                        </p>
+                        <div class="intersection-pills" aria-label="varsha strengths">
+                            <span>Astro + Starlight</span>
+                            <span>design tokens</span>
+                            <span>MDX blog</span>
+                            <span>18+ palettes</span>
+                            <span>SEO ready</span>
+                            <span>i18n routing</span>
+                        </div>
+                    </article>
+                    <div class="differ-list">
+                        <article>
+                            <span>Design system</span>
+                            <h3>Tokens, components, and palettes — done.</h3>
+                            <p>Typography, spacing, color tokens, buttons, cards, tables, and layouts are already designed. Swap palettes or extend the system without fighting CSS resets.</p>
+                        </article>
+                        <article>
+                            <span>Docs + Blog</span>
+                            <h3>Content collections that just work.</h3>
+                            <p>Starlight powers the docs with search, sidebar, and i18n. The blog uses Astro content collections with MDX, frontmatter, tags, and RSS. Add a post by dropping in a file.</p>
+                        </article>
+                        <article>
+                            <span>Theming</span>
+                            <h3>Dark mode is not an afterthought.</h3>
+                            <p>18 curated palettes (Tokyo Night, Catppuccin, Gruvbox, Nord, and more) with a keyboard-accessible switcher. System preference detection and localStorage persistence built in.</p>
+                        </article>
+                        <article>
+                            <span>Performance</span>
+                            <h3>Fast by default, optimized for production.</h3>
+                            <p>Astro's zero-JS-by-default islands architecture keeps pages lean. Critical CSS is inlined, fonts are preloaded, and images are optimized. Ship Lighthouse 100s without the hassle.</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section compare-one-liners-section">
+                <div class="section-heading">
+                    <p class="section-kicker">Feature highlights</p>
+                    <h2>Built for builders who care about craft.</h2>
+                </div>
+                <div class="one-liner-list">
+                    <article><strong>Astro + Starlight</strong><span>Astro's island architecture paired with Starlight's best-in-class documentation framework.</span></article>
+                    <article><strong>Design tokens</strong><span>CSS custom properties for color, typography, spacing, radius, and motion — consistent across every page.</span></article>
+                    <article><strong>MDX everywhere</strong><span>Write docs and blog posts in MDX with embedded components, code blocks, and custom layouts.</span></article>
+                    <article><strong>Palette switcher</strong><span>Press / or t anywhere to cycle through 18+ hand-tuned themes. Your choice persists across visits.</span></article>
+                    <article><strong>i18n ready</strong><span>Built-in locale routing with Starlight's internationalization for multilingual sites.</span></article>
+                    <article><strong>SEO defaults</strong><span>Open Graph, Twitter cards, canonical URLs, sitemap, and structured metadata — preconfigured and per-page overridable.</span></article>
+                    <article><strong>Deploy anywhere</strong><span>Vercel, Netlify, Cloudflare, GitHub Pages, or any static host. Zero-config static output — no adapter needed.</span></article>
+                </div>
+            </section>
+
+            <section class="final-cta compare-final-cta">
+                <p class="section-kicker">Launch faster</p>
+                <h2>Skip the setup. Start shipping.</h2>
+                <p>
+                    Clone the template, customize the design tokens, add your content, and deploy.
+                    varsha gives you a beautiful, premium website foundation so you can focus on
+                    what makes your product unique.
+                </p>
+                <div class="hero-actions center">
+                    <a class="button button-primary" href="/docs/install/">Get started</a>
+                    <a class="button button-secondary" href="https://github.com/yethikrishna/web-ui-template">View on GitHub</a>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <a class="brand" href="/" aria-label="varsha home">
+                <span class="brand-logo" aria-hidden="true"></span>
+                <span>varsha</span>
+            </a>
+            <div>
+                <a href="/compare/">Features</a>
+                <a href="/docs/">Docs</a>
+                <a href="/blog/">Blog</a>
+                <a href="https://github.com/yethikrishna/web-ui-template">GitHub</a>
+                <a href="mailto:hey@myndlabs.tech">hey@myndlabs.tech</a>
+            </div>
+            <nav class="footer-social" aria-label="Social links">
+                <a href="https://github.com/yethikrishna/web-ui-template" aria-label="varsha on GitHub">
+                    <svg viewBox="0 0 16 16" aria-hidden="true">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.64 7.64 0 0 1 8 3.87c.68 0 1.36.09 2 .26 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+                    </svg>
+                </a>
+                <a href="https://instagram.com/yethikrishnar" aria-label="varsha on Instagram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                        <circle cx="12" cy="12" r="4"/>
+                        <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+                    </svg>
+                </a>
+            </nav>
+        </footer>
+
+        <div class="theme-hint" id="theme-hint" title="Press / or t to switch theme">
+            <span class="theme-hint-dot"></span>
+            <span class="theme-hint-label" id="theme-hint-label">light</span>
+            <span class="theme-hint-key">[/]</span>
+        </div>
+
+        <div class="theme-overlay" id="theme-overlay" hidden>
+            <div class="theme-overlay-panel" role="dialog" aria-label="Theme switcher" aria-modal="true">
+                <div class="theme-overlay-title">settings</div>
+                <div class="theme-overlay-tabs"><span class="active">theme</span></div>
+                <div class="theme-overlay-list" id="theme-overlay-list" role="listbox" aria-label="Themes">
+                    <div class="theme-sep"><span>dark</span></div>
+                    <button type="button" role="option" data-value="catppuccin">catppuccin</button>
+                    <button type="button" role="option" data-value="terminal">terminal</button>
+                    <button type="button" role="option" data-value="tokyo-night">tokyo night</button>
+                    <button type="button" role="option" data-value="dracula">dracula</button>
+                    <button type="button" role="option" data-value="nord">nord</button>
+                    <button type="button" role="option" data-value="gruvbox">gruvbox</button>
+                    <button type="button" role="option" data-value="one-dark">one dark</button>
+                    <button type="button" role="option" data-value="solarized">solarized</button>
+                    <button type="button" role="option" data-value="kanagawa">kanagawa</button>
+                    <button type="button" role="option" data-value="rose-pine">rose pine</button>
+                    <button type="button" role="option" data-value="vesper">vesper</button>
+                    <div class="theme-sep"><span>light</span></div>
+                    <button type="button" role="option" data-value="catppuccin-latte">catppuccin latte</button>
+                    <button type="button" role="option" data-value="tokyo-night-day">tokyo day</button>
+                    <button type="button" role="option" data-value="gruvbox-light">gruvbox light</button>
+                    <button type="button" role="option" data-value="one-light">one light</button>
+                    <button type="button" role="option" data-value="solarized-light">solarized light</button>
+                    <button type="button" role="option" data-value="kanagawa-lotus">kanagawa lotus</button>
+                    <button type="button" role="option" data-value="rose-pine-dawn">rose pine dawn</button>
+                </div>
+                <div class="theme-overlay-footer">
+                    <span class="theme-overlay-hints"><span class="key">↑↓</span> select</span>
+                    <span class="theme-overlay-actions"><span class="theme-apply-btn">↵ apply</span><button class="theme-close-btn" type="button" id="theme-close-btn">esc close</button></span>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            (function () {
+                var overlay = document.getElementById("theme-overlay");
+                var list = document.getElementById("theme-overlay-list");
+                var hintLabel = document.getElementById("theme-hint-label");
+                if (!overlay || !list) return;
+                var options = Array.prototype.slice.call(list.querySelectorAll("[role='option']"));
+                var media = window.matchMedia("(prefers-color-scheme: dark)");
+                var saved = localStorage.getItem("varsha-palette") || "";
+                var committed = saved || defaultPalette();
+
+                function defaultPalette() {
+                    return media.matches ? "tokyo-night" : "tokyo-night-day";
+                }
+
+                function setPalette(value) {
+                    document.documentElement.setAttribute("data-palette", value || defaultPalette());
+                }
+
+                function updateUI(value) {
+                    var activeValue = value || defaultPalette();
+                    options.forEach(function (opt) {
+                        opt.setAttribute("aria-selected", String(opt.dataset.value === activeValue));
+                    });
+                    var active = options.find(function (opt) { return opt.dataset.value === activeValue; });
+                    if (hintLabel && active) hintLabel.textContent = active.textContent.trim();
+                }
+
+                function openOverlay() {
+                    overlay.hidden = false;
+                    document.body.style.overflow = "hidden";
+                    committed = localStorage.getItem("varsha-palette") || defaultPalette();
+                    updateUI(committed);
+                    var active = list.querySelector("[aria-selected='true']") || options[0];
+                    if (active) active.focus();
+                }
+
+                function closeOverlay() {
+                    overlay.hidden = true;
+                    document.body.style.overflow = "";
+                }
+
+                function toggleOverlay() {
+                    if (overlay.hidden) openOverlay();
+                    else closeOverlay();
+                }
+
+                function preview(index) {
+                    if (index < 0 || index >= options.length) return;
+                    setPalette(options[index].dataset.value);
+                    updateUI(options[index].dataset.value);
+                    options[index].focus();
+                }
+
+                function commit(value) {
+                    setPalette(value);
+                    localStorage.setItem("varsha-palette", value);
+                    updateUI(value);
+                    closeOverlay();
+                }
+
+                function revert() {
+                    setPalette(committed);
+                    updateUI(committed);
+                    closeOverlay();
+                }
+
+                media.addEventListener("change", function () {
+                    if (!localStorage.getItem("varsha-palette")) {
+                        setPalette("");
+                        updateUI("");
+                    }
+                });
+
+                options.forEach(function (opt, idx) {
+                    opt.addEventListener("click", function () { commit(opt.dataset.value); });
+                    opt.addEventListener("mouseenter", function () { preview(idx); });
+                });
+
+                document.addEventListener("keydown", function (e) {
+                    if ((e.key === "t" || e.key === "/") && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                        var tag = document.activeElement && document.activeElement.tagName;
+                        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+                        e.preventDefault();
+                        toggleOverlay();
+                        return;
+                    }
+                    if (overlay.hidden) return;
+                    var idx = options.indexOf(document.activeElement);
+                    if (e.key === "ArrowDown") {
+                        e.preventDefault();
+                        preview(idx >= 0 ? Math.min(options.length - 1, idx + 1) : 0);
+                    } else if (e.key === "ArrowUp") {
+                        e.preventDefault();
+                        preview(idx >= 0 ? Math.max(0, idx - 1) : options.length - 1);
+                    } else if (e.key === "Enter" && idx >= 0) {
+                        e.preventDefault();
+                        commit(options[idx].dataset.value);
+                    } else if (e.key === "Escape") {
+                        e.preventDefault();
+                        revert();
+                    }
+                });
+
+                var themeHint = document.getElementById("theme-hint");
+                if (localStorage.getItem("varsha-theme-hint-seen") === "1") {
+                    themeHint.classList.add("is-seen");
+                }
+                themeHint.addEventListener("mouseenter", function () {
+                    localStorage.setItem("varsha-theme-hint-seen", "1");
+                    themeHint.classList.add("is-seen");
+                }, { once: true });
+                themeHint.addEventListener("click", toggleOverlay);
+                document.getElementById("theme-close-btn").addEventListener("click", revert);
+                setPalette(saved);
+                updateUI(saved);
+            })();
+        </script>
+        <!-- varsha-builtwith:start -->
+        <a
+            class="builtwith-credit builtwith-credit--corner"
+            href="https://myndlabs.tech"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-builtwith="true"
+            aria-label="Built with varsha · myndlabs"
+        >
+            <span class="builtwith-credit__dot" aria-hidden="true"></span>
+            <span class="builtwith-credit__text">Built with varsha</span>
+            <span class="builtwith-credit__sep" aria-hidden="true">·</span>
+            <span class="builtwith-credit__company">myndlabs</span>
+        </a>
+        <script>
+            (function () {
+                'use strict';
+                var HOOK = 'data-builtwith';
+                function createCredit() {
+                    var a = document.createElement('a');
+                    a.setAttribute(HOOK, 'true');
+                    a.href = 'https://myndlabs.tech';
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                    a.setAttribute('aria-label', 'Built with varsha \u00b7 myndlabs');
+                    a.className = 'builtwith-credit builtwith-credit--corner';
+                    a.innerHTML = '<span class="builtwith-credit__dot"></span>' +
+                        '<span class="builtwith-credit__text">Built with varsha</span>' +
+                        '<span class="builtwith-credit__sep">\u00b7</span>' +
+                        '<span class="builtwith-credit__company">myndlabs</span>';
+                    return a;
+                }
+                function ensureCredit() {
+                    var el = document.querySelector('[' + HOOK + ']');
+                    if (!el || !document.body.contains(el)) {
+                        document.body.appendChild(createCredit());
+                        return;
+                    }
+                    var cs = window.getComputedStyle(el);
+                    if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0' || parseFloat(cs.opacity) < 0.1) {
+                        el.removeAttribute('style');
+                        el.style.cssText = '';
+                    }
+                }
+                function init() { ensureCredit(); }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', init);
+                } else { init(); }
+                setInterval(ensureCredit, 2500);
+                if (typeof MutationObserver !== 'undefined') {
+                    new MutationObserver(ensureCredit).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
+                }
+            })();
+        </script>
+        <!-- varsha-builtwith:end -->
+    </body>
+</html>

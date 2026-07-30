@@ -1,0 +1,48 @@
+{
+  "name": "create-varsha",
+  "version": "1.0.0",
+  "description": "Scaffold a new varsha website — a premium Astro + Starlight starter template by myndlabs.",
+  "type": "module",
+  "bin": {
+    "create-varsha": "bin/create-varsha.mjs"
+  },
+  "exports": {
+    ".": "./bin/create-varsha.mjs"
+  },
+  "files": [
+    "bin/",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "varsha",
+    "astro",
+    "starlight",
+    "starter",
+    "template",
+    "website",
+    "scaffold",
+    "create-varsha",
+    "myndlabs",
+    "docs",
+    "blog",
+    "i18n"
+  ],
+  "author": "Yethikrishna R <hey@myndlabs.tech>",
+  "license": "MIT",
+  "homepage": "https://myndlabs.tech",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yethikrishna/web-ui-template",
+    "directory": "create-varsha"
+  },
+  "bugs": {
+    "url": "https://github.com/yethikrishna/web-ui-template/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  }
+}

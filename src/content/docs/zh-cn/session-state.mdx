@@ -1,0 +1,139 @@
+---
+title: 内容与博客
+description: 如何使用 Markdown 和 MDX 创建内容，管理 Astro 内容集合，发布博客文章。
+slug: content-blog
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha 使用 Astro 的内容集合来管理博客文章和文档页面。本指南介绍如何创建内容、管理集合和发布博客文章。
+
+## 关于内容集合
+
+Astro 的内容集合提供类型安全的方式管理 Markdown/MDX 内容。varsha 有两个集合：
+
+| 集合 | 目录 | 用途 |
+| --- | --- | --- |
+| `blog` | `src/content/blog/` | 博客文章 |
+| `docs` | `src/content/docs/` | Starlight 文档（自动处理） |
+
+集合 schema 在 `src/content/config.ts` 中定义。
+
+## 创建博客文章
+
+要创建新博客文章，在 `src/content/blog/` 添加 `.md` 或 `.mdx` 文件：
+
+```md title="src/content/blog/launch-announcement.md"
+---
+title: "Launching varsha: A Premium Website Starter"
+description: "Today we're launching varsha, a beautiful Astro starter template."
+pubDate: "2025-01-15"
+author: "Your Name"
+tags: ["launch", "announcement", "astro"]
+---
+
+Today we're excited to announce the launch of **varsha**.
+
+## Why varsha?
+
+We built varsha because we were tired of starting every new project from scratch.
+```
+
+### 博客文章 Frontmatter
+
+| 字段 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `title` | `string` | 是 | 文章标题 |
+| `description` | `string` | 是 | 用于 SEO 和文章列表的简短描述 |
+| `pubDate` | `string` | 是 | 发布日期（`"YYYY-MM-DD"` 格式） |
+| `author` | `string` | 否 | 作者名 |
+| `tags` | `string[]` | 否 | 标签数组 |
+| `heroImage` | `string` | 否 | Hero 图片路径 |
+| `draft` | `boolean` | 否 | 为 `true` 时文章不发布 |
+
+## 使用 MDX
+
+MDX 允许在 Markdown 内容中使用 JSX 组件。在博客文章中使用 MDX，将文件扩展名改为 `.mdx`：
+
+```mdx title="src/content/blog/feature-showcase.mdx"
+---
+title: "Feature Showcase"
+description: "See varsha components in action."
+pubDate: "2025-01-20"
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="Fast" icon="rocket">
+    Zero JavaScript by default.
+  </Card>
+</CardGrid>
+```
+
+## 文章列表
+
+博客文章自动显示在 `src/pages/blog/index.astro` 的博客列表页面。该页面从内容集合获取文章：
+
+```astro
+---
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog', ({ data }) => {
+  return import.meta.env.DEV || !data.draft;
+});
+
+const sortedPosts = posts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+```
+
+## 草稿文章
+
+将正在撰写的文章标记为 `draft: true`：
+
+```md
+---
+title: "Coming Soon"
+pubDate: "2025-02-01"
+draft: true
+---
+```
+
+草稿在开发环境可见，但在生产构建中排除。
+
+## 文档内容
+
+文档页面由 Starlight 处理，位于 `src/content/docs/`。本地化文档放在 `ja/` 和 `zh-cn/` 子目录。
+
+## 添加图片
+
+在博客文章和文档中使用图片：
+
+- 需要优化的图片放在 `src/assets/`，在 MDX 中导入
+- 不需要优化的静态图片放在 `public/`
+
+## 最佳实践
+
+1. **写好描述** — `description` 字段用于 SEO 和文章卡片
+2. **使用一致的日期格式** — 坚持 `YYYY-MM-DD`
+3. **有效使用标签** — 帮助分组相关内容
+4. **长文使用标题** — 将内容分成 `##` 小节便于扫描
+5. **不要部署草稿** — 部署前检查 `draft: true`
+6. **节制使用 MDX 组件** — 不要让内容过度依赖自定义组件
+
+## 下一步
+
+<CardGrid>
+  <Card title="页面与布局">
+    深入了解如何创建页面和使用布局。
+
+    [页面与布局 →](/zh-cn/docs/how-to-work/)
+  </Card>
+  <Card title="SEO 与元数据">
+    确保你的内容针对搜索引擎和社交分享进行了优化。
+
+    [SEO 与元数据 →](/zh-cn/docs/socket-api/)
+  </Card>
+</CardGrid>

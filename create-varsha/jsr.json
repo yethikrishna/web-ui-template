@@ -1,0 +1,14 @@
+{
+  "name": "@myndlabs/create-varsha",
+  "version": "1.0.0",
+  "exports": {
+    ".": "./bin/create-varsha.mjs"
+  },
+  "publish": {
+    "include": [
+      "bin/",
+      "README.md",
+      "LICENSE"
+    ]
+  }
+}

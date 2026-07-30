@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import MarketingLayout from '../../components/MarketingLayout.astro';
+
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .map((post) => ({ ...post, slug: post.id.replace(/\.(md|mdx)$/i, '') }))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<MarketingLayout
+  title="varsha blog"
+  description="Tips, tutorials, and updates for building websites with the varsha starter."
+  canonicalPath="/blog/"
+>
+  <main class="content-shell">
+    <section class="page-hero page-hero-compact">
+      <p class="eyebrow"><span class="status-dot dot-working"></span>Blog</p>
+      <h1>varsha blog.</h1>
+      <p class="hero-lede">
+        Tips, tutorials, and updates for building websites with the varsha starter.
+      </p>
+    </section>
+
+    <section class="section section-narrow" aria-label="Blog posts">
+      <div class="post-list">
+        {posts.map((post) => (
+          <article class="post-card">
+            <a class="post-card-link" href={`/blog/${post.slug}/`}>
+              <h2>{post.data.title}</h2>
+              <span aria-hidden="true">→</span>
+            </a>
+            {post.data.tags && post.data.tags.length > 0 && (
+              <div class="post-tags">
+                {post.data.tags.map((tag) => (
+                  <a class="tag-pill" href={`/blog/?tag=${encodeURIComponent(tag)}`}>{tag}</a>
+                ))}
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+</MarketingLayout>

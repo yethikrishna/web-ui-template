@@ -1,0 +1,208 @@
+---
+title: Design system
+description: An overview of varsha's design philosophy, design tokens, component patterns, and principles that guide the visual language of the starter.
+slug: design-system
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha ships with a cohesive design system built on CSS custom properties. It is designed to be easy to customize while maintaining visual consistency across marketing pages, documentation, and blog content.
+
+## Design principles
+
+varsha's design system is guided by five core principles:
+
+<CardGrid>
+  <Card title="Clarity over decoration">
+    Every element earns its place. Typography, spacing, and color serve readability and hierarchy rather than visual noise.
+  </Card>
+  <Card title="Content first">
+    Layouts are designed around content — not the other way around. Hero sections, feature grids, and documentation pages all prioritize readable text.
+  </Card>
+  <Card title="Themeable by default">
+    Every color is a CSS custom property. Switching or creating a theme means changing variables, not rewriting components.
+  </Card>
+  <Card title="Accessible out of the box">
+    Semantic HTML, sufficient color contrast, keyboard navigation, and ARIA labels are built into every component.
+  </Card>
+  <Card title="Performant">
+    Zero-JavaScript-by-default marketing pages, preloaded fonts, minimal CSS, and static generation ensure fast loads on any device.
+  </Card>
+</CardGrid>
+
+## Color system
+
+varsha uses a layered color system:
+
+1. **Primitive tokens** — Raw color values (e.g., `--c-tokyo-night-bg: #1a1b26`)
+2. **Semantic tokens** — Semantic mappings (e.g., `--bg`, `--fg`, `--accent`) that point to primitive tokens within each theme
+3. **Component tokens** — Component-specific mappings (e.g., `--nav-bg`, `--card-border`) that point to semantic tokens
+
+This means changing a theme only requires updating the semantic token mappings, and components automatically adapt.
+
+See the [CSS tokens reference](/docs/cli-reference/) for the complete list of tokens.
+
+### Color roles
+
+Every theme defines colors for these roles:
+
+| Role | Purpose |
+| --- | --- |
+| Background (`--bg`) | Page and surface background |
+| Foreground (`--fg`) | Primary body text |
+| Muted (`--muted`) | Secondary text, labels, captions |
+| Accent (`--accent`) | Links, buttons, focus states, brand highlights |
+| Border (`--border`) | Dividers, card borders, input outlines |
+| Surface (`--surface`) | Cards, panels, elevated surfaces |
+
+## Typography
+
+varsha uses a modular type scale with JetBrains Mono as the default typeface. The typography system includes:
+
+- **Display headings:** Large, impactful headings for hero sections
+- **Section headings:** Hierarchical H1–H6 styles with consistent weight and spacing
+- **Body text:** Optimized line height (1.6–1.7) and measure (65–75 characters)
+- **Code:** Monospaced code blocks with syntax-aware styling (in docs)
+- **UI labels:** Compact, medium-weight text for navigation, buttons, and metadata
+
+The typography scale is defined in CSS custom properties and can be customized per theme.
+
+## Spacing
+
+Spacing follows a consistent scale based on a 4px base unit:
+
+| Token | Value | Common use |
+| --- | --- | --- |
+| `--sp-1` | 4px | Tight gaps, icon spacing |
+| `--sp-2` | 8px | Element padding, small gaps |
+| `--sp-3` | 12px | Card padding, medium gaps |
+| `--sp-4` | 16px | Section padding, component gaps |
+| `--sp-5` | 24px | Large gaps, section spacing |
+| `--sp-6` | 32px | Hero spacing, major sections |
+| `--sp-8` | 48px | Page-level vertical rhythm |
+| `--sp-10` | 64px | Hero top/bottom padding |
+
+## Border radius
+
+| Token | Value | Use |
+| --- | --- | --- |
+| `--radius-sm` | 4px | Small elements, badges |
+| `--radius-md` | 8px | Buttons, inputs, cards |
+| `--radius-lg` | 12px | Large cards, panels |
+| `--radius-full` | 9999px | Pills, avatar circles |
+
+## Shadows
+
+varsha uses subtle, layered shadows that adapt to each theme's brightness:
+
+| Token | Use |
+| --- | --- |
+| `--shadow-sm` | Subtle elevation for interactive elements |
+| `--shadow-md` | Cards and elevated surfaces |
+| `--shadow-lg` | Dropdowns, modals, popovers |
+
+Dark themes use less shadow and more border-based elevation to avoid muddiness.
+
+## Component patterns
+
+### Buttons
+
+Two button variants are used throughout varsha:
+
+```astro
+<a href="/docs/install/" class="button button--primary">Primary action</a>
+<a href="/docs/" class="button button--secondary">Secondary action</a>
+```
+
+- **Primary buttons** use the accent color background with high-contrast text
+- **Secondary buttons** use a transparent or muted background with a border
+
+### Cards
+
+Cards are used for feature grids, documentation link cards, and content grouping:
+
+```astro
+<div class="feature-card">
+  <h3>Feature title</h3>
+  <p>Feature description goes here.</p>
+</div>
+```
+
+In documentation pages, use Starlight's `<Card>` and `<CardGrid>` components (already imported in most doc templates).
+
+### Hero sections
+
+Landing pages and top-level marketing pages use a `hero` section with:
+
+- A large display heading
+- A supporting subtitle
+- Optional call-to-action buttons in a `.hero-actions` container
+
+```astro
+<section class="hero">
+  <h1>Your headline</h1>
+  <p>Your supporting text.</p>
+  <div class="hero-actions">
+    <a href="/" class="button button--primary">Get started</a>
+  </div>
+</section>
+```
+
+## The BuiltWith component
+
+The `BuiltWith` component is a first-class design element in varsha. It renders a subtle, unobtrusive credit link in the corner or footer of every page. It is designed to be visible but not distracting — a small dot, text, and separator styled to match each theme.
+
+See [Components reference](/docs/plugins/) for props and usage.
+
+## Responsive design
+
+varsha is fully responsive with breakpoints for common device sizes:
+
+| Breakpoint | Approximate width | Target devices |
+| --- | --- | --- |
+| Mobile | < 640px | Phones |
+| Tablet | 640px–1024px | Tablets, small laptops |
+| Desktop | > 1024px | Laptops and desktops |
+
+The navigation collapses to a hamburger menu on mobile, grids reflow to single columns, and hero text sizes adjust automatically.
+
+## Dark mode and theming
+
+Every component in varsha respects the active theme palette. The theme system:
+
+- Respects `prefers-color-scheme` by default
+- Persists user selection in `localStorage`
+- Applies instantly via the `data-palette` attribute on `<html>`
+- Can be toggled with the `/` or `t` key
+
+See the [Themes guide](/docs/keyboard/) for the full list of themes and how to create custom ones.
+
+## Working with the design system
+
+To stay consistent with varsha's design language:
+
+1. **Use tokens, not raw values.** Always reference `var(--bg)`, `var(--accent)`, etc., instead of hardcoding `#hex` values.
+2. **Follow the spacing scale.** Use the `--sp-*` tokens for margins and padding to maintain rhythm.
+3. **Use semantic HTML.** Prefer `<button>`, `<a>`, `<nav>`, `<article>`, `<section>` over generic `<div>`s.
+4. **Respect component variants.** Use `button--primary` and `button--secondary` rather than inventing new button styles.
+5. **Test in multiple themes.** Switch themes during development to ensure your custom components look good across palettes.
+
+## Next steps
+
+<CardGrid>
+  <Card title="CSS tokens reference">
+    Browse every CSS custom property available in varsha.
+
+    [CSS tokens →](/docs/cli-reference/)
+  </Card>
+  <Card title="Themes">
+    Explore all built-in themes and learn to create your own.
+
+    [Themes →](/docs/keyboard/)
+  </Card>
+  <Card title="Components">
+    See every built-in component with code examples.
+
+    [Components →](/docs/plugins/)
+  </Card>
+</CardGrid>

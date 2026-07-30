@@ -1,0 +1,114 @@
+---
+title: 主题
+description: 如何切换主题、配置深浅色模式以及在 varsha 中创建自定义主题。18+ 内置主题。
+slug: themes
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha 附带 18+ 内置主题，支持营销页面和文档站点。用户可以即时切换主题，选择会保存到 localStorage。
+
+## 切换主题
+
+用户可以通过以下方式切换主题：
+
+- 按 `/` 或 `t` 键打开主题选择器模态框
+- 点击导航栏中的主题切换器按钮
+
+主题选择会保存到 `localStorage`，后续访问时会记住偏好。
+
+## 内置主题
+
+<CardGrid>
+  <Card title="Tokyo Night">
+    深蓝色调的深色主题，受 Tokyo Night 配色方案启发。默认主题。
+  </Card>
+  <Card title="Tokyo Day">
+    Tokyo Night 的明亮对应版本，柔和的蓝灰色调。
+  </Card>
+  <Card title="Catppuccin (Latte/Frappe/Macchiato/Mocha)">
+    四种变体的柔和暖色调主题系列。
+  </Card>
+  <Card title="Nord">
+    冷色调的北极风格深色主题，蓝绿色调。
+  </Card>
+  <Card title="Dracula">
+    经典的紫色/粉色深色主题。
+  </Card>
+  <Card title="One Dark/Light">
+    受 Atom One Dark 主题启发。
+  </Card>
+</CardGrid>
+
+以及更多：Solarized Dark/Light、Gruvbox、Rose Pine、Kanagawa、Ayu Dark/Light、Everforest 等。
+
+## 主题系统工作原理
+
+varsha 使用 CSS 自定义属性（CSS 变量）处理主题。每个主题在 `<html>` 标签上设置 `data-theme` 属性：
+
+```html
+<html data-theme="tokyo-night">
+```
+
+主题 CSS 定义了语义化颜色 Token：
+
+```css
+:root[data-theme="tokyo-night"] {
+  --color-bg: #1a1b26;
+  --color-fg: #c0caf5;
+  --color-accent: #7aa2f7;
+  /* ... */
+}
+```
+
+## 创建自定义主题
+
+在 `src/styles/global.css` 中添加新主题：
+
+```css title="src/styles/global.css"
+:root[data-theme="my-theme"] {
+  --color-bg: #0d1117;
+  --color-fg: #e6edf3;
+  --color-muted: #8b949e;
+  --color-accent: #58a6ff;
+  --color-surface: #161b22;
+  --color-border: #30363d;
+}
+```
+
+然后在 `src/components/ThemeSwitcher.astro` 中注册主题，将其添加到主题列表数组：
+
+```js title="src/components/ThemeSwitcher.astro"
+const themes = [
+  // ... 现有主题
+  { id: 'my-theme', name: 'My Custom Theme' },
+];
+```
+
+## 明暗模式
+
+主题可以是深色或浅色。Starlight 自动检测浅色/深色模式以处理代码高亮和内置组件。
+
+要强制特定模式，添加 `data-color-scheme`：
+
+```css
+:root[data-theme="my-theme"] {
+  color-scheme: dark; /* 或 light */
+}
+```
+
+## 覆盖默认主题
+
+更改 `src/components/ThemeSwitcher.astro` 中的默认主题：
+
+```js
+const defaultTheme = 'my-theme';
+```
+
+## 尊重系统偏好
+
+varsha 默认不自动跟随系统主题偏好，因为有多个主题可用。如果想添加此功能，检查 `prefers-color-scheme` 媒体查询并相应设置初始主题。
+
+## 主题预览
+
+在浏览器中按 `/` 键打开主题切换器，实时预览所有主题。

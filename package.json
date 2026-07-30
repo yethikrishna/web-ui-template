@@ -1,0 +1,23 @@
+{
+  "name": "varsha-starter",
+  "version": "1.0.0",
+  "description": "varsha — a premium website starter template by myndlabs. Built with Astro + Starlight.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare-docs": "node scripts/prepare-docs.mjs",
+    "rebrand": "node scripts/rebrand.mjs",
+    "clean": "node -e \"const fs=require('fs');['.vercel','dist','build','src/content/docs/preview'].forEach(d=>fs.rmSync(d,{recursive:true,force:true}))\"",
+    "predev": "node scripts/rebrand.mjs",
+    "dev": "node scripts/prepare-docs.mjs && astro dev",
+    "prebuild": "node scripts/rebrand.mjs && node -e \"const fs=require('fs');['.vercel','dist','build','src/content/docs/preview'].forEach(d=>fs.rmSync(d,{recursive:true,force:true}))\"",
+    "build": "node scripts/prepare-docs.mjs && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.2.0",
+    "@astrojs/starlight": "^0.36.0",
+    "astro": "^5.0.0"
+  }
+}

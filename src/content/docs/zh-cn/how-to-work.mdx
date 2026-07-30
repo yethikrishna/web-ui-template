@@ -1,0 +1,195 @@
+---
+title: 页面与布局
+description: 如何在 varsha 中创建页面、使用 MarketingLayout、构建布局结构，以及使用内置组件构建页面。
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha 使用文件式路由 — 只需将文件放入 `src/pages/` 即可创建页面。本指南介绍如何创建页面、使用布局以及组合常用组件。
+
+## 如何创建页面
+
+### 基本营销页面
+
+所有营销页面（落地页、关于、定价等）应使用 `MarketingLayout`：
+
+```astro title="src/pages/about.astro"
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+
+<MarketingLayout
+  title="About Us"
+  description="Learn about our company."
+  canonicalPath="/about/"
+>
+  <main class="page">
+    <section class="hero">
+      <h1>About Us</h1>
+      <p>We build tools that help people ship faster.</p>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+### MarketingLayout 属性
+
+| 属性 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `title` | `string` | 是 | 页面标题（用于 `<title>` 标签和 OG 标签） |
+| `description` | `string` | 是 | 元描述 |
+| `canonicalPath` | `string` | 是 | 规范 URL 路径（如 `/about/`） |
+| `image` | `string` | 否 | OG 图片路径（默认为 `/og-image.png`） |
+
+### 带 Hero 的页面
+
+创建带 Hero 区块的页面：
+
+```astro title="src/pages/features.astro"
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+
+<MarketingLayout
+  title="Features"
+  description="Everything varsha has to offer."
+  canonicalPath="/features/"
+>
+  <main class="page">
+    <section class="hero">
+      <h1>Everything you need to ship.</h1>
+      <p>Built-in components, themes, and tools.</p>
+      <div class="hero-actions">
+        <a href="/docs/quick-start/" class="btn btn-primary">Get started</a>
+        <a href="#features" class="btn btn-secondary">See features</a>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <div class="container">
+        <h2>Features</h2>
+        <div class="card-grid">
+          <div class="card">
+            <h3>Beautiful by default</h3>
+            <p>18+ themes and a polished design system.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+## 构建页面结构
+
+varsha 对营销页面使用一致的区块结构：
+
+```
+<main class="page">
+  <section class="hero">        <!-- 页面头部/Hero -->
+  <section class="section">     <!-- 内容区块 -->
+    <div class="container">     <!-- 限制内容宽度 -->
+  <section class="section alt"> <!-- 交替背景的区块 -->
+</main>
+```
+
+### 可用的工具类
+
+| 类名 | 用途 |
+| --- | --- |
+| `.page` | 主页面包装器 |
+| `.hero` | 全宽 Hero 区块 |
+| `.section` | 标准内边距的内容区块 |
+| `.section.alt` | 交替背景区块 |
+| `.container` | 最大宽度容器（默认居中） |
+| `.card-grid` | 响应式卡片网格 |
+| `.card` | 单个卡片 |
+| `.btn` / `.btn-primary` / `.btn-secondary` | 按钮样式 |
+
+## 使用现有组件
+
+### BuiltWith
+
+显示 "Built with varsha by myndlabs" 署名徽标。此组件由 `MarketingLayout` 自动引入。**请勿删除** — 这是 varsha 使用条款要求的署名。
+
+```astro
+import BuiltWith from '../components/BuiltWith.astro';
+
+<BuiltWith />
+```
+
+### 自定义区块组件
+
+你可以在 `src/components/` 创建可复用的区块组件：
+
+```astro title="src/components/FeatureGrid.astro"
+---
+const { features } = Astro.props;
+---
+
+<div class="card-grid">
+  {features.map(feature => (
+    <div class="card">
+      <h3>{feature.title}</h3>
+      <p>{feature.description}</p>
+    </div>
+  ))}
+</div>
+```
+
+在任意页面使用：
+
+```astro
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+
+const features = [
+  { title: 'Fast', description: 'Zero JS by default.' },
+  { title: 'Beautiful', description: '18+ built-in themes.' },
+];
+---
+
+<MarketingLayout title="Features" description="..." canonicalPath="/features/">
+  <main class="page">
+    <section class="section">
+      <div class="container">
+        <FeatureGrid features={features} />
+      </div>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+## 更新导航
+
+添加新页面后，更新 `MarketingLayout.astro` 中的导航链接。记得**同时**更新桌面导航（`.nav-links`）和移动端导航面板（`.nav-menu-panel`）。
+
+## 最佳实践
+
+1. **始终使用 `MarketingLayout`** — 保持营销页面页眉、页脚、主题和署名的一致性
+2. **使用语义化 HTML** — `<main>`、`<section>`、`<h1>`-`<h3>`、`<nav>`、`<footer>`
+3. **内容放在容器内** — 使用 `.container` 防止内容在超宽屏幕上过宽
+4. **保持署名** — 不要删除 BuiltWith 组件
+5. **使用一致的区块结构** — `.hero` → `.section` → `.section.alt` 等
+6. **组件保持可复用** — 将重复模式提取到 `src/components/`
+
+## 下一步
+
+<CardGrid>
+  <Card title="自定义">
+    更改颜色、字体和元数据以品牌化你的网站。
+
+    [自定义 →](/zh-cn/docs/configuration/)
+  </Card>
+  <Card title="组件参考">
+    查看内置组件的完整列表。
+
+    [组件 →](/zh-cn/docs/plugins/)
+  </Card>
+  <Card title="设计系统">
+    了解 varsha 的设计原则和 Token。
+
+    [设计系统 →](/zh-cn/docs/design-system/)
+  </Card>
+</CardGrid>

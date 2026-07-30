@@ -1,0 +1,131 @@
+---
+title: 开始使用
+description: 如何安装 varsha 网站启动模板。通过 degit、git clone、npm create 进行设置和首次运行。
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha 是一个构建在 [Astro](https://astro.build) 之上的优质网站启动模板。本指南将介绍前置条件、安装方式以及首次启动本地开发服务器。
+
+## 前置条件
+
+在安装 varsha 之前，你需要：
+
+| 工具 | 最低版本 | 备注 |
+| --- | --- | --- |
+| [Node.js](https://nodejs.org/) | 18.17.0 或 20.3.0+ | 推荐使用 LTS 版本 |
+| [npm](https://www.npmjs.com/) | 9.0+ | Node.js 自带 |
+| 代码编辑器 | — | 推荐 VS Code + [Astro 扩展](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode) |
+| Git | 2.0+ | 克隆和部署所需 |
+
+检查 Node.js 版本：
+
+```bash
+node --version
+```
+
+## 安装 varsha
+
+选择以下任一方式创建新的 varsha 项目。
+
+<CardGrid>
+  <Card title="推荐：degit">
+    使用 `degit` 下载不含 Git 历史的最新模板，获得干净的起始状态。
+  </Card>
+  <Card title="Git clone">
+    如需贡献代码或保留 Git 历史，克隆完整仓库。
+  </Card>
+  <Card title="npm create">
+    使用 Astro CLI 并指定 varsha 模板标志。
+  </Card>
+</CardGrid>
+
+### 方式一：使用 degit（推荐）
+
+```bash
+npx degit yethikrishna/web-ui-template my-varsha-site
+cd my-varsha-site
+npm install
+```
+
+这将创建一个 `my-varsha-site` 目录，包含 varsha 启动模板的全新副本（不含原始 Git 历史）。
+
+### 方式二：使用 Git 克隆
+
+```bash
+git clone https://github.com/yethikrishna/web-ui-template.git my-varsha-site
+cd my-varsha-site
+npm install
+```
+
+如果使用 Git 克隆，在提交前可考虑删除原有远程并添加自己的远程仓库：
+
+```bash
+git remote remove origin
+git remote add origin https://github.com/your-username/your-repo.git
+```
+
+### 方式三：使用 Astro CLI
+
+```bash
+npm create astro@latest -- --template yethikrishna/web-ui-template my-varsha-site
+cd my-varsha-site
+npm install
+```
+
+## 启动开发服务器
+
+启动本地开发服务器：
+
+```bash
+npm run dev
+```
+
+默认情况下，varsha 运行在 [http://localhost:4321](http://localhost:4321)。在浏览器中打开该地址即可查看网站。
+
+开发服务器支持：
+
+- **热模块替换（HMR）：** 对 `.astro`、`.mdx`、`.css`、`.ts` 文件的修改会立即生效，无需整页刷新。
+- **本地网络访问：** 添加 `--host` 可在本地网络中访问：`npm run dev -- --host`。
+
+## 可用脚本
+
+varsha 内置以下 npm 脚本：
+
+| 脚本 | 命令 | 用途 |
+| --- | --- | --- |
+| `dev` | `npm run dev` | 启动本地开发服务器 |
+| `build` | `npm run build` | 生成生产构建到 `./dist/` |
+| `preview` | `npm run preview` | 在部署前本地预览生产构建 |
+| `astro` | `npx astro` | 直接运行 Astro CLI 命令 |
+
+## 验证安装
+
+运行 `npm run dev` 后，确认以下页面均可正常访问：
+
+1. varsha 首页（`http://localhost:4321/`）
+2. 文档页面（`http://localhost:4321/docs/`）
+3. 博客页面（`http://localhost:4321/blog/`）
+
+如果三个页面都能正常加载，说明安装成功。
+
+## 下一步
+
+<CardGrid>
+  <Card title="快速开始">
+    在 5 分钟内创建并部署你的第一个自定义页面。
+
+    [快速开始 →](/zh-cn/docs/quick-start/)
+  </Card>
+  <Card title="项目结构">
+    了解 varsha 项目的组织方式。
+
+    [项目结构 →](/zh-cn/docs/concepts/)
+  </Card>
+</CardGrid>
+
+## 获取帮助
+
+- **文档：** 你正在这里。通过侧边栏导航查看所有功能指南。
+- **GitHub Issues：** 在 [github.com/yethikrishna/web-ui-template/issues](https://github.com/yethikrishna/web-ui-template/issues) 提交 Bug 报告或功能请求。
+- **Instagram：** 关注 [@yethikrishnar](https://instagram.com/yethikrishnar) 获取更新和案例。

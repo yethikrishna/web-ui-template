@@ -1,0 +1,131 @@
+---
+title: 始め方
+description: varshaウェブサイトスターターテンプレートのインストール方法。degit、git clone、npm createによるセットアップと初回実行。
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varshaは[Astro](https://astro.build)上に構築されたプレミアムWebサイトスターターテンプレートです。このガイドでは、前提条件、インストール方法、ローカル開発サーバーの初回起動について説明します。
+
+## 前提条件
+
+varshaをインストールする前に、以下のツールが必要です：
+
+| ツール | 最小バージョン | 備考 |
+| --- | --- | --- |
+| [Node.js](https://nodejs.org/) | 18.17.0 または 20.3.0+ | LTS推奨 |
+| [npm](https://www.npmjs.com/) | 9.0+ | Node.jsに付属 |
+| コードエディター | — | VS Codeと[Astro拡張機能](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode)推奨 |
+| Git | 2.0+ | クローンとデプロイに必要 |
+
+Node.jsのバージョンを確認するには：
+
+```bash
+node --version
+```
+
+## varshaのインストール
+
+以下の方法から1つ選んで新しいvarshaプロジェクトを作成してください。
+
+<CardGrid>
+  <Card title="推奨: degit">
+    `degit`はGit履歴を含まない最新のテンプレートをダウンロードし、クリーンな状態で始められます。
+  </Card>
+  <Card title="Git clone">
+    コントリビュートする場合やGit履歴を保持したい場合はフルリポジトリをクローンします。
+  </Card>
+  <Card title="npm create">
+    Astro CLIでvarshaテンプレートフラグを使用します。
+  </Card>
+</CardGrid>
+
+### オプション1: degitで作成（推奨）
+
+```bash
+npx degit yethikrishna/web-ui-template my-varsha-site
+cd my-varsha-site
+npm install
+```
+
+これにより、元のGit履歴を除いたvarshaスターターの新しいコピーを含む`my-varsha-site`ディレクトリが作成されます。
+
+### オプション2: Gitでクローン
+
+```bash
+git clone https://github.com/yethikrishna/web-ui-template.git my-varsha-site
+cd my-varsha-site
+npm install
+```
+
+Gitでクローンした場合は、コミットする前に既存のリモートを削除して自分のリモートを追加することを検討してください：
+
+```bash
+git remote remove origin
+git remote add origin https://github.com/your-username/your-repo.git
+```
+
+### オプション3: Astro CLIで作成
+
+```bash
+npm create astro@latest -- --template yethikrishna/web-ui-template my-varsha-site
+cd my-varsha-site
+npm install
+```
+
+## 開発サーバーの起動
+
+ローカル開発サーバーを起動します：
+
+```bash
+npm run dev
+```
+
+デフォルトでは、varshaは[http://localhost:4321](http://localhost:4321)で実行されます。ブラウザでこのURLを開くとサイトが表示されます。
+
+開発サーバーは以下をサポートしています：
+
+- **ホットモジュールリプレースメント（HMR）：** `.astro`、`.mdx`、`.css`、`.ts`ファイルの変更はフルページリロードなしで即座に反映されます。
+- **ローカルネットワークアクセス：** `--host`を追加するとローカルネットワーク上で公開されます：`npm run dev -- --host`。
+
+## 利用可能なスクリプト
+
+varshaには以下のnpmスクリプトが標準で用意されています：
+
+| スクリプト | コマンド | 目的 |
+| --- | --- | --- |
+| `dev` | `npm run dev` | ローカル開発サーバーを起動 |
+| `build` | `npm run build` | プロダクションビルドを`./dist/`に生成 |
+| `preview` | `npm run preview` | デプロイ前にプロダクションビルドをローカルでプレビュー |
+| `astro` | `npx astro` | Astro CLIコマンドを直接実行 |
+
+## インストールの確認
+
+`npm run dev`を実行した後、以下が表示されることを確認してください：
+
+1. varshaランディングページ（`http://localhost:4321/`）
+2. ドキュメント（`http://localhost:4321/docs/`）
+3. ブログ（`http://localhost:4321/blog/`）
+
+3つのページすべてが読み込まれれば、インストールは正常に完了しています。
+
+## 次のステップ
+
+<CardGrid>
+  <Card title="クイックスタート">
+    5分で最初のカスタムページを作成してデプロイします。
+
+    [クイックスタート →](/ja/docs/quick-start/)
+  </Card>
+  <Card title="プロジェクト構造">
+    varshaプロジェクトの構成方法を理解します。
+
+    [プロジェクト構造 →](/ja/docs/concepts/)
+  </Card>
+</CardGrid>
+
+## ヘルプの入手
+
+- **ドキュメント：** ここにいます。サイドバーですべての機能のガイドを参照してください。
+- **GitHub Issues：** [github.com/yethikrishna/web-ui-template/issues](https://github.com/yethikrishna/web-ui-template/issues)でバグ報告や機能リクエストができます。
+- **Instagram：** [@yethikrishnar](https://instagram.com/yethikrishnar)で最新情報や事例をフォローしてください。

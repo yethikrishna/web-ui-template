@@ -1,0 +1,166 @@
+---
+/**
+ * Hero — Page hero section.
+ *
+ * Renders an eyebrow label, large title, supporting subtitle, and up to two
+ * call-to-action buttons. Styling uses the project design-system CSS custom
+ * properties so the component adapts to every palette automatically.
+ *
+ * Props:
+ *   eyebrow?: string     - small mono label rendered above the title
+ *   title: string        - main headline (required)
+ *   subtitle?: string    - supporting copy below the title
+ *   primaryCta?: Cta     - primary action button { text, href }
+ *   secondaryCta?: Cta   - secondary action button { text, href }
+ */
+interface Cta {
+  text: string;
+  href: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  primaryCta?: Cta;
+  secondaryCta?: Cta;
+}
+
+const {
+  eyebrow,
+  title,
+  subtitle,
+  primaryCta,
+  secondaryCta,
+} = Astro.props;
+
+const hasActions = Boolean(primaryCta || secondaryCta);
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__inner">
+    {eyebrow && <p class="hero__eyebrow">{eyebrow}</p>}
+    <h1 class="hero__title" id="hero-title">{title}</h1>
+    {subtitle && <p class="hero__subtitle">{subtitle}</p>}
+    {hasActions && (
+      <div class="hero__actions">
+        {primaryCta && (
+          <a class="btn btn--primary" href={primaryCta.href}>
+            {primaryCta.text}
+          </a>
+        )}
+        {secondaryCta && (
+          <a class="btn btn--secondary" href={secondaryCta.href}>
+            {secondaryCta.text}
+          </a>
+        )}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: 5rem 1.5rem 4rem;
+  }
+
+  .hero__inner {
+    max-width: var(--max);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .hero__eyebrow {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    color: var(--accent);
+  }
+
+  .hero__title {
+    margin: 0;
+    max-width: 18ch;
+    font-family: var(--body);
+    font-size: clamp(2.25rem, 6vw, 3.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+  }
+
+  .hero__subtitle {
+    margin: 0;
+    max-width: 56ch;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.6rem;
+    padding: 0 1.1rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-md);
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.12s ease, color 0.12s ease, background 0.12s ease;
+  }
+
+  .btn--primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+
+  .btn--primary:hover {
+    background: color-mix(in srgb, var(--accent) 86%, var(--ink));
+    border-color: color-mix(in srgb, var(--accent) 86%, var(--ink));
+  }
+
+  .btn--secondary {
+    background: transparent;
+    color: var(--ink-soft);
+  }
+
+  .btn--secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding: 3.5rem 1.25rem 2.5rem;
+    }
+    .hero__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .btn {
+      width: 100%;
+    }
+  }
+</style>

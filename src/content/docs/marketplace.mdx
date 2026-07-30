@@ -1,0 +1,194 @@
+---
+title: Examples
+description: Example sites, starter templates, and real-world projects built with varsha by the community and myndlabs.
+slug: examples
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varsha is designed to be a starting point for a wide range of websites — from SaaS landing pages and founder portfolios to documentation sites, blogs, and product microsites. This page showcases how people are using varsha in production.
+
+## Official examples
+
+<CardGrid>
+  <Card title="myndlabs.tech" icon="globe">
+    The official varsha website and documentation. The canonical reference implementation showcasing every feature of the starter.
+
+    [Visit myndlabs.tech →](https://myndlabs.tech)
+  </Card>
+  <Card title="founder.myndlabs.tech" icon="rocket">
+    A founder-focused site built with varsha, demonstrating how to customize the starter for personal branding, product launches, and portfolio use cases.
+
+    [Visit founder.myndlabs.tech →](https://founder.myndlabs.tech)
+  </Card>
+</CardGrid>
+
+## Starter templates
+
+The varsha ecosystem includes several opinionated starter variations for different use cases. These are available as branches or separate repositories:
+
+| Template | Description |
+| --- | --- |
+| **varsha (default)** | The standard starter with marketing site, docs, blog, and multi-theme support |
+| **varsha-docs-only** | Documentation-focused variant without marketing landing page |
+| **varsha-blog** | Blog-first variant optimized for content creators |
+| **varsha-minimal** | Stripped-down starter with just the design system and theme switcher |
+
+To use a variant, specify the branch or repository when using degit:
+
+```bash
+# Default starter
+npx degit yethikrishna/web-ui-template my-site
+
+# Minimal variant (if available)
+npx degit yethikrishna/web-ui-template#minimal my-site
+```
+
+## Common site patterns
+
+varsha is flexible enough to support many types of websites. Here are common patterns with implementation guidance.
+
+### SaaS landing page
+
+A typical SaaS marketing site built with varsha includes:
+
+- Hero section with product name, tagline, and CTAs
+- Feature grid highlighting key capabilities
+- Pricing comparison table
+- Testimonial or social proof section
+- Documentation at `/docs/`
+- Blog at `/blog/`
+
+Use `MarketingLayout` for all marketing pages and Starlight for documentation. Add a pricing page at `src/pages/pricing.astro`.
+
+### Personal portfolio / founder site
+
+Showcase your work, writing, and projects:
+
+- Minimal hero with name and bio
+- Projects grid with screenshots and links
+- Blog posts for essays and updates
+- Newsletter signup section
+- Contact links (GitHub, X/Twitter, Instagram)
+
+See [founder.myndlabs.tech](https://founder.myndlabs.tech) for a reference implementation.
+
+### Documentation site
+
+If you do not need a marketing landing page:
+
+- Remove or replace `index.html`
+- Set the Starlight docs as the homepage
+- Customize the Starlight theme colors in `src/styles/starlight.css`
+- Add custom components as needed
+
+### Product launch / microsite
+
+For a product launch or campaign page:
+
+- Single-page scrolling layout with anchor links
+- Email capture or waitlist form (integrate with your email provider)
+- Countdown timer (custom Astro component or lightweight JS)
+- OG images optimized for social sharing
+- Remove the blog and simplify navigation
+
+### Open source project site
+
+Combine a marketing landing page with full project documentation:
+
+- GitHub link prominently in navigation
+- Starlight docs for guides and API reference
+- Blog for release notes
+- Stats page showing GitHub stars, downloads, or contributors (varsha includes a `stats.astro` page)
+
+## Customization examples
+
+### Adding a pricing page
+
+```astro title="src/pages/pricing.astro"
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+
+<MarketingLayout
+  title="Pricing"
+  description="Simple, transparent pricing for every team."
+  canonicalPath="/pricing/"
+>
+  <main class="page">
+    <section class="hero">
+      <h1>Simple pricing</h1>
+      <p>Start free. Scale when you are ready.</p>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>Free</h3>
+            <p class="price">$0</p>
+            <ul>
+              <li>1 project</li>
+              <li>Community support</li>
+            </ul>
+            <a href="/docs/install/" class="button button--secondary">Get started</a>
+          </div>
+          <div class="feature-card">
+            <h3>Pro</h3>
+            <p class="price">$29/mo</p>
+            <ul>
+              <li>Unlimited projects</li>
+              <li>Priority support</li>
+            </ul>
+            <a href="/docs/install/" class="button button--primary">Start free trial</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+### Adding a waitlist/email form
+
+Add a form endpoint from your email provider (Buttondown, Mailchimp, ConvertKit, etc.) in a marketing section:
+
+```astro
+<section class="section">
+  <div class="container">
+    <h2>Stay updated</h2>
+    <form action="https://buttondown.email/api/emails/embed-subscribe/yourlist" method="post">
+      <input type="email" name="email" placeholder="you@example.com" required />
+      <button type="submit" class="button button--primary">Subscribe</button>
+    </form>
+  </div>
+</section>
+```
+
+## Sharing your site
+
+Built a site with varsha? We would love to feature it. Share it:
+
+- Tag [@yethikrishnar](https://instagram.com/yethikrishnar) on Instagram
+- Open a pull request on [GitHub](https://github.com/yethikrishna/web-ui-template) to add your site to this page
+- Post about it with the hashtag `#builtwithvarsha`
+
+## Next steps
+
+<CardGrid>
+  <Card title="Quick start">
+    Build your first page in five minutes.
+
+    [Quick start →](/docs/quick-start/)
+  </Card>
+  <Card title="Showcase">
+    See more sites built with varsha.
+
+    [Showcase →](/docs/agents/)
+  </Card>
+  <Card title="Deployment">
+    Ship your site to production.
+
+    [Deployment →](/docs/persistence-remote/)
+  </Card>
+</CardGrid>

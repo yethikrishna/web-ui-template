@@ -1,0 +1,104 @@
+---
+title: エージェントスキルファイル
+description: AIコーディングエージェントがvarshaプロジェクトを理解し、効果的に作業するためのSKILL.mdファイル。TRAE、Cursor、Copilotなどのエージェント向け。
+---
+
+varshaには、AIコーディングエージェント（TRAE、Cursor、GitHub Copilot、Claude Codeなど）がプロジェクトの構造、規約、コンポーネントをすぐに理解できるようにする特別な`SKILL.md`ファイルが付属しています。
+
+## SKILL.mdとは何か
+
+`SKILL.md`は、エージェントが読んでvarshaでの作業方法を学習するためのプロジェクトレベルの指示ファイルです。以下のような情報が含まれます：
+
+- プロジェクトの構造と主要なディレクトリ
+- コンポーネントの使用パターンと規約
+- ページの作成方法とレイアウトの適用方法
+- スタイリングシステムとCSSトークン
+- コンテンツ作成のワークフロー
+- デプロイメントワークフロー
+- 「してはいけないこと」と既知の制限
+
+## SKILL.mdの場所
+
+`SKILL.md`ファイルはプロジェクトルートに配置する必要があります：
+
+```
+my-varsha-site/
+├── SKILL.md              ← エージェントの指示ファイル
+├── astro.config.mjs
+├── package.json
+└── src/
+```
+
+## SKILL.mdの内容
+
+以下は、varshaに適した`SKILL.md`のサンプルテンプレートです：
+
+```markdown title="SKILL.md"
+# varsha — AIコーディングエージェント向けプロジェクトガイド
+
+あなたは、myndlabs.techによるAstroベースのプレミアムWebサイトスターターであるvarshaプロジェクトで作業しています。
+
+## プロジェクト構造
+- `src/pages/` — ファイルベースルーティング（.astro, .md, .mdxファイルがルートになる）
+- `src/components/` — 再利用可能なUIコンポーネント
+- `src/content/blog/` — ブログ記事（Markdown/MDX）
+- `src/content/docs/` — Starlightドキュメント
+- `src/styles/` — グローバルCSSとCSS変数/テーマトークン
+- `public/` — そのまま配信される静的アセット
+- `astro.config.mjs` — Astro、Starlight、インテグレーションの設定
+
+## コマンド
+- `npm run dev` — localhost:4321で開発サーバーを起動
+- `npm run build` — dist/にプロダクションビルドを生成
+- `npm run preview` — プロダクションビルドをローカルでプレビュー
+
+## ページ作成の規約
+- マーケティングページには常に`MarketingLayout`を使用する
+- MarketingLayoutにはtitle, description, canonicalPathが必須
+- ページコンテンツは常に`<main class="page">`でラップする
+- セクションは`.hero`、`.section`、`.container`クラスを使用
+- ナビゲーションリンクはデスクトップ(.nav-links)とモバイル(.nav-menu-panel)の両方を更新する
+
+## スタイリング
+- カラーはCSSカスタムプロパティ（--color-bg, --color-fg, --color-accent等）を使用
+- 生のHEX値はハードコードしない — トークンを使用
+- コンポーネントのスコープ付きスタイルにはAstroの<style>を使用
+- グローバルスタイルはsrc/styles/global.cssに追加
+
+## 重要：帰属表示
+- 「Built with varsha by myndlabs」クレジットは削除しない
+- BuiltWithコンポーネントはMarketingLayoutに含まれており、維持する必要がある
+- この帰属はhttps://myndlabs.techにリンクする必要がある
+
+## コンテンツ
+- ブログ記事はsrc/content/blog/に配置し、frontmatter(title, description, pubDate)が必要
+- ドキュメントはStarlightを使用（src/content/docs/）
+- ドラフト記事はdraft: trueでマーク
+
+## テーマ
+- テーマはdata-theme属性で切り替えられる
+- ビルトインテーマ：tokyo-night, tokyo-day, catppuccin, nord, draculaなど18以上
+- ユーザーは/またはtキーでテーマスイッチャーを開ける
+```
+
+## エージェントにSKILL.mdを認識させる方法
+
+ほとんどのAIコーディングエージェントは、プロジェクトルートにある`SKILL.md`ファイルを自動的に検出して読み取ります。ベストプラクティス：
+
+1. プロジェクトを大きくカスタマイズする場合は、SKILL.mdをあなたの規約に合わせて更新
+2. ディレクトリ構造を変更した場合は、ファイルを更新
+3. カスタムコンポーネントを追加した場合は、使用パターンを追加
+4. デプロイメントプロセスを変更した場合は、コマンドセクションを更新
+
+## 既知の制限事項
+
+- varshaはAstroの静的出力モードを使用 — SSR/エッジ関数はデフォルトでは有効化されていない
+- マーケティングサイトのテーマ切り替えはJavaScriptを必要とする
+- ビルトインの18テーマはマーケティングページとドキュメントの両方に適用される
+
+## コミュニティとサポート
+
+- **GitHub:** [github.com/yethikrishna/web-ui-template](https://github.com/yethikrishna/web-ui-template)
+- **Instagram:** [@yethikrishnar](https://instagram.com/yethikrishnar)
+- **サンプルサイト:** [founder.myndlabs.tech](https://founder.myndlabs.tech)
+- **会社:** [myndlabs.tech](https://myndlabs.tech)

@@ -1,0 +1,381 @@
+---
+title: Components reference
+description: Complete reference for all built-in varsha components — MarketingLayout, BuiltWith, AuthorCard, and Starlight documentation components.
+slug: components
+---
+
+import { Card, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
+
+varsha includes a set of Astro components for building marketing pages and structuring documentation. This reference covers every built-in component, its props, and usage examples.
+
+## Custom components
+
+These components live in `src/components/` and are used for building marketing pages and customizing the documentation theme.
+
+### MarketingLayout
+
+The primary layout wrapper for all marketing pages. It provides the header, navigation, footer, theme switcher, OG metadata, and the BuiltWith attribution.
+
+**Import:**
+
+```astro
+import MarketingLayout from '../components/MarketingLayout.astro';
+```
+
+**Props:**
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `title` | `string` | **required** | Page title |
+| `description` | `string` | **required** | Meta description |
+| `canonicalPath` | `string` | **required** | Canonical URL path (e.g., `/about/`) |
+| `ogType` | `'website' \| 'article'` | `'website'` | Open Graph content type |
+| `ogImage` | `string` | `'/assets/og-card-v8.png'` | OG image path |
+| `ogImageAlt` | `string` | `'varsha'` | Alt text for OG image |
+
+**Usage:**
+
+```astro
+---
+import MarketingLayout from '../components/MarketingLayout.astro';
+---
+
+<MarketingLayout
+  title="Pricing"
+  description="Simple, transparent pricing for every team."
+  canonicalPath="/pricing/"
+>
+  <main class="page">
+    <section class="hero">
+      <h1>Pricing</h1>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+### BuiltWith
+
+Renders the required "Built with varsha by myndlabs" attribution link. This component is automatically included in `MarketingLayout` and the custom Starlight `Footer`. You only need to use it directly if you create a custom layout.
+
+**Import:**
+
+```astro
+import BuiltWith from '../components/BuiltWith.astro';
+```
+
+**Props:**
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `'footer' \| 'corner' \| 'docs'` | `'footer'` | Visual style |
+
+**Variants:**
+
+- `corner` — Floating badge in the bottom-right corner (used on marketing pages)
+- `footer` — Inline text link (used in documentation footer)
+- `docs` — Documentation-specific styling
+
+**Usage:**
+
+```astro
+<BuiltWith variant="corner" />
+```
+
+:::caution[Do not remove]
+The BuiltWith component is protected by a self-healing script that re-injects the attribution if it is removed or hidden. See the [attribution section in Customization](/docs/configuration/#attribution-requirement) for details.
+:::
+
+### AuthorCard
+
+Displays an author card for blog posts, typically used on blog post pages to show the author's name, avatar, and bio.
+
+**Import:**
+
+```astro
+import AuthorCard from '../components/AuthorCard.astro';
+```
+
+**Location:** `src/components/AuthorCard.astro`
+
+### Banner
+
+An announcement banner displayed at the top of Starlight documentation pages. Use it for launch announcements, version updates, or important notices.
+
+**Location:** `src/components/Banner.astro`
+
+To customize the banner content, edit the component directly. Set its content to conditionally show or hide based on your needs.
+
+### Header, Footer, Sidebar, SiteTitle
+
+These are Starlight override components that customize the documentation theme's chrome. They live in `src/components/` and are registered in `astro.config.mjs`:
+
+```js title="astro.config.mjs"
+components: {
+  Banner: './src/components/Banner.astro',
+  Header: './src/components/Header.astro',
+  Sidebar: './src/components/Sidebar.astro',
+  SiteTitle: './src/components/SiteTitle.astro',
+  Footer: './src/components/Footer.astro',
+},
+```
+
+You can customize these to change the docs header, add a logo, modify the sidebar, or update the footer.
+
+## Marketing CSS classes
+
+In addition to Astro components, varsha's global CSS (`public/css/style.css`) provides utility classes for common marketing page patterns.
+
+### Hero section
+
+```astro
+<section class="hero">
+  <h1>Your headline</h1>
+  <p>Supporting subtitle text.</p>
+  <div class="hero-actions">
+    <a href="/docs/install/" class="button button--primary">Get started</a>
+    <a href="/docs/" class="button button--secondary">Read docs</a>
+  </div>
+</section>
+```
+
+### Feature grid
+
+```astro
+<section class="section">
+  <div class="container">
+    <h2>Features</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>Fast</h3>
+        <p>Zero-JS static pages for instant loads.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Beautiful</h3>
+        <p>18+ themes and a refined design system.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Complete</h3>
+        <p>Docs, blog, and marketing pages out of the box.</p>
+      </div>
+    </div>
+  </div>
+</section>
+```
+
+### Buttons
+
+```astro
+<a href="/" class="button button--primary">Primary CTA</a>
+<a href="/" class="button button--secondary">Secondary CTA</a>
+```
+
+### Page and section structure
+
+```astro
+<main class="page">
+  <section class="hero">
+    <!-- Hero content -->
+  </section>
+  <section class="section">
+    <div class="container">
+      <!-- Section content -->
+    </div>
+  </section>
+</main>
+```
+
+- `.page` — Wraps main page content with appropriate vertical padding
+- `.section` — Vertical section spacing
+- `.container` — Max-width container with horizontal padding
+
+## Starlight components
+
+Documentation pages can use all of Starlight's built-in components. Import them from `@astrojs/starlight/components`:
+
+```mdx
+import {
+  Card, CardGrid, Tabs, TabItem, Steps,
+  Aside, CodeBlock, FileTree, LinkCard, LinkCardGroup
+} from '@astrojs/starlight/components';
+```
+
+### Card and CardGrid
+
+Display grouped links or feature highlights in a grid:
+
+```mdx
+<CardGrid>
+  <Card title="Getting started" icon="rocket">
+    Install and run varsha in minutes.
+
+    [Get started →](/docs/install/)
+  </Card>
+  <Card title="Customization" icon="puzzle">
+    Brand your site to match your identity.
+
+    [Customize →](/docs/configuration/)
+  </Card>
+</CardGrid>
+```
+
+**Card props:**
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `title` | `string` | Card heading |
+| `icon` | `string` | Starlight icon name (e.g., `rocket`, `puzzle`, `book-open`) |
+
+### Tabs and TabItem
+
+Display tabbed content for platform-specific instructions or alternatives:
+
+```mdx
+<Tabs>
+  <TabItem label="npm">
+    npm run dev
+  </TabItem>
+  <TabItem label="pnpm">
+    pnpm dev
+  </TabItem>
+  <TabItem label="yarn">
+    yarn dev
+  </TabItem>
+</Tabs>
+```
+
+### Steps
+
+Render numbered steps for tutorials and guides:
+
+```mdx
+<Steps>
+1. Install varsha with `npx degit yethikrishna/web-ui-template my-site`
+2. Run `npm install`
+3. Start the dev server with `npm run dev`
+</Steps>
+```
+
+### Asides (callouts)
+
+Use Markdown directive syntax for callout boxes:
+
+```mdx
+:::tip[Pro tip]
+This is a helpful tip that makes things easier.
+:::
+
+:::note
+This is a general note.
+:::
+
+:::caution
+Be careful — this action has consequences.
+:::
+
+:::danger[Critical]
+This can cause data loss or broken builds.
+:::
+```
+
+### FileTree
+
+Display a file tree for project structure examples:
+
+```mdx
+<FileTree>
+- src/
+  - components/
+    - MarketingLayout.astro
+    - BuiltWith.astro
+  - pages/
+    - index.astro
+  - content/
+    - blog/
+    - docs/
+- astro.config.mjs
+- package.json
+</FileTree>
+```
+
+### LinkCard and LinkCardGroup
+
+Navigation cards optimized for linking between documentation pages:
+
+```mdx
+<LinkCardGroup>
+  <LinkCard title="Getting started" href="/docs/install/" description="Install varsha and start building." />
+  <LinkCard title="Deployment" href="/docs/persistence-remote/" description="Ship to production." />
+</LinkCardGroup>
+```
+
+### CodeBlock
+
+Display syntax-highlighted code with file name and language:
+
+```mdx
+<CodeBlock lang="js" title="astro.config.mjs">
+export default defineConfig({
+  site: 'https://your-domain.com',
+});
+</CodeBlock>
+```
+
+You can also use standard Markdown fenced code blocks with an optional title:
+
+````mdx
+```js title="astro.config.mjs"
+export default defineConfig({
+  site: 'https://your-domain.com',
+});
+```
+````
+
+## Creating your own components
+
+To create a new reusable component, add a `.astro` file in `src/components/`:
+
+```astro title="src/components/CallToAction.astro"
+---
+interface Props {
+  text: string;
+  href: string;
+  variant?: 'primary' | 'secondary';
+}
+
+const { text, href, variant = 'primary' } = Astro.props;
+---
+
+<a href={href} class={`button button--${variant}`}>
+  {text}
+</a>
+```
+
+Then use it in any page or layout:
+
+```astro
+---
+import CallToAction from '../components/CallToAction.astro';
+---
+
+<CallToAction text="Get started" href="/docs/install/" />
+```
+
+## Next steps
+
+<CardGrid>
+  <Card title="CSS tokens">
+    Understand the design token system that powers component styling.
+
+    [CSS tokens →](/docs/cli-reference/)
+  </Card>
+  <Card title="Pages & layouts">
+    Learn how to compose pages using MarketingLayout.
+
+    [Pages & layouts →](/docs/how-to-work/)
+  </Card>
+  <Card title="Design system">
+    Explore the design principles behind varsha's components.
+
+    [Design system →](/docs/design-system/)
+  </Card>
+</CardGrid>

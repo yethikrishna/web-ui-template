@@ -1,0 +1,156 @@
+---
+title: デプロイ
+description: varshaサイトをVercel、Netlify、Cloudflare Pages、その他の静的ホスティングプラットフォームにデプロイする方法。
+slug: deployment
+---
+
+import { Card, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
+
+varshaは静的サイトを出力するため、事実上すべてのホスティングプラットフォームにデプロイできます。このガイドでは主要なプラットフォームの手順を説明します。
+
+## デプロイ前に
+
+デプロイ前に以下を確認してください：
+
+1. `astro.config.mjs`の`site`URLが実際のドメインに設定されている
+2. ビルドがエラーなしで成功する：`npm run build`
+3. プロダクションビルドをローカルで確認：`npm run preview`
+4. すべてのドラフト記事が公開準備完了している
+
+```bash
+npm run build
+npm run preview
+```
+
+## Vercel（推奨）
+
+Vercelは最速のデプロイ体験を提供します。varshaにはVercelアダプターがプリインストールされています。
+
+<Tabs>
+  <TabItem label="CLI">
+    ```bash
+    # Vercel CLIをインストール
+    npm i -g vercel
+
+    # デプロイ
+    vercel
+
+    # プロダクションにデプロイ
+    vercel --prod
+    ```
+  </TabItem>
+  <TabItem label="Git経由">
+    1. コードをGitHub/GitLab/Bitbucketにプッシュ
+    2. [vercel.com](https://vercel.com)で「New Project」をクリック
+    3. リポジトリを選択
+    4. フレームワークプリセットとして「Astro」が自動検出される
+    5. 「Deploy」をクリック
+
+    Vercelは自動的に：
+    - プッシュごとにデプロイ
+    - プレビューURLを生成
+    - HTTPSを処理
+    - CDNキャッシュを処理
+  </TabItem>
+</Tabs>
+
+**ビルド設定：**
+- フレームワーク：Astro
+- ビルドコマンド：`npm run build`
+- 出力ディレクトリ：`dist`
+- インストールコマンド：`npm install`
+
+## Netlify
+
+<Tabs>
+  <TabItem label="CLI">
+    ```bash
+    # Netlify CLIをインストール
+    npm i -g netlify-cli
+
+    # デプロイ
+    netlify deploy --build --prod
+    ```
+  </TabItem>
+  <TabItem label="Git経由">
+    1. コードをGitHub/GitLab/Bitbucketにプッシュ
+    2. [app.netlify.com](https://app.netlify.com)で「Add new site」をクリック
+    3. リポジトリを選択
+    4. ビルド設定：
+       - ビルドコマンド：`npm run build`
+       - 公開ディレクトリ：`dist`
+    5. 「Deploy site」をクリック
+  </TabItem>
+</Tabs>
+
+**注意：** Netlifyにデプロイする場合、Vercelアダプターを削除してデフォルトの静的アダプターを使用するか、Netlifyアダプターに切り替えてください。
+
+## Cloudflare Pages
+
+<Tabs>
+  <TabItem label="Git経由（ダッシュボード）">
+    1. コードをGitHub/GitLabにプッシュ
+    2. [dash.cloudflare.com](https://dash.cloudflare.com)で「Pages」に移動
+    3. 「Create a project」→「Connect to Git」をクリック
+    4. リポジトリを選択
+    5. ビルド設定：
+       - フレームワークプリセット：Astro
+       - ビルドコマンド：`npm run build`
+       - ビルド出力ディレクトリ：`dist`
+    6. 「Save and Deploy」をクリック
+  </TabItem>
+  <TabItem label="Wrangler CLI">
+    ```bash
+    # Wranglerをインストール
+    npm i -g wrangler
+
+    # ビルド
+    npm run build
+
+    # デプロイ
+    npx wrangler pages deploy dist --project-name=your-site
+    ```
+  </TabItem>
+</Tabs>
+
+## その他の静的ホスティング
+
+varshaは静的サイトを`dist/`ディレクトリに出力するため、任意の静的ホスティングで動作します：
+
+<CardGrid>
+  <Card title="GitHub Pages">
+    `npm run build`を実行し、`dist/`の内容を`gh-pages`ブランチにプッシュします。`astro.config.mjs`の`base`設定をリポジトリ名に設定してください。
+  </Card>
+  <Card title="AWS S3 + CloudFront">
+    `dist/`をS3バケットにアップロードし、CloudFrontディストリビューションを作成します。
+  </Card>
+  <Card title="Nginx/Apache">
+    `dist/`の内容をウェブサーバーのドキュメントルートにコピーします。
+  </Card>
+  <Card title="Firebase Hosting">
+    `firebase init hosting`を実行し、公開ディレクトリを`dist`に設定して`firebase deploy`を実行します。
+  </Card>
+</CardGrid>
+
+## 環境変数
+
+デプロイ時に環境変数が必要な場合は、ホスティングプラットフォームのダッシュボードで設定してください。Astroはビルド時に`import.meta.env`を通じて環境変数を利用できます。
+
+`PUBLIC_`で始まる変数はクライアントサイドで利用可能です：
+
+```astro
+const apiKey = import.meta.env.PUBLIC_API_KEY;
+```
+
+## カスタムドメイン
+
+各プラットフォームはカスタムドメイン設定をサポートしています：
+
+1. プラットフォームのダッシュボードでカスタムドメインを追加
+2. DNSレコードをプラットフォームの指示に従って設定
+3. HTTPS証明書が自動的にプロビジョニングされるのを待つ
+4. `astro.config.mjs`の`site`を新しいドメインに更新して再デプロイ
+
+## トラブルシューティング
+
+デプロイの問題に遭遇した場合は、[トラブルシューティングガイド](/ja/docs/troubleshooting/)を参照してください。

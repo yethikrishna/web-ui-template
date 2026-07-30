@@ -1,0 +1,106 @@
+---
+title: 例
+description: varshaで構築されたサンプルサイト、スターターテンプレート、実世界のプロジェクトの例。コミュニティとmyndlabsによる実装。
+slug: examples
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+varshaは、SaaSランディングページ、ファウンダーポートフォリオ、ドキュメントサイト、ブログ、プロダクトマイクロサイトなど、幅広いウェブサイトの出発点として設計されています。このページでは、varshaが実際にどのように使用されているかを紹介します。
+
+## 公式の例
+
+<CardGrid>
+  <Card title="myndlabs.tech" icon="globe">
+    varshaの公式ウェブサイトとドキュメント。スターターのすべての機能を紹介する標準リファレンス実装。
+
+    [myndlabs.techを見る →](https://myndlabs.tech)
+  </Card>
+  <Card title="founder.myndlabs.tech" icon="rocket">
+    varshaで構築されたファウンダー向けサイト。パーソナルブランディング、プロダクトローンチ、カスタムスタイルのポートフォリオパターンを示しています。
+
+    [founder.myndlabs.techを見る →](https://founder.myndlabs.tech)
+  </Card>
+</CardGrid>
+
+## スターターテンプレート
+
+varshaは、デフォルトで完全なスターターとして使用することも、特定のユースケースのベースとして使用することもできます。
+
+<CardGrid>
+  <Card title="デフォルトスターター">
+    このドキュメントで説明されている標準のvarshaテンプレート。マーケティングサイト、ドキュメント、ブログが含まれます。
+
+    GitHub: [yethikrishna/web-ui-template](https://github.com/yethikrishna/web-ui-template)
+  </Card>
+  <Card title="SaaSランディングページ">
+    料金セクション、お客様の声、CTAセクション、ヒーローのバリエーションを追加することで、SaaSプロダクトサイトに最適です。
+  </Card>
+  <Card title="個人ポートフォリオ" icon="user">
+    ブログセクションをプロジェクトショーケースに置き換え、プロフィールページを追加し、テーマをパーソナライズしてポートフォリオサイトを作成します。
+  </Card>
+  <Card title="ドキュメントサイト" icon="book-open">
+    マーケティングページを削除し、Starlightドキュメントを拡張して、製品やライブラリのドキュメントサイトに焦点を当てます。
+  </Card>
+</CardGrid>
+
+## 一般的なサイトパターン
+
+### 最小限のランディングページ
+
+ヒーロー、3〜4のフィーチャーカード、CTAセクション、フッターのみを使用：
+
+```astro
+<MarketingLayout title="My App" description="..." canonicalPath="/">
+  <main class="page">
+    <section class="hero">
+      <h1>Ship faster.</h1>
+      <p>Simple, beautiful apps.</p>
+      <a href="/signup" class="btn btn-primary">Get started</a>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="card-grid">
+          <div class="card"><h3>Fast</h3><p>Lightning speed.</p></div>
+          <div class="card"><h3>Simple</h3><p>Easy to use.</p></div>
+          <div class="card"><h3>Beautiful</h3><p>Gorgeous themes.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</MarketingLayout>
+```
+
+### ブログメインのサイト
+
+ブログに焦点を当て、マーケティングセクションを減らし、ホームページでブログ記事を紹介します。`src/content/blog/`に記事を追加し、必要に応じてブログレイアウトをカスタマイズします。
+
+### プロダクトドキュメント
+
+製品中心のサイトの場合は、ナビゲーションとホームページを`/docs/`に向け、Starlightサイドバーを充実させます。
+
+## カスタマイズ例
+
+<CardGrid>
+  <Card title="カスタムカラーパレット">
+    ブランドカラーに合わせてCSS変数を変更します。例：紫のアクセントにするには`--color-accent: #8b5cf6`を設定。
+  </Card>
+  <Card title="カスタムフォント">
+    Google Fontsでフォントを追加し、`--font-sans`と`--font-display`を更新。
+  </Card>
+  <Card title="追加ページ">
+    Pricing、Changelog、About、Contactページを`MarketingLayout`で追加。
+  </Card>
+  <Card title="カスタムコンポーネント">
+    TestimonialCarousel、PricingTable、LogoCloudなどのコンポーネントを`src/components/`に作成。
+  </Card>
+</CardGrid>
+
+## あなたのサイトを紹介する
+
+varshaでサイトを構築されましたか？ぜひお知らせください！
+
+- **Instagram:** [@yethikrishnar](https://instagram.com/yethikrishnar)にタグ付け
+- **GitHub:** [リポジトリ](https://github.com/yethikrishna/web-ui-template)にPRまたはissueを送信
+
+[ショーケースページ](/ja/docs/agents/)で厳選されたサイトをご覧ください。
