@@ -126,6 +126,7 @@ jobs:
     name: Create GitHub Release
     runs-on: ubuntu-latest
     needs: [publish-npm, publish-github-packages, publish-docker]
+    if: always()
     permissions:
       contents: write
     steps:
