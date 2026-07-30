@@ -52,3 +52,30 @@ jobs:
         run: jsr publish --allow-dirty
         env:
           JSR_TOKEN: ${{ secrets.JSR_TOKEN }}
+
+  publish-github-packages:
+    name: Publish to GitHub Packages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@yethikrishna'
+
+      - name: Rename package for GitHub Packages
+        working-directory: create-varsha
+        run: npm pkg set name="@yethikrishna/create-varsha"
+
+      - name: Publish to GitHub Packages
+        working-directory: create-varsha
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
