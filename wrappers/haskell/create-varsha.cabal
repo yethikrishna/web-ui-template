@@ -1,0 +1,54 @@
+cabal-version:      2.4
+name:               create-varsha
+version:            1.0.0
+synopsis:           Scaffold a new varsha website — a premium Astro + Starlight starter template by myndlabs.
+description:
+  A Haskell wrapper for the create-varsha CLI tool.
+  Scaffolds a new varsha website project by delegating to the
+  Node.js-based create-varsha npm package.
+  .
+  Requires Node.js (>= 18.17.0) and npm to be installed.
+
+category:           Development, Web
+license:            MIT
+license-file:       LICENSE
+author:             Yethikrishna R
+maintainer:         hey@myndlabs.tech
+homepage:           https://myndlabs.tech
+bug-reports:        https://github.com/yethikrishna/web-ui-template/issues
+build-type:         Simple
+
+extra-source-files:
+  README.md
+  CHANGELOG.md
+
+source-repository head
+  type:     git
+  location: https://github.com/yethikrishna/web-ui-template
+
+flag dev
+  description: Development mode
+  default:     False
+  manual:      True
+
+library
+  exposed-modules:    CreateVarsha
+  hs-source-dirs:     src
+  build-depends:      base >= 4.14 && < 5
+                    , directory >= 1.3
+                    , filepath >= 1.4
+                    , process >= 1.6
+  default-language:   Haskell2010
+  ghc-options:        -Wall -Wcompat -Widentities -Wincomplete-record-updates
+                      -Wincomplete-uni-patterns -Wredundant-constraints
+                      -Wmissing-export-lists
+
+executable create-varsha
+  main-is:            Main.hs
+  hs-source-dirs:     app
+  build-depends:      base >= 4.14 && < 5
+                    , directory >= 1.3
+                    , filepath >= 1.4
+                    , process >= 1.6
+  default-language:   Haskell2010
+  ghc-options:        -Wall -Wcompat -threaded -rtsopts -with-rtsopts=-N
