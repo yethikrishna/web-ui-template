@@ -131,3 +131,5 @@ MIT License — Copyright (c) 2026 Yethikrishna R / myndlabs.tech
 
 See [LICENSE](./LICENSE) for the full text. The attribution notice (Built with
 varsha by myndlabs) must be preserved on all deployed sites.
+
+<!-- deployed 2026-10-04 -->
