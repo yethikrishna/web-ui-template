@@ -1,7 +1,9 @@
 ---
 import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 
-const homepage = await readFile(new URL('../../index.html', import.meta.url), 'utf8');
+// Resolve from the project root so this works in both dev and the Astro 7 prerender bundle.
+const homepage = await readFile(resolve(process.cwd(), 'index.html'), 'utf8');
 ---
 
 <Fragment set:html={homepage} />
