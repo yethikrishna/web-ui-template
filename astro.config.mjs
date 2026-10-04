@@ -52,6 +52,8 @@ export default defineConfig({
   redirects: {
     '/ja': '/ja/docs/',
     '/zh-cn': '/zh-cn/docs/',
+    '/ja/blog': '/blog/',
+    '/zh-cn/blog': '/blog/',
   },
   integrations: [
     sitemap(),

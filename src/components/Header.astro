@@ -10,15 +10,6 @@ import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
 const shouldRenderSearch =
   config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
 
-const pathname = Astro.url.pathname;
-const isDocs = pathname === '/docs/' || pathname.startsWith('/docs/');
-const isPreview = pathname === '/docs/preview/' || pathname.startsWith('/docs/preview/');
-const stableHref = isPreview ? pathname.replace(/^\/docs\/preview\/?/, '/docs/') : pathname;
-const previewHref = isPreview
-  ? pathname
-  : pathname === '/docs/'
-    ? '/docs/preview/'
-    : pathname.replace(/^\/docs\/?/, '/docs/preview/');
 ---
 
 <div class="header">
@@ -26,12 +17,6 @@ const previewHref = isPreview
     <SiteTitle />
   </div>
   <div class="sl-flex print:hidden search-wrapper">
-    {isDocs && (
-      <nav class="docs-channel-switcher" aria-label="Documentation channel">
-        <a href={stableHref} aria-current={!isPreview ? 'page' : undefined}>Stable</a>
-        <a href={previewHref} aria-current={isPreview ? 'page' : undefined}>Preview</a>
-      </nav>
-    )}
     {shouldRenderSearch && <Search />}
   </div>
   <div class="sl-hidden md:sl-flex print:hidden right-group">

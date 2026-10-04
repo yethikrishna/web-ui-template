@@ -31,7 +31,9 @@ export async function getStaticPaths() {
       params: { author: authorSlug },
       props: {
         name,
-        photo: `/assets/author-${authorSlug}.png`,
+        // Photos are named by the author's first name(s), without a trailing initial
+        // ("yethikrishna-r" -> author-yethikrishna.png).
+        photo: `/assets/author-${authorSlug.replace(/-[a-z]$/, '')}.png`,
         posts: authorPosts
           .map((post) => ({ ...post, slug: post.id.replace(/\.(md|mdx)$/i, '') }))
           .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
