@@ -1,0 +1,22 @@
+/* AA contrast refinements for terminal tokens, muted-2 and accents.
+   Loaded after style.css; edit or delete freely when you retheme. */
+[data-palette="varsha"] { --muted-2: #7d7c74; --term-muted: #85847c; }
+[data-palette="taat"] { --muted-2: #7c7b73; --term-muted: #828179; --term-dim: #828179; }
+[data-palette="catppuccin"] { --muted-2: #7c7d90; --term-muted: #878697; }
+[data-palette="catppuccin-latte"] { --muted-2: #6a6c7c; --accent: #1e56c8; --term-muted: #606272; --term-prompt: #1e5ad5; --term-cmd: #336f2c; --term-str: #825825; --term-dim: #5e6075; --term-blue: #1e5ad5; --term-green-bright: #336f2c; }
+[data-palette="terminal"] { --muted-2: #777777; --term-muted: #7e7e7e; }
+[data-palette="tokyo-night"] { --muted-2: #7a82aa; --term-muted: #8991b8; --term-dim: #878eb5; }
+[data-palette="tokyo-night-day"] { --muted-2: #56618e; --accent: #2651a0; --term-text: #2f4fa1; --term-muted: #435080; --term-prompt: #2651a0; --term-cmd: #41594b; --term-str: #5c5150; --term-dim: #455181; --term-blue: #2651a0; --term-green-bright: #41594b; }
+[data-palette="dracula"] { --muted-2: #8591b8; --accent: #c097f9; --term-muted: #9ba5c5; --term-dim: #9fa5c2; }
+[data-palette="nord"] { --muted-2: #959dab; --term-muted: #a9afba; --term-dim: #a9b1c0; }
+[data-palette="gruvbox"] { --muted-2: #9c8e7c; --accent: #d89b24; --term-muted: #afa28b; --term-dim: #b0a28b; }
+[data-palette="gruvbox-light"] { --muted-2: #766b60; --accent: #086475; --term-muted: #685f56; --term-cmd: #666214; --term-str: #7f581c; --term-green-bright: #666214; }
+[data-palette="one-dark"] { --muted-2: #90959f; --term-muted: #9ea3ac; --term-dim: #9da1aa; }
+[data-palette="one-light"] { --muted-2: #6f7177; --accent: #3760ba; --term-muted: #6a6c72; --term-prompt: #3a67ca; --term-cmd: #417843; --term-str: #8d650d; --term-blue: #3a67ca; --term-green-bright: #417843; }
+[data-palette="solarized"] { --muted-2: #859392; --accent: #71aed3; --term-text: #97a4a3; --term-muted: #9aa49f; --term-prompt: #66a9d3; --term-cmd: #9caa2f; --term-str: #c29e2f; --term-dim: #98a5a3; --term-blue: #66a9d3; --term-green-bright: #9caa2f; }
+[data-palette="solarized-light"] { --muted-2: #587479; --accent: #17628d; --term-text: #49666f; --term-muted: #47676e; --term-prompt: #196796; --term-cmd: #4b6b1e; --term-str: #68641d; --term-dim: #4b656d; --term-blue: #196796; --term-green-bright: #4b6b1e; }
+[data-palette="kanagawa"] { --muted-2: #8c897e; --term-muted: #969387; --term-cmd: #809b72; --term-dim: #959385; --term-green-bright: #809b72; }
+[data-palette="kanagawa-lotus"] { --muted-2: #676574; --accent: #42557c; --term-muted: #595866; --term-prompt: #455b85; --term-cmd: #515f44; --term-str: #605c3d; --term-dim: #5d5a59; --term-blue: #455b85; --term-green-bright: #515f44; }
+[data-palette="rose-pine"] { --muted-2: #837f99; --term-muted: #8e8aa3; }
+[data-palette="rose-pine-dawn"] { --muted-2: #6f6b7c; --accent: #66587b; --term-muted: #6f6b7c; --term-prompt: #78668e; --term-cmd: #477681; --term-str: #92652d; --term-dim: #6f6c88; --term-blue: #78668e; --term-green-bright: #477681; }
+[data-palette="vesper"] { --muted-2: #7d7d7d; --term-muted: #8a8a8a; --term-dim: #8b8b8b; }
