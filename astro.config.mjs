@@ -47,7 +47,7 @@ function walk(node, visitor) {
 }
 
 export default defineConfig({
-  site: 'https://myndlabs.tech',
+  site: 'https://varsha.myndlabs.tech',
   output: 'static',
   redirects: {
     '/ja': '/ja/docs/',
@@ -118,7 +118,7 @@ export default defineConfig({
         },
         {
           tag: 'meta',
-          attrs: { property: 'og:image', content: 'https://myndlabs.tech/assets/og-card-v8.png' },
+          attrs: { property: 'og:image', content: 'https://varsha.myndlabs.tech/assets/og-card-v8.png' },
         },
         { tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
         { tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
@@ -131,7 +131,7 @@ export default defineConfig({
         },
         {
           tag: 'meta',
-          attrs: { name: 'twitter:image', content: 'https://myndlabs.tech/assets/og-card-v8.png' },
+          attrs: { name: 'twitter:image', content: 'https://varsha.myndlabs.tech/assets/og-card-v8.png' },
         },
         {
           tag: 'meta',
