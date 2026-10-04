@@ -313,3 +313,39 @@
   }
 }
 /* varsha-builtwith:end */
+
+/* Light-palette code tokens: every Shiki light color that sat near 4.2:1 on the code
+   background is darkened just enough to clear AA (4.5:1). Dark mode uses --0 and is untouched. */
+.expressive-code span[style*='--1:#096E72'] {
+  --1: #08676b !important;
+}
+.expressive-code span[style*='--1:#3B61B0'] {
+  --1: #3659a1 !important;
+}
+.expressive-code span[style*='--1:#4D667B'] {
+  --1: #485f73 !important;
+}
+.expressive-code span[style*='--1:#5D6376'] {
+  --1: #555b6c !important;
+}
+.expressive-code span[style*='--1:#5F636F'] {
+  --1: #575b66 !important;
+}
+.expressive-code span[style*='--1:#7C5686'] {
+  --1: #724f7b !important;
+}
+.expressive-code span[style*='--1:#8844AE'] {
+  --1: #7f3fa3 !important;
+}
+.expressive-code span[style*='--1:#954F5A'] {
+  --1: #894852 !important;
+}
+.expressive-code span[style*='--1:#984E4D'] {
+  --1: #8b4746 !important;
+}
+.expressive-code span[style*='--1:#A24848'] {
+  --1: #954242 !important;
+}
+.expressive-code span[style*='--1:#B23834'] {
+  --1: #a3332f !important;
+}
