@@ -63,7 +63,7 @@
             .browser-mock {
                 background: var(--bg-elevated, #1a1b26);
                 border-radius: 12px;
-                border: 1px solid var(--border, #2a2b3a);
+                border: 1px solid var(--line-strong);
                 overflow: hidden;
                 box-shadow: 0 25px 60px rgba(0,0,0,0.35), 0 6px 20px rgba(0,0,0,0.2);
                 font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
@@ -73,8 +73,8 @@
                 align-items: center;
                 gap: 12px;
                 padding: 10px 14px;
-                background: var(--bg-surface, #16161e);
-                border-bottom: 1px solid var(--border, #2a2b3a);
+                background: var(--bg-elevated);
+                border-bottom: 1px solid var(--line-strong);
             }
             .browser-dots {
                 display: flex;
@@ -92,11 +92,11 @@
             .browser-dots span:nth-child(3) { background: #28c840; }
             .browser-url-bar {
                 flex: 1;
-                background: var(--bg-raised, #24283b);
+                background: var(--bg-elevated);
                 border-radius: 6px;
                 padding: 5px 12px;
                 font-size: 12px;
-                color: var(--text-dim, #565f89);
+                color: var(--muted);
                 display: flex;
                 align-items: center;
                 gap: 6px;
@@ -106,7 +106,7 @@
                 font-size: 11px;
             }
             .browser-url-bar .url-text {
-                color: var(--text-muted, #a9b1d6);
+                color: var(--ink-soft);
             }
             .browser-content {
                 padding: 0;
@@ -117,7 +117,7 @@
             /* Simulated website preview inside the browser */
             .site-preview {
                 padding: 28px 32px;
-                color: var(--text, #c0caf5);
+                color: var(--ink, #1f2f66);
             }
             .site-preview-nav {
                 display: flex;
@@ -135,7 +135,7 @@
                 display: flex;
                 gap: 18px;
                 font-size: 11px;
-                color: var(--text-dim, #565f89);
+                color: var(--muted, #68709a);
             }
             .site-preview-links span {
                 opacity: 0.7;
@@ -150,7 +150,7 @@
                 text-transform: uppercase;
                 letter-spacing: 1.2px;
                 color: var(--accent, #7aa2f7);
-                background: var(--bg-raised, #24283b);
+                background: var(--bg-elevated, #d8d9e0);
                 padding: 4px 10px;
                 border-radius: 20px;
                 margin-bottom: 16px;
@@ -159,19 +159,19 @@
                 font-size: 26px;
                 font-weight: 700;
                 line-height: 1.15;
-                color: var(--text, #c0caf5);
+                color: var(--ink, #1f2f66);
                 margin: 0 0 10px;
                 font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
             }
             .site-preview-h1 .accent-word {
-                background: linear-gradient(135deg, var(--accent, #7aa2f7), var(--accent2, #bb9af7));
+                background: linear-gradient(135deg, var(--accent, #7aa2f7), var(--accent, #7aa2f7));
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
             }
             .site-preview-sub {
                 font-size: 12px;
-                color: var(--text-dim, #565f89);
+                color: var(--muted, #68709a);
                 max-width: 380px;
                 margin: 0 auto 20px;
                 line-height: 1.5;
@@ -195,8 +195,8 @@
                 color: var(--bg, #1a1b26);
             }
             .site-preview-btn.secondary {
-                border: 1px solid var(--border, #2a2b3a);
-                color: var(--text, #c0caf5);
+                border: 1px solid var(--line-strong, #a8aecb);
+                color: var(--ink, #1f2f66);
             }
             .site-preview-features {
                 display: grid;
@@ -204,8 +204,8 @@
                 gap: 12px;
             }
             .site-preview-feature {
-                background: var(--bg-raised, #24283b);
-                border: 1px solid var(--border, #2a2b3a);
+                background: var(--bg-elevated, #d8d9e0);
+                border: 1px solid var(--line-strong, #a8aecb);
                 border-radius: 8px;
                 padding: 14px 12px;
                 text-align: left;
@@ -222,17 +222,17 @@
                 margin-bottom: 8px;
                 color: var(--accent, #7aa2f7);
             }
-            .site-preview-feature h4 {
+            .site-preview-feature .site-preview-feature-title {
                 margin: 0 0 4px;
                 font-size: 11px;
                 font-weight: 600;
-                color: var(--text, #c0caf5);
+                color: var(--ink, #1f2f66);
                 font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
             }
             .site-preview-feature p {
                 margin: 0;
                 font-size: 10px;
-                color: var(--text-dim, #565f89);
+                color: var(--muted, #68709a);
                 line-height: 1.4;
                 font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
             }
@@ -244,7 +244,7 @@
             }
             .showcase-card {
                 display: block;
-                border: 1px solid var(--border);
+                border: 1px solid var(--line-strong);
                 border-radius: 12px;
                 overflow: hidden;
                 text-decoration: none;
@@ -258,7 +258,7 @@
             }
             .showcase-thumb {
                 height: 180px;
-                background: linear-gradient(135deg, var(--bg-raised), var(--bg-surface));
+                background: linear-gradient(135deg, var(--bg-elevated), var(--bg-elevated));
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -270,7 +270,7 @@
                 height: 78%;
                 background: var(--bg);
                 border-radius: 8px;
-                border: 1px solid var(--border);
+                border: 1px solid var(--line-strong);
                 padding: 14px;
                 display: flex;
                 flex-direction: column;
@@ -279,7 +279,7 @@
             .showcase-thumb-bar {
                 height: 8px;
                 border-radius: 4px;
-                background: var(--bg-raised);
+                background: var(--bg-elevated);
             }
             .showcase-thumb-bar.accent { background: var(--accent); width: 60%; }
             .showcase-thumb-bar.muted { width: 90%; opacity: 0.4; }
@@ -291,7 +291,7 @@
                 flex: 1;
             }
             .showcase-thumb-grid > div {
-                background: var(--bg-raised);
+                background: var(--bg-elevated);
                 border-radius: 4px;
             }
             .showcase-copy {
@@ -299,7 +299,7 @@
             }
             .showcase-meta {
                 font-size: 12px;
-                color: var(--text-dim);
+                color: var(--muted);
                 text-transform: uppercase;
                 letter-spacing: 0.8px;
                 margin-bottom: 6px;
@@ -311,7 +311,7 @@
             }
             .showcase-desc {
                 font-size: 14px;
-                color: var(--text-dim);
+                color: var(--muted);
                 margin: 0;
                 line-height: 1.5;
             }
@@ -322,7 +322,7 @@
                 gap: 16px;
             }
             .component-card {
-                border: 1px solid var(--border);
+                border: 1px solid var(--line-strong);
                 border-radius: 10px;
                 padding: 24px 16px;
                 text-align: center;
@@ -552,17 +552,17 @@
                                 <div class="site-preview-features">
                                     <div class="site-preview-feature">
                                         <div class="site-preview-feature-icon">&#9889;</div>
-                                        <h4>Blazing fast</h4>
+                                        <p class="site-preview-feature-title">Blazing fast</p>
                                         <p>Astro islands ship zero JS by default.</p>
                                     </div>
                                     <div class="site-preview-feature">
                                         <div class="site-preview-feature-icon">&#9790;</div>
-                                        <h4>Dark mode</h4>
+                                        <p class="site-preview-feature-title">Dark mode</p>
                                         <p>18 themes with system preference detection.</p>
                                     </div>
                                     <div class="site-preview-feature">
                                         <div class="site-preview-feature-icon">&#9998;</div>
-                                        <h4>Blog & Docs</h4>
+                                        <p class="site-preview-feature-title">Blog & Docs</p>
                                         <p>Content collections ready out of the box.</p>
                                     </div>
                                 </div>
@@ -723,7 +723,7 @@
                             <div class="showcase-thumb-inner">
                                 <div class="showcase-thumb-bar" style="background: var(--accent); width: 35%;"></div>
                                 <div style="display:flex; gap:6px; flex:1;">
-                                    <div style="width:30%; background:var(--bg-raised); border-radius:4px;"></div>
+                                    <div style="width:30%; background:var(--bg-elevated); border-radius:4px;"></div>
                                     <div style="flex:1; display:flex; flex-direction:column; gap:4px;">
                                         <div class="showcase-thumb-bar muted"></div>
                                         <div class="showcase-thumb-bar muted" style="width:80%;"></div>
@@ -741,15 +741,15 @@
                     <a class="showcase-card" href="/blog/">
                         <div class="showcase-thumb">
                             <div class="showcase-thumb-inner">
-                                <div class="showcase-thumb-bar" style="background: var(--accent2, #bb9af7); width: 50%;"></div>
+                                <div class="showcase-thumb-bar" style="background: var(--accent); width: 50%;"></div>
                                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; flex:1;">
-                                    <div style="background:var(--bg-raised); border-radius:4px; display:flex; flex-direction:column; gap:4px; padding:6px;">
-                                        <div style="height:6px; background:var(--bg-surface); border-radius:2px; width:80%;"></div>
-                                        <div style="height:4px; background:var(--bg-surface); border-radius:2px; width:100%; opacity:0.5;"></div>
+                                    <div style="background:var(--bg-elevated); border-radius:4px; display:flex; flex-direction:column; gap:4px; padding:6px;">
+                                        <div style="height:6px; background:var(--bg-elevated); border-radius:2px; width:80%;"></div>
+                                        <div style="height:4px; background:var(--bg-elevated); border-radius:2px; width:100%; opacity:0.5;"></div>
                                     </div>
-                                    <div style="background:var(--bg-raised); border-radius:4px; display:flex; flex-direction:column; gap:4px; padding:6px;">
-                                        <div style="height:6px; background:var(--bg-surface); border-radius:2px; width:70%;"></div>
-                                        <div style="height:4px; background:var(--bg-surface); border-radius:2px; width:90%; opacity:0.5;"></div>
+                                    <div style="background:var(--bg-elevated); border-radius:4px; display:flex; flex-direction:column; gap:4px; padding:6px;">
+                                        <div style="height:6px; background:var(--bg-elevated); border-radius:2px; width:70%;"></div>
+                                        <div style="height:4px; background:var(--bg-elevated); border-radius:2px; width:90%; opacity:0.5;"></div>
                                     </div>
                                 </div>
                             </div>
