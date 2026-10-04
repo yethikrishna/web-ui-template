@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://myndlabs.tech/sitemap-index.xml
+Sitemap: https://varsha.myndlabs.tech/sitemap-index.xml

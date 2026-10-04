@@ -8,7 +8,7 @@ import { getCollection } from 'astro:content';
  * descending order (newest first), and serializes them as an RSS 2.0 feed.
  *
  * The site URL resolves from `context.site`, which is configured in
- * `astro.config.mjs` as `https://myndlabs.tech`.
+ * `astro.config.mjs` as `https://varsha.myndlabs.tech`.
  */
 export async function GET(context) {
   const posts = (await getCollection('blog'))
@@ -18,7 +18,7 @@ export async function GET(context) {
   return rss({
     title: 'varsha Blog',
     description: 'News and updates from varsha.',
-    site: context.site ?? 'https://myndlabs.tech',
+    site: context.site ?? 'https://varsha.myndlabs.tech',
     items: posts.map((post) => ({
       title: post.data.title,
       description: post.data.description,
