@@ -385,7 +385,7 @@
             "name": "varsha",
             "applicationCategory": "DeveloperApplication",
             "operatingSystem": "Cross-platform",
-            "description": "A premium website starter template built on Astro 5 and Starlight.",
+            "description": "A premium website starter template built on Astro 7 and Starlight.",
             "url": "https://varsha.myndlabs.tech/",
             "author": {
                 "@type": "Person",
@@ -603,7 +603,7 @@
                         <h3>Fast, really fast</h3>
                         <p>
                             Built on Astro's islands architecture. Ship near-zero JavaScript
-                            by default, with perfect Lighthouse scores and instant page loads.
+                            by default, with static HTML and small client-side scripts.
                         </p>
                     </article>
                     <article class="access-card">
@@ -1118,11 +1118,11 @@ tags: [intro]
             <button type="button" id="copy-logo-url">Copy SVG URL</button>
         </div>
 
-        <div class="theme-hint" id="theme-hint" title="Press / or t to switch theme">
+        <button type="button" class="theme-hint" id="theme-hint" aria-label="Choose color theme" aria-haspopup="dialog" title="Press / or t to switch theme">
             <span class="theme-hint-dot"></span>
             <span class="theme-hint-label" id="theme-hint-label">light</span>
             <span class="theme-hint-key">[/]</span>
-        </div>
+        </button>
 
         <div class="theme-overlay" id="theme-overlay" hidden>
             <div class="theme-overlay-panel" role="dialog" aria-label="Theme switcher" aria-modal="true">
@@ -1170,6 +1170,7 @@ tags: [intro]
                 var media = window.matchMedia("(prefers-color-scheme: dark)");
                 var saved = localStorage.getItem("varsha-palette") || "";
                 var committed = saved || defaultPalette();
+                var returnFocus = null;
 
                 function defaultPalette() {
                     return media.matches ? "tokyo-night" : "tokyo-night-day";
@@ -1190,6 +1191,7 @@ tags: [intro]
                 }
 
                 function openOverlay() {
+                    returnFocus = document.activeElement;
                     overlay.hidden = false;
                     document.body.style.overflow = "hidden";
                     committed = localStorage.getItem("varsha-palette") || defaultPalette();
@@ -1201,6 +1203,7 @@ tags: [intro]
                 function closeOverlay() {
                     overlay.hidden = true;
                     document.body.style.overflow = "";
+                    if (returnFocus && returnFocus.focus) returnFocus.focus();
                 }
 
                 function toggleOverlay() {
@@ -1255,7 +1258,13 @@ tags: [intro]
                     if (overlay.hidden) return;
                     var current = document.activeElement;
                     var idx = options.indexOf(current);
-                    if (e.key === "ArrowDown") {
+                    if (e.key === "Tab") {
+                        var controls = Array.prototype.slice.call(overlay.querySelectorAll("button, [tabindex='0']"));
+                        var first = controls[0];
+                        var last = controls[controls.length - 1];
+                        if (e.shiftKey && current === first) { e.preventDefault(); last.focus(); }
+                        else if (!e.shiftKey && current === last) { e.preventDefault(); first.focus(); }
+                    } else if (e.key === "ArrowDown") {
                         e.preventDefault();
                         var nextIdx = idx >= 0 ? Math.min(options.length - 1, idx + 1) : 0;
                         preview(nextIdx);

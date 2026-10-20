@@ -7,7 +7,7 @@ const repoRoot = resolve(scriptsDir, '..');
 const publicDir = resolve(repoRoot, 'public');
 const docsDir = resolve(repoRoot, 'src/content/docs');
 
-const SITE = 'https://myndlabs.tech';
+const SITE = 'https://varsha.myndlabs.tech';
 const PRODUCT = 'varsha';
 
 await preparePublicAssets();

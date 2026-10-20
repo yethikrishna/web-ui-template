@@ -2684,7 +2684,7 @@ td:last-child {
     }
 
     .hero-right {
-        order: -1;
+        order: 0;
         display: flex;
         padding: 1.25rem 1rem 1.5rem;
         border-bottom: 1px solid var(--line);
@@ -3730,3 +3730,10 @@ td:last-child {
     }
 }
 /* varsha-builtwith:end */
+
+/* On phones, the product message and real actions precede the decorative demo. */
+@media (max-width: 440px) {
+    .hero-left { padding-top: 2rem; padding-bottom: 2rem; }
+    .hero h1 { font-size: 2.35rem; }
+    .hero-lede { font-size: 1rem; line-height: 1.55; }
+}
